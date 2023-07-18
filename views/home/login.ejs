@@ -8,7 +8,7 @@
                     <h4 class="mb-0">Login</h4>
                 </div>
                 <div class="card-body">
-                    <form action="/home" method="POST">
+                    <form action="/verifyLogin" method="POST">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail Address</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="E-mail Address">
@@ -17,8 +17,16 @@
                             <label for="password" class="form-label">Password</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            <a href="/register" class="btn btn-secondary">Signup</a>
+                        </div>
                     </form>
+                    <% if (typeof errorMessage !== 'undefined') { %>
+                        <div class="alert alert-danger mt-3">
+                            <%= errorMessage %>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
