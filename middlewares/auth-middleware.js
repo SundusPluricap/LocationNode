@@ -1,5 +1,10 @@
 // Middleware to check if the user already exists
 import User from "../models/user-model.js";
+import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config();
+const { SESSION_SECRET } = process.env;
+
 // Middleware to check if the user already exists
 export const checkUserExistence = async (req, res, next) => {
   try {
@@ -21,15 +26,53 @@ export const checkUserExistence = async (req, res, next) => {
   }
 };
 
+// Middleware to check if the user is logged in (authentication check)
+export const isAuthenticateds = (req, res, next) => {
+  console.log("isAuthenticated starting")
+  if (req.session.userId) {
+    console.log("The user is logged in")
+    // The user is logged in
+    next();
+  } else {
+    console.log("Redirect the user to the login page if not logged in")
+    // Redirect the user to the login page if not logged in
+    res.redirect('/login');
+  }
+  console.log("isAuthenticated done")
+};
+
 
 
 // Middleware to check if the user is logged in (authentication check)
 export const isAuthenticated = (req, res, next) => {
-  if (req.session.userId) {
-    // The user is logged in
-    next();
-  } else {
-    // Redirect the user to the login page if not logged in
-    res.redirect('/login');
+  try {
+    console.log("isAuthenticated starting")
+    const token = req.query.token || req.body.token || req.headers["x-access-token"];
+    console.log("token ", token)
+    if (req.session.userId) {
+      console.log("The user is logged in")
+      // The user is logged in
+      next();
+    }
+    else if (!token && !req.session.userId) {
+      return res.redirect('/login');
+    }
+
+    // Verify the token
+    jwt.verify(token, SESSION_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(403).json({ message: "Invalid or expired token." });
+      }
+      
+      // Token is valid, extract the userId and role from the decoded token
+      req.userId = decoded.userId;
+      req.role = decoded.role;
+      console.log('User ID and role set in token:', req.userId, req.role);
+      next();
+    });
+    console.log("isAuthenticated done")
+  } catch (error) {
+    console.error("Error during token verification:", error);
+    res.status(500).json({ message: "Error during token verification." });
   }
 };
