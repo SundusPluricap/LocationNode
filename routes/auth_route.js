@@ -7,7 +7,7 @@ import {checkUserExistence, isAuthenticated} from "../middlewares/auth-middlewar
 
 const router = express.Router();
 
-router.get("/", index);
+router.get("/", isAuthenticated, dashboard);
 router.get("/login", login);
 router.get("/register", register);
 router.post("/create-user", checkUserExistence, createUser);

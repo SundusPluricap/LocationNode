@@ -27,19 +27,19 @@ export const checkUserExistence = async (req, res, next) => {
 };
 
 // Middleware to check if the user is logged in (authentication check)
-export const isAuthenticateds = (req, res, next) => {
-  console.log("isAuthenticated starting")
-  if (req.session.userId) {
-    console.log("The user is logged in")
-    // The user is logged in
-    next();
-  } else {
-    console.log("Redirect the user to the login page if not logged in")
-    // Redirect the user to the login page if not logged in
-    res.redirect('/login');
-  }
-  console.log("isAuthenticated done")
-};
+// export const isAuthenticateds = (req, res, next) => {
+//   console.log("isAuthenticated starting")
+//   if (req.session.userId) {
+//     console.log("The user is logged in")
+//     // The user is logged in
+//     next();
+//   } else {
+//     console.log("Redirect the user to the login page if not logged in")
+//     // Redirect the user to the login page if not logged in
+//     res.redirect('/login');
+//   }
+//   console.log("isAuthenticated done")
+// };
 
 
 
@@ -48,22 +48,27 @@ export const isAuthenticated = (req, res, next) => {
   try {
     console.log("isAuthenticated starting")
     const token = req.query.token || req.body.token || req.headers["x-access-token"];
-    console.log("token ", token)
+    // console.log("token ", token)
     if (req.session.userId) {
-      console.log("The user is logged in")
-      // The user is logged in
-      next();
+      console.log("The user is logged in (using session)")
+      // The user is logged in (using the session)
+      return next(); // Move to the next middleware or route handler
     }
-    else if (!token && !req.session.userId) {
+    // If token is not provided, redirect the user to the login page
+    if (!token) {
+      console.log("Redirect the user to the login page (token not provided)")
       return res.redirect('/login');
     }
+
+     
 
     // Verify the token
     jwt.verify(token, SESSION_SECRET, (err, decoded) => {
       if (err) {
+        console.error("Error during token verification:", err);
         return res.status(403).json({ message: "Invalid or expired token." });
       }
-      
+
       // Token is valid, extract the userId and role from the decoded token
       req.userId = decoded.userId;
       req.role = decoded.role;

@@ -34,6 +34,7 @@ export const verifyLogin = async (req, res) => {
 
         // Set the user ID in the session to keep track of the authenticated user
         req.session.userId = user.id;
+        req.session.role = user.role;
         const token = jwt.sign(
             {
                 userId: user.id, // You can include any user-specific data in the token payload
@@ -47,9 +48,9 @@ export const verifyLogin = async (req, res) => {
 
         // Check the user's role and redirect accordingly
         if (user.role === 'admin') {
-            res.redirect(`/admin-dashboard?token=${token}`);
+            res.redirect(`/dashboard?token=${token}`);
         } else if (user.role === 'assistant') {
-            res.redirect(`/assistant-dashboard?token=${token}`);
+            res.redirect(`/dashboard?token=${token}`);
         } else {
             // If the role is not explicitly defined, you can redirect to a common dashboard or home page
             res.redirect('/dashboard');
