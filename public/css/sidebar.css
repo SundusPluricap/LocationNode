@@ -4,17 +4,22 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 25%;
+    width: 100%; /* Set the sidebar to occupy the full width initially */
+    max-width: 300px; /* Set a maximum width for the sidebar */
     height: 100%;
-    float: left;
+    min-height: 100vh;
     background-color: #efefef;
     padding: 10px 12px 10px 20px;
     box-sizing: border-box;
+    overflow-y: auto; /* Enable vertical scrolling when content overflows */
 }
 
 .main-content {
-    width: 75%;
-    float: right;
+    padding: 20px;
+    /* min-height: 100vh; */
+    width: 100%; /* Main content occupies the full width initially */
+    max-width: calc(100% - 300px); /* Set a maximum width for the main content area */
+    margin-left: auto; /* Push the main content to the right of the sidebar */
 }
 
 
@@ -77,24 +82,33 @@
 }
 
 .sidebar-links a:nth-child(2):before {
-    content: "💰";
+    content: "\1F6CF";/*🛏️*/
 }
 
 .sidebar-links a:nth-child(3):before {
-    content: "🛡️";
+    content: "\1F6C8";/*📅*/
 }
 
 .sidebar-links a:nth-child(4):before {
-    content: "💹";
+    content: "\1F4C5";/*📅*/
 }
 
 .sidebar-links a:nth-child(5):before {
-    content: "👥";
+    content: "👥";/*👥*/
+}
+
+.sidebar-links a:nth-child(6):before {
+    content: "\1F3E2"; /*🏢*/
+}
+
+.sidebar-links a:nth-child(7):before {
+    content:"\1F513"; /* 🔓 Unlocked */
 }
 
 .logout-button {
-    /* background-color: #f44336; */
-    /* color: white; */
+    
+    /* background-color: #f44336;  */
+    color: white;
     padding: 12px;
     /* border: none; */
     border-radius: 4px;
@@ -103,4 +117,20 @@
     font-size: 1rem;
     order: 1;
     
+} 
+
+
+@media only screen and (min-width: 768px) {
+    /* Adjust the layout for medium and larger screens */
+    .sidebar {
+        width: 25%; /* Restore the sidebar width for medium and larger screens */
+        max-width: none; /* Remove the maximum width restriction */
+        height: 100%; /* Ensure the sidebar occupies the full height */
+    }
+
+    .main-content {
+        width: 75%; /* Restore the main content width for medium and larger screens */
+        max-width: none; /* Remove the maximum width restriction */
+        margin-left: auto; /* Keep the main content to the right of the sidebar */
+    }
 }
