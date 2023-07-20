@@ -34,10 +34,10 @@ export const verifyLogin = async (req, res) => {
 
         // Set the user ID in the session to keep track of the authenticated user
         req.session.user = user;
-        req.session.userId = user.id;
-        req.session.role = user.role;
-        req.session.firstName = user.firstName;
-        req.session.lastName = user.lastName;
+        // req.session.userId = user.id;
+        // req.session.role = user.role;
+        // req.session.firstName = user.firstName;
+        // req.session.lastName = user.lastName;
         // console.log("here//////////////////////////////////////////////////////////:\n user: ",user)
         const token = jwt.sign(
             {

@@ -48,8 +48,8 @@ export const isAuthenticated = (req, res, next) => {
   try {
     console.log("isAuthenticated starting")
     const token = req.query.token || req.body.token || req.headers["x-access-token"];
-    // console.log("token ", token)
-    if (req.session.userId) {
+    console.log("req.session ", req.session)
+    if (req.session.user) {
       console.log("The user is logged in (using session)")
       // The user is logged in (using the session)
       return next(); // Move to the next middleware or route handler

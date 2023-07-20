@@ -1,10 +1,10 @@
 export const logout = (req, res) => {
     try {
         // Clear user-related information from the session
-        delete req.session.userId;
-        delete req.session.role;
-        delete req.session.firstName;
-        delete req.session.lastName;
+        delete req.session.user;
+        // delete req.session.role;
+        // delete req.session.firstName;
+        // delete req.session.lastName;
 
         // Redirect the user to the login page after successful logout
         res.redirect('/login');
