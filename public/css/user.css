@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+/* Styling for the user table */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.user-table th, .user-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    /* Add word-wrap property to allow text to wrap within the cell */
+    word-wrap: break-word;
+}
+
+.user-table th {
+    background-color: #f2f2f2;
+}
+
+.user-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.user-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 600px) {
+    .user-table th, .user-table td {
+        /* padding: 8px; */
+        font-size: 12px;
+    }
+
+    .user-table th {
+        font-size: 14px;
+    }
+}

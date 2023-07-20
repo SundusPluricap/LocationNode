@@ -1,4 +1,13 @@
-<div class="sidebar">
+<!-- Hamburger icon -->
+<div class="hamburger-menu" id="hamburgerMenu">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+</div>
+
+<div class="sidebar" id="sidebar">
+    <!-- Close icon -->
+    <div class="close-icon" id="closeIcon">X</div>
     <div class="user-profile">
     👨‍💼 <span class="username"><%= `${firstName} ${lastName}` %></span>
     </div>
@@ -21,4 +30,37 @@
         <a href="/batiment"> Bâtiment</a>
         <a class="btn btn-outline-danger logout-button" href="/logout"> Logout</a>
     </div>
+
+    
 </div>
+
+<script src="js/sidebar.js">
+// document.addEventListener('DOMContentLoaded', () => {
+//     const hamburgerMenu = document.getElementById('hamburgerMenu');
+//     const sidebar = document.getElementById('sidebar');
+
+//     hamburgerMenu.addEventListener('click', () => {
+//         sidebar.classList.toggle('active');
+//     });
+
+//     // Close the sidebar when clicking outside of it (except on the hamburger icon)
+//     // window.addEventListener('click', (event) => {
+//     //     if (sidebar.classList.contains('active') && !event.target.closest('.sidebar') && window.innerWidth <= 768) {
+//     //         sidebar.classList.remove('active');
+//     //     }
+//     // });
+
+//     // Close the sidebar when clicking on a link inside it (for mobile responsiveness)
+//     const sidebarLinks = document.querySelectorAll('.sidebar-links a');
+//     sidebarLinks.forEach(link => {
+//         link.addEventListener('click', () => {
+//             if (window.innerWidth <= 768) {
+//                 sidebar.classList.remove('active');
+//             }
+//         });
+//     });
+// });
+
+
+
+</script>

@@ -16,4 +16,5 @@ router.post("/verifyLogin", verifyLogin);
 router.get("/dashboard", isAuthenticated, dashboard);
 router.get('/logout', logout);
 
+
 export default router;

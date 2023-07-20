@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session"; // Import the express-session package
 
 import authRoute from "./routes/auth_route.js";
-// import adminRoute from "./routes/admin.route.js";
+import userRouter from "./routes/user.route.js";
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
 
 
 app.use('/', authRoute);
-// app.use('/admin', adminRoute);
+app.use('/users', userRouter);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
