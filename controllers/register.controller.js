@@ -42,11 +42,12 @@ export const createUser = async (req, res) => {
             SESSION_SECRET,
             { expiresIn: '1h' } // Token will expire in 1 hour
         );
+        req.session.user = newUser;
         req.session.userId = newUser.id;
         req.session.role = newUser.role;
         req.session.firstName = newUser.firstName;
         req.session.lastName = newUser.lastName;
-        
+
         console.log('User ID set in session:', req.session.userId);
         // console.log('User ID set in token:', token.userId);
         console.log('newUser.id:', newUser.id);
