@@ -14,6 +14,7 @@ export const login = (req, res) => {
 
 
 export const verifyLogin = async (req, res) => {
+    console.log("verifyLogin starting")
     try {
         const { email, password } = req.body;
 
@@ -22,6 +23,7 @@ export const verifyLogin = async (req, res) => {
 
         if (!user) {
             req.session.errorMessage = 'Invalid email or password';
+            console.log("req.session.errorMessage:  ", req.session.errorMessage)
             return res.redirect('/login');
         }
 
@@ -30,24 +32,21 @@ export const verifyLogin = async (req, res) => {
 
         if (!passwordMatch) {
             req.session.errorMessage = 'Invalid email or password';
+            console.log("req.session.errorMessage:  ", req.session.errorMessage)
             return res.redirect('/login');
         }
 
         // Set the user ID in the session to keep track of the authenticated user
         req.session.user = user;
-        // req.session.userId = user.id;
-        // req.session.role = user.role;
-        // req.session.firstName = user.firstName;
-        // req.session.lastName = user.lastName;
-        // console.log("here//////////////////////////////////////////////////////////:\n user: ",user)
-        const token = jwt.sign(
-            {
-                userId: user.id, // You can include any user-specific data in the token payload
-                role: user.role,
-            },
-            SESSION_SECRET,
-            { expiresIn: '1h' } // Token will expire in 1 hour
-        );
+        
+        // const token = jwt.sign(
+        //     {
+        //         userId: user.id, // You can include any user-specific data in the token payload
+        //         role: user.role,
+        //     },
+        //     SESSION_SECRET,
+        //     { expiresIn: '1h' } // Token will expire in 1 hour
+        // );
         // Redirect the user to the desired page after successful login (e.g., dashboard, home)
         // res.redirect(`/dashboard?token=${token}`);
 
@@ -64,4 +63,5 @@ export const verifyLogin = async (req, res) => {
         console.error('Error during login:', error);
         res.status(500).send('Error during login. Please try again.');
     }
+    console.log("verifyLogin done")
 };
