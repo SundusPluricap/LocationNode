@@ -8,6 +8,7 @@ const { SESSION_SECRET } = process.env;
 // Middleware to check if the user already exists
 export const checkUserExistence = async (req, res, next) => {
   try {
+    console.log("checkUserExistence starting")
     const { email } = req.body;
 
     // Check if the user already exists in the database
@@ -24,6 +25,7 @@ export const checkUserExistence = async (req, res, next) => {
     console.error('Error checking user existence:', error);
     res.status(500).send('Error checking user existence. Please try again.');
   }
+  console.log("checkUserExistence done")
 };
 
 // Middleware to check if the user is logged in (authentication check)

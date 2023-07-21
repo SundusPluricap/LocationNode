@@ -2,7 +2,7 @@
 <%- include('../partials/header') -%>
 
 <title><%= user.firstName %> <%= user.lastName %> Profile</title>
-<link rel="stylesheet" href="/css/user.css">
+<link rel="stylesheet" href="/css/profile.css">
 </head>
 <body>
     <div class="container">
@@ -17,18 +17,29 @@
                 <tr>
                     <td>First Name:</td>
                     <td><%= user.firstName %></td>
+                    
                 </tr>
                 <tr>
                     <td>Last Name:</td>
                     <td><%= user.lastName %></td>
+                    
                 </tr>
                 <tr>
                     <td>Email:</td>
                     <td><%= user.email %></td>
+                    
                 </tr>
                 <tr>
                     <td>Role:</td>
                     <td><%= user.role %></td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="3" align="center">
+                        <a href="<%= user.id %>/edit" class="edit-button">Edit</a>
+                        
+                        <a href="<%= user.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -36,5 +47,3 @@
 
 <%- include('../partials/footer') -%>
 
-</body>
-</html>
