@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session"; // Import the express-session package
 
 import authRoute from "./routes/auth_route.js";
-import userRouter from "./routes/user.route.js";
+import userRouter from "./routes/users.route.js";
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
