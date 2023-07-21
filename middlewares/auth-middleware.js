@@ -13,7 +13,9 @@ export const checkUserExistence = async (req, res, next) => {
 
     // Check if the user already exists in the database
     const existingUser = await User.findOne({ where: { email } });
+    req.session.user = existingUser;
 
+    console.log("shiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii req.session.user: " , req.session.user)
     if (existingUser) {
       req.session.errorMessage = 'User with this email already exists.';
       return res.redirect('/userExist');

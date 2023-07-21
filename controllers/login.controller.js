@@ -12,6 +12,7 @@ export const login = (req, res) => {
     res.render('home/login', { errorMessage });
 };
 
+
 export const verifyLogin = async (req, res) => {
     try {
         const { email, password } = req.body;

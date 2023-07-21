@@ -25,6 +25,13 @@
                 <% }) %>
                 </tbody>
             </table>
+
+            <a href="/register" class="add-user-button">Add a user</a>
+            <% if (typeof errorMessage !== 'undefined') { %>
+                <div class="alert alert-danger mt-3">
+                    <%= errorMessage %>
+                </div>
+            <% } %>
         </div>
     </div>
 

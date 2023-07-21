@@ -15,19 +15,34 @@ h1 {
 .user-table th {
     background-color: #f2f2f2;
 }
-.view-profile-button {
+.view-profile-button , .add-user-button{
     display: block;
     width: 100%;
     max-width: 200px;
     margin: 0 auto;
-    padding: 5px 10px;
-    border: 2px solid #007bff; /* Changed to border instead of background color */
-    color: #007bff;
+    padding:10px;
     text-align: center;
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s, color 0.3s;
 }
+
+.add-user-button {
+    margin-top: 20px;
+    border: 2px solid #3f9d00; /* Changed to border instead of background color */
+    color: #3f9d00;
+}
+
+.add-user-button:hover {
+    background-color: #3f9d00;
+    color: #fff;
+}
+
+.view-profile-button {
+    border: 2px solid #007bff; /* Changed to border instead of background color */
+    color: #007bff;
+}
+
 .view-profile-button:hover {
     background-color: #007bff;
     color: #fff;

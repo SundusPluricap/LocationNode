@@ -95,3 +95,14 @@ export const deleteUser = async (req, res) => {
     res.status(500).send('Error deleting user.');
   }
 };
+
+
+export const exist = async (req, res) => {
+  const firstName = req.session.user.firstName;
+  const lastName = req.session.user.lastName;
+  const errorMessage = req.session.errorMessage;
+  const users = await User.findAll();
+  // Clear the error message from the session
+  delete req.session.errorMessage;
+  res.render('users/users', { errorMessage, firstName, lastName, users });
+};
