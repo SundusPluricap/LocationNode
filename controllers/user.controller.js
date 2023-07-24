@@ -67,6 +67,11 @@ export const postEdit = async (req, res) => {
       role: req.body.role,
     });
 
+    if(user.id === req.session.user.id){
+      req.session.user = user
+    }
+    // console.log("user update: " , user)
+    // console.log("user logged in: " , req.session.user)
     // Redirect to the user's profile page after successful update
     res.redirect(`/users/${userId}`);
   } catch (error) {
