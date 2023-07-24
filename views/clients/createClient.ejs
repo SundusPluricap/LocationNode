@@ -1,0 +1,50 @@
+<%- include('../partials/header') -%>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create New Client</h4>
+                </div>
+                <div class="card-body" >
+                    <form action="create-client" method="POST">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail Address</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="E-mail Address" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="phoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="phoneNumber" required>
+                        </div>
+                       
+                        
+                        
+                        <div align="center">
+                            <button type="submit"  class="btn btn-primary">Add Client</button>
+                            <!-- <a href="/login" class="btn btn-secondary">Login</a> -->
+                        </div>
+                    </form>
+
+                    <% if (typeof errorMessage !== 'undefined') { %>
+                        <div class="alert alert-danger mt-3">
+                            <%= errorMessage %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%- include('../partials/footer') -%>
