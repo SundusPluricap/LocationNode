@@ -6,7 +6,7 @@ const userRouter = express.Router();
 userRouter.get('/', isAuthenticated, showAllUsers);
 
 
-// Route handler for /profiles/:userId
+// Route handler for /users/:userId
 userRouter.get('/:userId', isAuthenticated, getProfile);
 
 

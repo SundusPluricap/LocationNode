@@ -82,38 +82,18 @@
     background-color: #cfcece;
 }
 
-.sidebar-links a:before {
+/* .sidebar-links a:before {
     content: "•";
     margin-right: 5px;
-}
+} */
 
-.sidebar-links a:nth-child(1):before {
+/* .sidebar-links a:nth-child(1):before {
     content: "🏠";
-}
+} */
 
-.sidebar-links a:nth-child(2):before {
-    content: "\1F6CF";/*🛏️*/
-}
-
-.sidebar-links a:nth-child(3):before {
-    content: "\1F6C8";/*📅*/
-}
-
-.sidebar-links a:nth-child(4):before {
-    content: "\1F4C5";/*📅*/
-}
-
-.sidebar-links a:nth-child(5):before {
-    content: "👥";/*👥*/
-}
-
-.sidebar-links a:nth-child(6):before {
-    content: "\1F3E2"; /*🏢*/
-}
-
-.sidebar-links a:nth-child(7):before {
-    content:"\1F513"; /* 🔓 Unlocked */
-}
+/* .sidebar-links a:nth-child(2):before {
+    content: "👥";
+} */
 
 .logout-button {
     
