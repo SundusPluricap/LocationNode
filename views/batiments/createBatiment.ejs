@@ -1,0 +1,56 @@
+<%- include('../partials/header') -%>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Create New Batiment</h4>
+                </div>
+                <div class="card-body" >
+                    <form action="/batiments/create-batiment" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adresse" class="form-label">Adresse</label>
+                            <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Adresse" required>
+                        </div>
+                        <!-- <div class="mb-3">
+                            <label for="photo" class="form-label">photo</label>
+                            <input type="text" class="form-control" id="photo" name="photo" placeholder="photo">
+                        </div> -->
+
+                        <!-- <div class="mb-3">
+                            <label for="photo" class="form-label">Photo</label>
+                            <input type="file" class="form-control" id="photo" name="photo" accept="image/*" >
+                        </div> -->
+                        <form action="/upload" method="post" enctype="multipart/form-data">
+                            <label for="photo">Select a photo:</label>
+                            <input type="file" id="photo" name="photo" accept="image/*" required>
+                            <br>
+                            <input type="submit" value="Upload">
+                        </form>
+                        
+                        
+                        <div align="center">
+                            <button type="submit"  class="btn btn-primary">Add Batiment</button>
+                            <!-- <a href="/login" class="btn btn-secondary">Login</a> -->
+                        </div>
+                    </form>
+
+                    <% if (typeof errorMessage !== 'undefined') { %>
+                        <div class="alert alert-danger mt-3">
+                            <%= errorMessage %>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%- include('../partials/footer') -%>

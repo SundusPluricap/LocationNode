@@ -1,0 +1,46 @@
+<!-- profileClient.ejs -->
+<%- include('../partials/header') -%>
+
+<title><%= param.name %> Profile</title>
+<link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>Batiment <%= param.name %></h1>
+            <table class="user-profile-table">
+                <tr>
+                    <td>ID:</td>
+                    <td><%= param.id %></td>
+                </tr>
+                <tr>
+                    <td>Name:</td>
+                    <td><%= param.name %></td>
+                    
+                </tr>
+                <tr>
+                    <td>Adresse:</td>
+                    <td><%= param.adresse %></td>
+                    
+                </tr>
+                <tr>
+                    <td>Photo:</td>
+                    <td><img src="/batiments/<%= param.id %>/photo" alt="<%= param.name %> Photo" width="200"></td>
+                </tr>
+                
+        
+                <tr>
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/edit" class="edit-button">Edit</a>
+                        
+                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+<script src="/js/delete.js"></script>
+
+

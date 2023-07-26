@@ -1,7 +1,7 @@
 import express from "express";
 // import {showAllUsers, getProfile, getEdit, postEdit, deleteUser} from "../controllers/user.controller.js";
 import {isAuthenticated} from "../middlewares/auth-middleware.js"
-import {create, createEstablishment, showAlleEtablishments, getEdit, postEdit, deleteEstablishment} from "../controllers/establishment.controller.js";
+import {create, createEstablishment, showAlleEstablishments, getEdit, postEdit, deleteEstablishment} from "../controllers/establishment.controller.js";
 // import Establishment from "../models/establishment-model.js";
 
 
@@ -9,7 +9,7 @@ import {create, createEstablishment, showAlleEtablishments, getEdit, postEdit, d
 
 const establishmentRouter = express.Router();
 // save for later
-establishmentRouter.get('/', isAuthenticated, showAlleEtablishments);
+establishmentRouter.get('/', isAuthenticated, showAlleEstablishments);
 
 establishmentRouter.get("/create-establishment",isAuthenticated, create);
 establishmentRouter.post("/create-establishment",isAuthenticated ,createEstablishment);

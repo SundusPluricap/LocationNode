@@ -1,0 +1,32 @@
+<!-- editProfile.ejs -->
+<%- include('../partials/header') -%>
+<title>Edit <%= param.firstName %> <%= param.lastName %> Profile</title>
+<link rel="stylesheet" href="/css/editProfile.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>Edit Client Profile</h1>
+            <form action="/clients/<%= param.id %>/edit" method="POST">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" name="firstName" value="<%= param.firstName %>">
+
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" value="<%= param.lastName %>">
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<%= param.email %>">
+
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" value="<%= param.phoneNumber %>">
+
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+<%- include('../partials/footer') -%>
+
+</body>
+</html>

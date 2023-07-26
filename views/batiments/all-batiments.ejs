@@ -1,0 +1,41 @@
+<%- include('../partials/header') -%>
+<title>Location, Batiments</title>
+<link rel="stylesheet" href="/css/user.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>All Batiment</h1>
+            <table class="user-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    
+                    <th>Profile</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% batiments.forEach(batiment => { %>
+                    <tr>
+                        <td><%= batiment.name %></td>
+                        
+                        <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">View Profile</a></td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+
+            <a href='/batiments/create-batiment' class="add-user-button">Add a batiment</a>
+            <% if (typeof errorMessage !== 'undefined') { %>
+                <div class="alert alert-danger mt-3">
+                    <%= errorMessage %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+<%- include('../partials/footer') -%>
+
+</body>
+</html>

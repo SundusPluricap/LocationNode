@@ -57,9 +57,9 @@ export const createEstablishment = async (req, res) => {
 };
 
 
-export const showAlleEtablishments = async (req, res) => {
+export const showAlleEstablishments = async (req, res) => {
     try {
-      console.log("showAlleEtablishments starting")
+      console.log("showAlleEstablishments starting")
       // Fetch all users from the database
       const establishments = await Establishment.findAll();
       const firstName = req.session.user.firstName;
@@ -67,7 +67,7 @@ export const showAlleEtablishments = async (req, res) => {
     //   console.log("establishments", establishments)
       // Render the EJS template with the user data
       res.render('establishments/all-establishments', { firstName, lastName, establishments });
-      console.log("showAlleEtablishments done")
+      console.log("showAlleEstablishments done")
     } catch (error) {
       console.error('Error fetching users:', error);
       res.status(500).send('Error fetching establishments. Please try again.');
@@ -75,28 +75,28 @@ export const showAlleEtablishments = async (req, res) => {
 };  
 
 
-export const getProfileEtablishment = async (req, res) => {
-  console.log("getProfileEtablishment starting")
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
-  const establishmentId = parseInt(req.params.establishmentId, 10); // Extract the establishment ID from the URL parameter and parse it as an integer.
+// export const getProfileEstablishment = async (req, res) => {
+//   console.log("getProfileEstablishment starting")
+//   const firstName = req.session.user.firstName;
+//   const lastName = req.session.user.lastName;
+//   const establishmentId = parseInt(req.params.establishmentId, 10); // Extract the establishment ID from the URL parameter and parse it as an integer.
 
-  try {
-    // Find the establishment with the given ID in the database.
-    const establishment = await Establishment.findOne({ where: { id: establishmentId } });
+//   try {
+//     // Find the establishment with the given ID in the database.
+//     const establishment = await Establishment.findOne({ where: { id: establishmentId } });
 
-    if (!establishment) {
-      return res.status(404).send('Establishment not found.'); // Handle the case when the establishment ID is not found.
-    }
-    const param = establishment
-    // Render the establishment profile template with the establishment data.
-    res.render('establishments/profileEstablishment', {  firstName, lastName, param });
-  } catch (error) {
-    console.error('Error fetching Establishment:', error);
-    res.status(500).send('Error fetching establishment. Please try again.');
-  }
-  console.log("getProfileEtablishment done")
-}
+//     if (!establishment) {
+//       return res.status(404).send('Establishment not found.'); // Handle the case when the establishment ID is not found.
+//     }
+//     const param = establishment
+//     // Render the establishment profile template with the establishment data.
+//     res.render('establishments/profileEstablishment', {  firstName, lastName, param });
+//   } catch (error) {
+//     console.error('Error fetching Establishment:', error);
+//     res.status(500).send('Error fetching establishment. Please try again.');
+//   }
+//   console.log("getProfileEstablishment done")
+// }
 
 
 export const getEdit = async (req, res) => {
