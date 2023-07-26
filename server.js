@@ -1,5 +1,5 @@
 import express from "express";
-import express from "multer";
+
 import session from "express-session"; // Import the express-session package
 // const multer = require('multer');
 import authRoute from "./routes/auth_route.js";

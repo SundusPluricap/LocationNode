@@ -4,7 +4,7 @@ import {isAuthenticated} from "../middlewares/auth-middleware.js"
 import {create, createBatiment, showAlleBatiments, getProfileBatiment, getEdit, postEdit, deleteBatiment, getBatimentPhoto} from "../controllers/batiment.controller.js";
 import Batiment from "../models/batiment-model.js";
 // import Establishment from "../models/establishment-model.js";
-
+import multer from "multer";
 // createBatiment, showAlleBatiments, getProfileBatiment, getEdit, postEdit, deleteBatiment
 
 
