@@ -4,6 +4,8 @@ import session from "express-session"; // Import the express-session package
 import authRoute from "./routes/auth_route.js";
 import userRouter from "./routes/users.route.js";
 import clientRouter from "./routes/clients.route.js";
+import establishmentRouter from "./routes/establishment.route.js";
+
 
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
@@ -38,6 +40,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use('/', authRoute);
 app.use('/users', userRouter);
 app.use('/clients', clientRouter);
+app.use('/establishments', establishmentRouter);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

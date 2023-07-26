@@ -1,0 +1,23 @@
+<!-- editProfile.ejs -->
+<%- include('../partials/header') -%>
+<title>Edit <%= param.firstName %> <%= param.lastName %> Profile</title>
+<link rel="stylesheet" href="/css/editProfile.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>Edit establishment</h1>
+            <form action="/establishments/<%= param.id %>/edit" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="<%= param.name %>">
+
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+<%- include('../partials/footer') -%>
+
+</body>
+</html>

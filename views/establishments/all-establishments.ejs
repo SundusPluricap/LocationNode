@@ -1,0 +1,48 @@
+<%- include('../partials/header') -%>
+<title>Location, Clients</title>
+<link rel="stylesheet" href="/css/user.css">
+<link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>All Establishments</h1>
+            <table class="user-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% establishments.forEach(establishment => { %>
+                    <tr>
+                        <td><%= establishment.name %> </td>
+                        <td align="center">
+                            <a href="/establishments/<%= establishment.id %>/edit" class="view-profile-button">Edit</a>
+                        </td>
+                        <td align="center">
+                            <a href="/establishments/<%= establishment.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                        </td>
+                        
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+
+            <a href='/establishments/create-establishment' class="add-user-button">Add an establishments</a>
+            <% if (typeof errorMessage !== 'undefined') { %>
+                <div class="alert alert-danger mt-3">
+                    <%= errorMessage %>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script src="/js/delete.js"></script>
+
+</body>
+</html>
