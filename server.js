@@ -12,6 +12,7 @@ import batimentstRouter from "./routes/batiment.route.js"
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import {upload} from './middlewares/multer.middleware.js';
 // import session from "express-session";
 
 dotenv.config();
@@ -22,6 +23,20 @@ const { APP_LOCALHOST: hostname, APP_PORT: port, SESSION_SECRET } = process.env;
 
 const app = express();
 
+// import multer from "multer";
+
+
+// const storage = multer.diskStorage({
+//     destination: function (req, file, cb) {
+//         cb(null, 'images'); // Set the destination folder where uploaded files will be stored
+//     },
+//     filename: function (req, file, cb) {
+//         const ext = path.extname(file.originalname);
+//         cb(null, Date.now() + ext); // Rename the file to avoid overwriting files with the same name
+//     }
+// });
+
+// const upload = multer({ storage: storage });
 
 // Set up multer for file upload
 
@@ -41,7 +56,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 
+///////////////// test upload images //////////////////
+app.get("/upload",(req, res)=>{
+  res.render("batiments/createBatiment")
+})
 
+app.post("/upload", upload.single('photo'), (req, res)=>{
+  res.send("uploaded")
+})
+
+/************ Routes */
 app.use('/', authRoute);
 app.use('/users', userRouter);
 app.use('/clients', clientRouter);
