@@ -19,7 +19,9 @@ export const createBatiment = async (req, res) => {
         const firstName = req.session.user.firstName
         const lastName = req.session.user.lastName
         console.log("req.body//////////////////////", req.body)
-        const { name,adresse,photo } = req.body;
+        const { name,adresse } = req.body;
+        const photo = req.file ? req.file.filename : null;
+
         const newBatiment = await Batiment.create({
             name,
             adresse,
@@ -81,26 +83,6 @@ export const getProfileBatiment = async (req, res) => {
 }
 
 
-
-export const getBatimentPhoto = async (req, res) => {
-  const batimentId = parseInt(req.params.batimentId, 10);
-
-  try {
-    const batiment = await Batiment.findOne({ where: { id: batimentId } });
-
-    if (!batiment || !batiment.photo) {
-      return res.status(404).send('Batiment photo not found.');
-    }
-
-    res.set('Content-Type', 'image/*'); // Set the appropriate content type for the image (e.g., 'image/jpeg', 'image/png')
-    res.send(batiment.photo);
-  } catch (error) {
-    console.error('Error fetching Batiment photo:', error);
-    res.status(500).send('Error fetching batiment photo. Please try again.');
-  }
-};
-
-
 export const getEdit = async (req, res) => {
   const firstName = req.session.user.firstName;
   const lastName = req.session.user.lastName;
@@ -135,16 +117,12 @@ export const postEdit = async (req, res) => {
 
     // Update the user data with the form data
     await batiment.update({
-      name: req.body.name
+      name: req.body.name,
+      adresse: req.body.adresse,
+      photo: req.file ? req.file.filename : batiment.photo, // Use existing photo if no new photo is uploaded
     });
 
-    // if(user.id === req.session.user.id){
-    //   req.session.user = user
-    // }
-    // console.log("user update: " , user)
-    // console.log("user logged in: " , req.session.user)
-    // Redirect to the user's profile page after successful update
-    res.redirect(`/batiments`);
+    res.redirect(`/batiments/${batimentId}`);
   } catch (error) {
     console.error('Error updating batiment:', error);
     res.status(500).send('Error updating batiment.');

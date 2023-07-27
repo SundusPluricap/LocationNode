@@ -21,7 +21,7 @@ const Batiment = sequelize.define('Batiment', {
     allowNull: false,
   },
   photo: {
-    type: DataTypes.BLOB('long'),
+    type: DataTypes.STRING,
     allowNull: true,
   },
 });
