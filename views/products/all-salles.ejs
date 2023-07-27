@@ -1,0 +1,71 @@
+<%- include('../partials/header') -%>
+<title>Location, Salles</title>
+<link rel="stylesheet" href="css/tabsProducts.css">
+</head>
+<body>
+ 
+
+  <div class="container">
+    <%- include('../partials/sidebar') -%>
+  
+    <div class="main-content">
+
+      <div class="tabs">
+        <ul class="tab-list" id="tabList">
+          <!-- First tab for all products -->
+          <li class="tab-label" onclick="showTabContent('allProducts')">
+            All Products
+          </li>
+          <% batiments.forEach((batiment) => { %>
+            <li class="tab-label" onclick="showTabContent('<%= batiment.name %>')">
+              <%= batiment.name %>
+            </li>
+          <% }); %>
+        </ul>
+        <div class="tab-content" id="tabContent">
+          <!-- Content section for the first tab (All Products) -->
+          <div class="content" id="content-allProducts">
+            <% products.forEach((product) => { %>
+              <div class="product-item">
+                <div class="product-cart">
+                  <p><strong>Name:</strong> <%= product.name %></p>
+                  <p><strong>Capacity:</strong> <%= product.capacity %></p>
+                  <p><strong>Price:</strong> <%= product.price %></p>
+                  <% if (product.Batiment) { %> <!-- Check if product.Batiment is defined -->
+                    <p><strong>Belongs to Batiment:</strong> <%= product.Batiment.name %></p> <!-- Use product.Batiment.name -->
+                    <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
+                    <% } else { %>
+                    <p><strong>Belongs to Batiment:</strong> Not specified</p>
+                  <% } %>
+
+                  <button onclick="reserveProduct('<%= product.id %>')" class="reserve-button">Reserve</button>
+                  <!-- Add other product details as needed -->
+                </div>
+              </div>
+            <% }); %>
+          </div>
+          <!-- Content sections for other tabs -->
+          <% batiments.forEach((batiment) => { %>
+            <div class="content" id="content-<%= batiment.name %>" style="display: none;">
+              <% products.forEach((product) => { %>
+                <% if (product.batiment_id === batiment.id) { %>
+                  <div class="product-item">
+                    <div class="product-cart">
+                      <p><strong>Name:</strong> <%= product.name %></p>
+                      <p><strong>Capacity:</strong> <%= product.capacity %></p>
+                      <p><strong>Price:</strong> <%= product.price %></p>
+                      <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
+                      <!-- Add other product details as needed -->
+                    </div>
+                  </div>
+                <% } %>
+              <% }); %>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/tabs.js"></script>
+</body>
+</html>

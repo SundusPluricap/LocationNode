@@ -4,7 +4,7 @@ dotenv.config();
 
 const { APP_LOCALHOST: hostname, APP_PORT: port, DATABASE: db, USERNAMESQL: username, PASSWORDSQL: mdp } = process.env;
 
-// Create a new instance of Sequelize with your MySQL connection details
+// Create a new instance of Sequelize with MySQL connection details
 const sequelize = new Sequelize(db, username, mdp, {
   host: hostname,
   dialect: 'mysql',

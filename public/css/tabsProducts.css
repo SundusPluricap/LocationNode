@@ -1,0 +1,60 @@
+/* Reset some default styles */
+body, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Tabs styles */
+.tabs {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tab-list {
+    display: flex;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 0;
+}
+
+.tab-label {
+    padding: 8px 16px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.tab-label:hover {
+    background-color: #ddd;
+}
+
+/* Cart-like product container styles */
+.product-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-cart {
+    width: 200px; /* Adjust as needed */
+}
+
+.reserve-button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+  /* Add a hover effect to the button */
+.reserve-button:hover {
+    background-color: #0056b3;
+}

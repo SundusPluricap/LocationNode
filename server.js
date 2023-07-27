@@ -7,6 +7,7 @@ import userRouter from "./routes/users.route.js";
 import clientRouter from "./routes/clients.route.js";
 import establishmentRouter from "./routes/establishment.route.js";
 import batimentstRouter from "./routes/batiment.route.js"
+import productRouter from "./routes/product.route.js"
 
 
 import dotenv from 'dotenv';
@@ -57,13 +58,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 
 ///////////////// test upload images //////////////////
-app.get("/upload",(req, res)=>{
-  res.render("batiments/createBatiment")
-})
+// app.get("/upload",(req, res)=>{
+//   res.render("batiments/createBatiment")
+// })
 
-app.post("/upload", upload.single('photo'), (req, res)=>{
-  res.send("uploaded")
-})
+// app.post("/upload", upload.single('photo'), (req, res)=>{
+//   res.send("uploaded")
+// })
 
 /************ Routes */
 app.use('/', authRoute);
@@ -71,6 +72,7 @@ app.use('/users', userRouter);
 app.use('/clients', clientRouter);
 app.use('/establishments', establishmentRouter);
 app.use('/batiments', batimentstRouter);
+app.use('/products', productRouter);
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
