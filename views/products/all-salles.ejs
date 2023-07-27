@@ -14,7 +14,7 @@
         <ul class="tab-list" id="tabList">
           <!-- First tab for all products -->
           <li class="tab-label" onclick="showTabContent('allProducts')">
-            All Products
+            All Salles
           </li>
           <% batiments.forEach((batiment) => { %>
             <li class="tab-label" onclick="showTabContent('<%= batiment.name %>')">
@@ -56,6 +56,10 @@
                       <p><strong>Price:</strong> <%= product.price %></p>
                       <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
                       <!-- Add other product details as needed -->
+                      <div colspan="3" align="center">
+                        
+                      </td>
+                      
                     </div>
                   </div>
                 <% } %>
@@ -63,9 +67,16 @@
             </div>
           <% }); %>
         </div>
+
+        <a href="/products/create-salle" class="add-salle-button" align="center">Add a salle</a>
+        
       </div>
+      
+      
+
     </div>
   </div>
   <script src="/js/tabs.js"></script>
+  <script src="/js/delete.js"></script>
 </body>
 </html>
