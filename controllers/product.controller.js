@@ -1,5 +1,6 @@
 import Batiment from "../models/batiment-model.js";
 import Product from "../models/product-model.js";
+import Image from "../models/image-model.js";
 import Establishment from "../models/establishment-model.js";
 
 export const showTabsSalles = async (req, res) => {
@@ -41,4 +42,45 @@ export const showTabsSalles = async (req, res) => {
       res.status(500).send('Internal Server Error');
     }
   };
-  
+
+
+export const getProfile = async (req, res) => {
+    console.log("getProfile starting")
+    const firstName = req.session.user.firstName;
+    const lastName = req.session.user.lastName;
+    const productId = parseInt(req.params.productId, 10); // Extract the product ID from the URL parameter and parse it as an integer.
+
+    try {
+        // Find the product with the given ID in the database.
+        const salle = await Product.findOne({ 
+        where: { id: productId },
+        include: [
+            {
+                model: Batiment,
+                attributes: ['id', 'name', 'adresse'],
+            },
+            {
+                model: Establishment,
+                attributes: ['id', 'name'],
+            },
+            ],
+        });
+
+        if (!salle) {
+        return res.status(404).send('Product not found.'); // Handle the case when the product ID is not found.
+        }
+        
+        const param = salle
+
+        console.log("product has:param ",param)
+        console.log("product done ")
+        // Render the product profile template with the product data.
+        res.render('products/profileProduct', {  firstName, lastName, param });
+    } catch (error) {
+        console.error('Error fetching product:', error);
+        res.status(500).send('Error fetching product. Please try again.');
+    }
+    console.log("getProfile done")
+}
+
+

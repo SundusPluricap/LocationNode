@@ -6,11 +6,11 @@ body, ul {
 }
 
 /* Tabs styles */
-.tabs {
+/* .tabs {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-}
+} */
 
 .tab-list {
     display: flex;
@@ -20,14 +20,35 @@ body, ul {
 }
 
 .tab-label {
+    flex: 1; /* Distribute equal width among tabs */
     padding: 8px 16px;
     cursor: pointer;
     user-select: none;
+    text-align: center;
     transition: background-color 0.2s;
+    font-size: 16px;
+    border-right: 1px solid #ccc; /* Add right border to each tab button */
+}
+
+.tab-label:last-child {
+    border-right: none; /* Remove right border from the last tab button */
 }
 
 .tab-label:hover {
-    background-color: #ddd;
+    background-color: #ddd; /* Change background color on hover */
+}
+
+/* Active tab style */
+.tab-label.active {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* Active tab style */
+.tab-label.active {
+    background-color: #007BFF;
+    color: white;
+    border-color: #007BFF; /* Change border color for active tab */
 }
 
 /* Cart-like product container styles */
@@ -37,13 +58,28 @@ body, ul {
     padding: 12px;
     margin: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    /* width: 100%; */
 }
 
+/* Style product cart based on screen size */
 .product-cart {
-    width: 200px; /* Adjust as needed */
+    width: 430px; /* Full width by default */
 }
 
-.reserve-button {
+/* Adjust product cart width for larger screens */
+@media screen and (max-width: 768px) {
+    .product-cart {
+        width: 270px;
+    }
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+/* .reserve-button {
     background-color: #007BFF;
     color: white;
     border: none;
@@ -52,22 +88,29 @@ body, ul {
     border-radius: 4px;
     font-size: 14px;
     transition: background-color 0.3s ease;
-}
+} */
 
-  /* Add a hover effect to the button */
-.reserve-button:hover {
+/* Add a hover effect to the button */
+/* .reserve-button:hover {
     background-color: #0056b3;
-}
+} */
 
-.edit-button, .delete-button, .add-salle-button{
+.edit-button, .delete-button, .add-salle-button, .reserve-button{
     display: inline-block;
-    width: 30%; /*Adjust the width as needed*/
+    width: 70%; /* Full width by default */
     margin: 10px; /* Add some margin between the buttons */
     padding:10px;
     text-align: center;
     text-decoration: none;
     border-radius: 4px;
     transition: background-color 0.3s, color 0.3s;
+}
+
+/* Adjust button width for larger screens */
+@media screen and (min-width: 768px) {
+    .edit-button, .delete-button, .add-salle-button{
+        width: calc(50% - 20px); /* Subtract 20px for margin between buttons */
+    }
 }
 
 .delete-button{
@@ -99,3 +142,31 @@ body, ul {
     background-color: #054268;
     color: #fff;
 }
+
+.reserve-button{
+    border: 2px solid #054268;
+    color: #054268;
+}
+
+.reserve-button:hover {
+    background-color: #054268;
+    color: #fff;
+}
+
+/* Responsive styles for tabs buttons */
+@media screen and (max-width: 600px) {
+    .tab-list {
+        flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+    }
+    .tab-label {
+        flex-basis: 50%; /* Show two tabs per row on smaller screens */
+        border-right: none; /* Remove right border on smaller screens */
+        border-bottom: 1px solid #ccc; /* Add bottom border for phones */
+        border-right: 1px solid #ccc; /* Add a right border for phones */
+    }
+
+    .tab-label:last-child, .tab-label:nth-last-child(2) {
+        border-bottom: none; /* Remove bottom border from the last tab button on smaller screens */
+    }
+}
+

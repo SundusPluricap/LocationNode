@@ -1,0 +1,111 @@
+<%- include('../partials/header') -%>
+
+<title><%= param.name %> Profile</title>
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/profile.css">
+
+<style >
+    .slick-arrow, .slick-prev:before, .slick-prev:focus,.slick-prev, .slick-next:before, .slick-next:focus, .slick-next {
+    color: #a00000 !important; /* Arrow color */
+}
+</style>
+<!-- Slick CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1 class="mb-4"> <%= param.product.name %></h1>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="user-profile-table">
+                        <tr>
+                            <td>ID:</td>
+                            <td><%= param.product.id %></td>
+                        </tr>
+                        <tr>
+                            <td>Name:</td>
+                            <td><%= param.product.name %></td>
+                        </tr>
+                        <tr>
+                            <td>Capacity:</td>
+                            <td><%= param.product.capacity %></td>
+                        </tr>
+                        <tr>
+                            <td>Price:</td>
+                            <td><%= param.product.price %></td>
+                        </tr>
+
+                        <!-- Existing Code -->
+                        <tr>
+                            <td>Belongs to Batiment:</td>
+                            <% if (param.product.Batiment) { %>
+                                <td><%= param.product.Batiment.name %></td>
+                            <% } else { %>
+                                <td>N/A</td>
+                            <% } %>
+                        </tr>
+                        <tr>
+                            <td>Batiment Adresse:</td>
+                            <% if (param.product.Batiment) { %>
+                                <td><%= param.product.Batiment.adresse %></td>
+                            <% } else { %>
+                                <td>N/A</td>
+                            <% } %>
+                        </tr>
+                        <!-- Remaining Code -->
+
+                        
+                    </table>
+                </div>
+                <div class="col-md-6">
+
+                    <div class="photo-container">
+                        <% if (param.images && param.images.length > 0) { %>
+                            <% param.images.forEach((image) => { %>
+                                <div class="image-item">
+                                    <img src="/images/bulidings/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <p class="no-photo-message">No photos available for this product.</p>
+                        <% } %>
+                    </div>
+
+                    
+                </div>
+            </div>
+
+            <div class="actions-container text-center mt-4">
+                <a href="<%= param.id %>/edit" class="edit-button">Edit</a>
+                <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/delete.js"></script>
+
+    <!-- Slick JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize Slick Carousel when the DOM is ready
+            $('.photo-slider').slick({
+                // Customize Slick options here, if needed
+                infinite: true,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                dots: true,
+                arrows: true,
+            });
+
+            // Custom arrow buttons
+            // $('.slick-prev').html('<i class="fa fa-chevron-left"></i>');
+            // $('.slick-next').html('<i class="fa fa-chevron-right"></i>');
+        });
+    </script>
+</body>
+</html>
