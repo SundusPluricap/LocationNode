@@ -4,11 +4,6 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/profile.css">
 
-<style >
-    .slick-arrow, .slick-prev:before, .slick-prev:focus,.slick-prev, .slick-next:before, .slick-next:focus, .slick-next {
-    color: #a00000 !important; /* Arrow color */
-}
-</style>
 <!-- Slick CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
@@ -65,11 +60,15 @@
 
                     <div class="photo-container">
                         <% if (param.images && param.images.length > 0) { %>
-                            <% param.images.forEach((image) => { %>
-                                <div class="image-item">
-                                    <img src="/images/bulidings/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
-                                </div>
-                            <% }); %>
+                            
+                            <div class="photo-slider">
+                                <% param.images.forEach((image) => { %>
+                                    <div class="slider-item">
+                                        <img src="/images/bulidings/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
+                                    </div>
+                                
+                                <% }); %>
+                            </div>
                         <% } else { %>
                             <p class="no-photo-message">No photos available for this product.</p>
                         <% } %>

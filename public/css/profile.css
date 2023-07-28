@@ -56,6 +56,6 @@
 }
 
 .slick-arrow, .slick-prev:before, .slick-prev:focus,.slick-prev, .slick-next:before, .slick-next:focus, .slick-next {
-    color: #000; /* Arrow color */
+    color: #005b24 !important; /* Arrow color */
 }
 
