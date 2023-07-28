@@ -15,7 +15,7 @@
             <h1 class="mb-4"> <%= param.product.name %></h1>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <table class="user-profile-table">
                         <tr>
                             <td>ID:</td>
@@ -56,16 +56,23 @@
                         
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-7">
 
                     <div class="photo-container">
                         <% if (param.images && param.images.length > 0) { %>
                             
                             <div class="photo-slider">
                                 <% param.images.forEach((image) => { %>
+                                    
+
                                     <div class="slider-item">
-                                        <img src="/images/bulidings/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
-                                    </div>
+                                        <img src="/images/products/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
+                                        <div class="image-buttons">
+                                          <a class="edit-img" href="/products/img/<%= image.id %>/change">change</a>
+                                          |
+                                          <a class="delete-img" href="/products/img/<%= image.id %>/delete">Delete</a>
+                                        </div>
+                                      </div>
                                 
                                 <% }); %>
                             </div>
@@ -79,8 +86,8 @@
             </div>
 
             <div class="actions-container text-center mt-4">
-                <a href="<%= param.id %>/edit" class="edit-button">Edit</a>
-                <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                <a href="<%= param.product.id %>/edit" class="edit-button">Edit</a>
+                <a href="/products/<%= param.product.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
             </div>
         </div>
     </div>

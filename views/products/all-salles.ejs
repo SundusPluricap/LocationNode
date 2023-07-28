@@ -1,6 +1,6 @@
 <%- include('../partials/header') -%>
 <title>Location, Salles</title>
-<link rel="stylesheet" href="css/tabsProducts.css">
+<link rel="stylesheet" href="/css/tabsProducts.css">
 </head>
 <body>
  
@@ -34,15 +34,14 @@
                   <% if (product.Batiment) { %> <!-- Check if product.Batiment is defined -->
                     <p><strong>Belongs to Batiment:</strong> <%= product.Batiment.name %></p> <!-- Use product.Batiment.name -->
                     <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
-                    <div class="button-container">
-                      <a href="/products/<%= product.id %>" class="edit-button">View</a>
-                      <a href="/products/<%= product.id %>/reserve" class="reserve-button">Reserve</a>
-                    </div>
+                    
                       <% } else { %>
                     <p><strong>Belongs to Batiment:</strong> Not specified</p>
-
-                    
                   <% } %>
+                  <div class="button-container">
+                    <a href="/products/<%= product.id %>" class="edit-button">View</a>
+                    <a href="/products/<%= product.id %>/reserve" class="reserve-button">Reserve</a>
+                  </div>
                   <!-- Add other product details as needed -->
                   
                 </div>
@@ -62,9 +61,8 @@
                       <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
 
                       <div class="button-container">
-                        <a href="/products/<%= product.Batiment.id %>/viewSalle" class="edit-button">View</a>
-                        <a href="/products/<%= product.Batiment.id %>/reserve" class="reserve-button">Reserve</a>
-                      
+                        <a href="/products/<%= product.id %>" class="edit-button">View</a>
+                        <a href="/products/<%= product.id %>/reserve" class="reserve-button">Reserve</a>
                       </div>
                       <!-- Add other product details as needed -->
                     </div>

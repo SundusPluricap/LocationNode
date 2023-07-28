@@ -1,0 +1,44 @@
+<!-- editProfile.ejs -->
+<%- include('../partials/header') -%>
+<title>Edit <%= param.name %> Profile</title>
+<link rel="stylesheet" href="/css/editProfile.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>Edit Batiment details</h1>
+            <form action="/products/<%= param.id %>/edit" method="POST" enctype="multipart/form-data">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="<%= param.name %>">
+
+                <label for="capacity">Capacity:</label>
+                <input type="number" id="capacity" name="capacity" value="<%= param.capacity %>">
+
+                <label for="price">Price:</label>
+                <input type="number" id="price" name="price" value="<%= param.price %>">
+
+                <label for="belongs_to_batiment">Belongs to Batiment:</label>
+                <input type="text" id="belongs_to_batiment" name="belongs_to_batiment" value="<%= param.belongs_to_batiment %>">
+
+               
+                <label for="batimentId" class="form-label">Batiment</label>
+                <select class="form-control" id="batimentId" name="batimentId">
+                    <% batiments.forEach((batiment) => { %>
+                        <option value="<%= batiment.id %>"><%= batiment.name %></option>
+                    <% }); %>
+                </select>
+               
+
+                <label for="photo">Add a new photo:</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+<%- include('../partials/footer') -%>
+
+</body>
+</html>

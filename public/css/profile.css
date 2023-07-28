@@ -59,3 +59,46 @@
     color: #005b24 !important; /* Arrow color */
 }
 
+/* Custom CSS to make photos contained within a square */
+.photo-slider .slider-item {
+    position: relative;
+    overflow: hidden;
+    /* width: 80%; */
+    padding-bottom: 50%; /* This creates a square container with 1:1 aspect ratio */
+}
+
+.photo-slider .slider-item img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* This ensures the image covers the entire container without distortion */
+}
+
+/* Custom CSS to style the image buttons */
+.photo-slider .slider-item {
+    position: relative;
+}
+  
+.image-buttons {
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background-color: rgba(9, 9, 9, 0.7);
+    padding: 8px;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+/* Add a border between the buttons */
+.image-buttons a {
+    color: #fff;
+    text-decoration: none;
+    padding: 4px 10px;
+    /* border-radius: 5px;
+    border-top: 1px solid #fff; Add this line to create a border between the buttons */
+}
+
+  

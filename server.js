@@ -13,7 +13,7 @@ import productRouter from "./routes/product.route.js"
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import {upload} from './middlewares/multer.middleware.js';
+import {upload} from './middlewares/multerBatiment.middleware.js';
 // import session from "express-session";
 
 dotenv.config();

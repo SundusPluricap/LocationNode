@@ -35,9 +35,12 @@ const Product = sequelize.define('products', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  photo: {
-    type: DataTypes.STRING,
-    defaultValue: null,
+  batiment_id: {
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'batiments',
+      key: 'id',
+    },
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -54,13 +57,7 @@ const Product = sequelize.define('products', {
       key: 'id',
     },
   },
-  batiment_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'batiments',
-      key: 'id',
-    },
-  },
+  
 });
 
 // Define the association between Product and Batiment
