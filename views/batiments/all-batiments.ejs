@@ -6,11 +6,11 @@
     <div class="container">
         <%- include('../partials/sidebar') -%>
         <div class="main-content">
-            <h1>All Batiment</h1>
+            <h1>Tous les bâtiments</h1>
             <table class="user-table">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Nom</th>
                     
                     <th>Profile</th>
                 </tr>
@@ -20,13 +20,13 @@
                     <tr>
                         <td><%= batiment.name %></td>
                         
-                        <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">View Profile</a></td>
+                        <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td>
                     </tr>
                 <% }) %>
                 </tbody>
             </table>
 
-            <a href='/batiments/create-batiment' class="add-user-button">Add a batiment</a>
+            <a href='/batiments/create-batiment' class="add-user-button">Ajouter un bâtiment</a>
             <% if (typeof errorMessage !== 'undefined') { %>
                 <div class="alert alert-danger mt-3">
                     <%= errorMessage %>

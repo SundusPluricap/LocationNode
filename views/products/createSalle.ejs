@@ -5,29 +5,29 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Create New Product</h4>
+                    <h4 class="mb-0">Créer une nouvelle salle</h4>
                 </div>
                 <div class="card-body" >
                     <form action="/products/create-salle" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Salle Name</label>
+                            <label for="name" class="form-label">Nom de la salle</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
                         </div>
                         <div class="mb-3">
-                            <label for="capacity" class="form-label">Capacity</label>
+                            <label for="capacity" class="form-label">Capacité</label>
                             <input type="number" class="form-control" id="capacity" name="capacity" placeholder="0">
                         </div>
                         <div class="mb-3">
-                            <label for="price" class="form-label">Price</label>
-                            <input type="text" class="form-control" id="price" name="price" placeholder="Price" required>
+                            <label for="price" class="form-label">Prix</label>
+                            <input type="number" class="form-control" id="price" name="price" placeholder="100$" required>
                         </div>
                         <div class="mb-3">
-                            <label for="image" class="form-label">Salle Image</label>
+                            <label for="image" class="form-label">Photo de la salle</label>
                             <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="batimentId" class="form-label">Batiment</label>
+                            <label for="batimentId" class="form-label">Appartient au bâtiment</label>
                             <select class="form-control" id="batimentId" name="batimentId">
                                 <% batiments.forEach((batiment) => { %>
                                     <option value="<%= batiment.id %>"><%= batiment.name %></option>
@@ -36,7 +36,7 @@
                         </div>
                        
                         <div align="center">
-                            <button type="submit" class="btn btn-primary">Add Product</button>
+                            <button type="submit" class="btn btn-primary">Ajouter la salle</button>
                         </div>
                     </form>
 

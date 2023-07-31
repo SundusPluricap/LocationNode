@@ -9,19 +9,19 @@
         <div class="main-content">
             <h1>Edit Client Profile</h1>
             <form action="/clients/<%= param.id %>/edit" method="POST">
-                <label for="firstName">First Name:</label>
+                <label for="firstName">Prénom:</label>
                 <input type="text" id="firstName" name="firstName" value="<%= param.firstName %>">
 
-                <label for="lastName">Last Name:</label>
+                <label for="lastName">Nom de famille:</label>
                 <input type="text" id="lastName" name="lastName" value="<%= param.lastName %>">
 
-                <label for="email">Email:</label>
+                <label for="email">Adresse e-mail:</label>
                 <input type="email" id="email" name="email" value="<%= param.email %>">
 
-                <label for="phoneNumber">Phone Number:</label>
+                <label for="phoneNumber">Numéro de tél:</label>
                 <input type="text" id="phoneNumber" name="phoneNumber" value="<%= param.phoneNumber %>">
 
-                <button type="submit">Save Changes</button>
+                <button type="submit">Enregistrer les modifications</button>
             </form>
         </div>
     </div>

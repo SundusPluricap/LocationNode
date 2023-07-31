@@ -10,7 +10,7 @@
     <div class="container">
         <%- include('../partials/sidebar') -%>
         <div class="main-content">
-            <h1 class="mb-4">Batiment <%= param.name %></h1>
+            <h1 class="mb-4">Bâtiment <%= param.name %></h1>
 
             <div class="row">
                 <div class="col-md-6">
@@ -20,7 +20,7 @@
                             <td><%= param.id %></td>
                         </tr>
                         <tr>
-                            <td>Name:</td>
+                            <td>Nom:</td>
                             <td><%= param.name %></td>
                         </tr>
                         <tr>
@@ -34,15 +34,15 @@
                         <% if (param.photo) { %>
                             <img src="/images/bulidings/<%= param.photo %>" alt="Batiment Photo" class="img-fluid">
                         <% } else { %>
-                            <p class="no-photo-message">No photo available</p>
+                            <p class="no-photo-message">Aucune photo disponible</p>
                         <% } %>
                     </div>
                 </div>
             </div>
 
             <div class="actions-container text-center mt-4">
-                <a href="<%= param.id %>/edit" class="edit-button">Edit</a>
-                <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
             </div>
         </div>
     </div>

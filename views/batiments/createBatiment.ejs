@@ -5,12 +5,12 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">Create New Batiment</h4>
+                    <h4 class="mb-0">Créer un nouveau bâtiment</h4>
                 </div>
                 <div class="card-body" >
                     <form action="/batiments/upload" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
+                            <label for="name" class="form-label">Nom</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
                         </div>
                         <div class="mb-3">
@@ -18,12 +18,12 @@
                             <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Adresse" required>
                         </div>
                         <div class="mb-3">
-                            <label for="photo">Select a photo:</label>
+                            <label for="photo">Sélectionner une photo:</label>
                             <input type="file" id="photo" name="photo" accept="image/*" >
                         </div>
                         
                         <div align="center">
-                            <button type="submit"  class="btn btn-primary">Add Batiment</button>
+                            <button type="submit"  class="btn btn-primary">Ajouter le bâtiment</button>
                         </div>
                     </form>
 

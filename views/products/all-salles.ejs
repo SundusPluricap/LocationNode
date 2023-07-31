@@ -14,7 +14,7 @@
         <ul class="tab-list" id="tabList">
           <!-- First tab for all products -->
           <li class="tab-label" onclick="showTabContent('allProducts')">
-            All Products
+            Toutes les salles
           </li>
           <% batiments.forEach((batiment) => { %>
             <li class="tab-label" onclick="showTabContent('<%= batiment.name %>')">
@@ -28,19 +28,19 @@
             <% products.forEach((product) => { %>
               <div class="product-item">
                 <div class="product-cart">
-                  <p><strong>Name:</strong> <%= product.name %></p>
-                  <p><strong>Capacity:</strong> <%= product.capacity %></p>
-                  <p><strong>Price:</strong> <%= product.price %></p>
+                  <p><strong>Nom:</strong> <%= product.name %></p>
+                  <p><strong>Capacité:</strong> <%= product.capacity %></p>
+                  <p><strong>Prix:</strong> <%= product.price %></p>
                   <% if (product.Batiment) { %> <!-- Check if product.Batiment is defined -->
-                    <p><strong>Belongs to Batiment:</strong> <%= product.Batiment.name %></p> <!-- Use product.Batiment.name -->
+                    <p><strong>Appartient au bâtiment:</strong> <%= product.Batiment.name %></p> <!-- Use product.Batiment.name -->
                     <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
                     
-                      <% } else { %>
-                    <p><strong>Belongs to Batiment:</strong> Not specified</p>
+                  <% } else { %>
+                    <p><strong>Appartient au bâtiment:</strong> Non spécifié</p>
                   <% } %>
                   <div class="button-container">
-                    <a href="/products/<%= product.id %>" class="edit-button">View</a>
-                    <a href="/products/<%= product.id %>/reserve" class="reserve-button">Reserve</a>
+                    <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
+                    <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
                   </div>
                   <!-- Add other product details as needed -->
                   
@@ -55,14 +55,14 @@
                 <% if (product.batiment_id === batiment.id) { %>
                   <div class="product-item">
                     <div class="product-cart">
-                      <p><strong>Name:</strong> <%= product.name %></p>
-                      <p><strong>Capacity:</strong> <%= product.capacity %></p>
-                      <p><strong>Price:</strong> <%= product.price %></p>
+                      <p><strong>Nom:</strong> <%= product.name %></p>
+                      <p><strong>Capacité:</strong> <%= product.capacity %></p>
+                      <p><strong>Prix:</strong> <%= product.price %></p>
                       <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
 
                       <div class="button-container">
-                        <a href="/products/<%= product.id %>" class="edit-button">View</a>
-                        <a href="/products/<%= product.id %>/reserve" class="reserve-button">Reserve</a>
+                        <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
+                        <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
                       </div>
                       <!-- Add other product details as needed -->
                     </div>
@@ -72,7 +72,7 @@
             </div>
           <% }); %>
           
-          <a href="/products/create-salle" class="add-salle-button">Add a Salle</a>
+          <a href="/products/create-salle" class="add-salle-button">Ajouter une salle</a>
         </div>
       </div>
       

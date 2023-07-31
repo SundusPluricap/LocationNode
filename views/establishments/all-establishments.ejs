@@ -1,5 +1,5 @@
 <%- include('../partials/header') -%>
-<title>Location, Establishments</title>
+<title>Location, Etablissements</title>
 <link rel="stylesheet" href="/css/user.css">
 <link rel="stylesheet" href="/css/profile.css">
 </head>
@@ -7,14 +7,14 @@
     <div class="container">
         <%- include('../partials/sidebar') -%>
         <div class="main-content">
-            <h1>All Establishments</h1>
+            <h1>Tous les établissements</h1>
             <table class="user-table">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Nom</th>
                     
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>Modifier</th>
+                    <th>Supprimer</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -22,10 +22,10 @@
                     <tr>
                         <td><%= establishment.name %> </td>
                         <td align="center">
-                            <a href="/establishments/<%= establishment.id %>/edit" class="view-profile-button">Edit</a>
+                            <a href="/establishments/<%= establishment.id %>/edit" class="view-profile-button">Modifier</a>
                         </td>
                         <td align="center">
-                            <a href="/establishments/<%= establishment.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                            <a href="/establishments/<%= establishment.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
                         </td>
                         
                     </tr>
@@ -33,7 +33,7 @@
                 </tbody>
             </table>
 
-            <a href='/establishments/create-establishment' class="add-user-button">Add an establishments</a>
+            <a href='/establishments/create-establishment' class="add-user-button">Ajouter un établissement</a>
             <% if (typeof errorMessage !== 'undefined') { %>
                 <div class="alert alert-danger mt-3">
                     <%= errorMessage %>

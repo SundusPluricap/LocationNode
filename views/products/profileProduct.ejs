@@ -22,21 +22,21 @@
                             <td><%= param.product.id %></td>
                         </tr>
                         <tr>
-                            <td>Name:</td>
+                            <td>Nom:</td>
                             <td><%= param.product.name %></td>
                         </tr>
                         <tr>
-                            <td>Capacity:</td>
+                            <td>Capacité:</td>
                             <td><%= param.product.capacity %></td>
                         </tr>
                         <tr>
-                            <td>Price:</td>
+                            <td>Prix:</td>
                             <td><%= param.product.price %></td>
                         </tr>
 
                         <!-- Existing Code -->
                         <tr>
-                            <td>Belongs to Batiment:</td>
+                            <td>Appartient au bâtiment:</td>
                             <% if (param.product.Batiment) { %>
                                 <td><%= param.product.Batiment.name %></td>
                             <% } else { %>
@@ -44,7 +44,7 @@
                             <% } %>
                         </tr>
                         <tr>
-                            <td>Batiment Adresse:</td>
+                            <td>Adresse:</td>
                             <% if (param.product.Batiment) { %>
                                 <td><%= param.product.Batiment.adresse %></td>
                             <% } else { %>
@@ -67,17 +67,17 @@
 
                                     <div class="slider-item">
                                         <img src="/images/products/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
-                                        <div class="image-buttons">
-                                          <a class="edit-img" href="/products/img/<%= image.id %>/change">change</a>
+                                        <!-- <div class="image-buttons">
+                                          <a class="edit-img" href="/products/img/<%= image.id %>/change">Modifier</a>
                                           |
-                                          <a class="delete-img" href="/products/img/<%= image.id %>/delete">Delete</a>
-                                        </div>
+                                          <a class="delete-img" href="/products/img/<%= image.id %>/delete">Supprimer</a>
+                                        </div> -->
                                       </div>
                                 
                                 <% }); %>
                             </div>
                         <% } else { %>
-                            <p class="no-photo-message">No photos available for this product.</p>
+                            <p class="no-photo-message">Pas de photos disponibles pour cette salle.</p>
                         <% } %>
                     </div>
 
@@ -86,8 +86,8 @@
             </div>
 
             <div class="actions-container text-center mt-4">
-                <a href="<%= param.product.id %>/edit" class="edit-button">Edit</a>
-                <a href="/products/<%= param.product.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                <a href="<%= param.product.id %>/edit" class="edit-button">Modifier</a>
+                <a href="/products/<%= param.product.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
             </div>
         </div>
     </div>

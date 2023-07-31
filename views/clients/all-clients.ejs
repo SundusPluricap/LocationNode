@@ -6,11 +6,11 @@
     <div class="container">
         <%- include('../partials/sidebar') -%>
         <div class="main-content">
-            <h1>All Clients</h1>
+            <h1>Tous les clients</h1>
             <table class="user-table">
                 <thead>
                 <tr>
-                    <th>Name</th>
+                    <th>Nom</th>
                     
                     <th>Profile</th>
                 </tr>
@@ -20,13 +20,13 @@
                     <tr>
                         <td><%= client.firstName %> <%= client.lastName %></td>
                         
-                        <td><a href="/clients/<%= client.id %>" class="view-profile-button">View Profile</a></td>
+                        <td><a href="/clients/<%= client.id %>" class="view-profile-button">Voir profile</a></td>
                     </tr>
                 <% }) %>
                 </tbody>
             </table>
 
-            <a href='/clients/create-client' class="add-user-button">Add a client</a>
+            <a href='/clients/create-client' class="add-user-button">Ajouter un client</a>
             <% if (typeof errorMessage !== 'undefined') { %>
                 <div class="alert alert-danger mt-3">
                     <%= errorMessage %>
