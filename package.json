@@ -4,7 +4,7 @@
   "description": "location project with nodeJS and React",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon index.js",
     "client": "cd client && npm start",
     "build": "cd client && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
