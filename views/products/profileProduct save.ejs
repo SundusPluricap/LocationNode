@@ -1,9 +1,9 @@
 <%- include('../partials/header') -%>
 
 <title><%= param.name %> Profile</title>
-<!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="stylesheet" href="/css/profile.css">
-<link rel="stylesheet" href="/css/slider.css">
+
 <!-- Slick CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
@@ -56,78 +56,33 @@
                         
                     </table>
                 </div>
-                <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet" />
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-                 -->
                 <div class="col-md-7">
 
                     <div class="photo-container">
                         <% if (param.images && param.images.length > 0) { %>
-                          <div class="photo-slider rev_slider">
-                            <% param.images.forEach((image) => { %>
-                              <div class="slider-item rev_slide">
-                                <img src="/images/products/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
-                              </div>
-                            <% }); %>
-                          </div>
+                            
+                            <div class="photo-slider">
+                                <% param.images.forEach((image) => { %>
+                                    
+
+                                    <div class="slider-item slider-item-3d">
+                                        <img src="/images/products/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
+                                        <!-- <div class="image-buttons">
+                                          <a class="edit-img" href="/products/img/<%= image.id %>/change">Modifier</a>
+                                          |
+                                          <a class="delete-img" href="/products/img/<%= image.id %>/delete">Supprimer</a>
+                                        </div> -->
+                                      </div>
+                                
+                                <% }); %>
+                            </div>
                         <% } else { %>
-                          <p class="no-photo-message">Pas de photos disponibles pour cette salle.</p>
+                            <p class="no-photo-message">Pas de photos disponibles pour cette salle.</p>
                         <% } %>
                     </div>
-                      
 
                     
                 </div>
-
-
-
-
-
-
-
-
-
-
-<!-- 
-
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet" />
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-                 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
             </div>
 
             <div class="actions-container text-center mt-4">

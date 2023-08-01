@@ -24,7 +24,7 @@
     text-align: center;
 }
 
-.edit-button, .delete-button{
+.edit-button, .delete-button, .view-button{
     display: inline-block;
     width: 30%; /*Adjust the width as needed*/
     margin: 10px; /* Add some margin between the buttons */
@@ -52,6 +52,16 @@
 
 .edit-button:hover {
     background-color: #005b24;
+    color: #fff;
+}
+
+.view-button{
+    border: 2px solid #00155b;
+    color: #00155b;
+}
+
+.view-button:hover {
+    background-color: #00155b;
     color: #fff;
 }
 
@@ -101,4 +111,17 @@
     border-top: 1px solid #fff; Add this line to create a border between the buttons */
 }
 
+  
+/* External CSS file or in <style> section */
+.slider-item-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px; /* Adjust the value for the desired perspective effect */
+    transition: transform 0.5s ease;
+}
+  
+.slider-item-3d img {
+    width: 100%;
+    height: auto;
+    backface-visibility: hidden;
+}
   

@@ -13,11 +13,11 @@
       <div class="tabs">
         <ul class="tab-list" id="tabList">
           <!-- First tab for all products -->
-          <li class="tab-label" onclick="showTabContent('allProducts')">
+          <li class="tab-label" onclick="showTabContent('content-allProducts')">
             Toutes les salles
           </li>
           <% batiments.forEach((batiment) => { %>
-            <li class="tab-label" onclick="showTabContent('<%= batiment.name %>')">
+            <li class="tab-label" onclick="showTabContent('content-<%= batiment.name %>')">
               <%= batiment.name %>
             </li>
           <% }); %>

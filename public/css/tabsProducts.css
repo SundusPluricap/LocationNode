@@ -40,15 +40,8 @@ body, ul {
 
 /* Active tab style */
 .tab-label.active {
-    background-color: #007BFF;
+    background-color: #043467b1;
     color: white;
-}
-
-/* Active tab style */
-.tab-label.active {
-    background-color: #007BFF;
-    color: white;
-    border-color: #007BFF; /* Change border color for active tab */
 }
 
 /* Cart-like product container styles */

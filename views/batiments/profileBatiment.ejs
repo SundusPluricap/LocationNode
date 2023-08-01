@@ -41,6 +41,7 @@
             </div>
 
             <div class="actions-container text-center mt-4">
+                <a href="/products#content-<%= param.name %>" class="view-button">Voir les salles</a>
                 <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
                 <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
             </div>
@@ -48,4 +49,5 @@
     </div>
 
     <script src="/js/delete.js"></script>
+    
 </body>
