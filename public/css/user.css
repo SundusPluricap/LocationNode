@@ -17,7 +17,7 @@ h1 {
 }
 .view-profile-button , .add-user-button{
     display: inline-block;
-    width: 50%;
+    width: 80%;
     max-width: 200px;
     margin: 0 auto;
     padding:10px;

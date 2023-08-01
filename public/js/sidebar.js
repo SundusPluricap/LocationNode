@@ -35,3 +35,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+
+const dropdownToggleButtons = document.querySelectorAll(".dropdown-toggle");
+
+// Add a click event listener to each dropdown toggle button
+dropdownToggleButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    // Find the corresponding dropdown menu
+    const dropdownMenu = button.nextElementSibling;
+
+    // Toggle the display of the dropdown menu
+    if (dropdownMenu.style.display === "block") {
+      dropdownMenu.style.display = "none";
+    } else {
+      dropdownMenu.style.display = "block";
+    }
+  });
+});

@@ -3,6 +3,7 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    margin-bottom: 34px;
 }
 
 .user-profile-table th,
@@ -26,7 +27,7 @@
 
 .edit-button, .delete-button, .view-button{
     display: inline-block;
-    width: 30%; /*Adjust the width as needed*/
+    width: 77%; /*Adjust the width as needed*/
     margin: 10px; /* Add some margin between the buttons */
     padding:10px;
     text-align: center;

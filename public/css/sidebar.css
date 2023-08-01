@@ -68,14 +68,25 @@
     display: inline-block;
 }
 
-.sidebar-links a {
+.sidebar-links a, .sidebar h2 {
     display: block;
     /* margin-bottom: 25px; */
     padding: 20px 10px;
     color: #333;
     text-decoration: none;
     border-radius: 4px;
+    font-size: 15px;
 }
+
+/* .sidebar .dropdown-menu a {
+    
+    padding: 20px;
+    display: block;
+    padding: 20px 20px;
+    color: #333;
+    text-decoration: none;
+} */
+
 
 .sidebar-links a:hover,
 .sidebar-links a:active {
@@ -164,4 +175,49 @@
     .close-icon {
         display: block;
     }
+}
+
+
+/* Add the following CSS to your sidebar.css file */
+/* Make the dropdown container relative to control its children positioning */
+.sidebar .dropdown {
+    position: relative;
+}
+
+/* Hide the dropdown menu by default */
+.sidebar .dropdown-menu {
+    background-color: #efefef;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%; /* Set the width to match the sidebar */
+   
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a slight shadow */
+    z-index: 1; /* Ensure the dropdown appears above other elements */
+}
+
+/* Style the dropdown links */
+.sidebar .dropdown-menu a {
+    
+    padding: 20px;
+    display: block;
+    padding: 20px 20px;
+    color: #333;
+    text-decoration: none;
+}
+
+/* Add a hover effect to the dropdown links */
+.sidebar .dropdown-menu a:hover, .sidebar .dropdown-menu a:active {
+    background-color: #cfcece; /* Change the background color on hover */
+}
+
+/* Show the dropdown menu when the dropdown is hovered or focused */
+.sidebar .dropdown:hover .dropdown-menu,
+.sidebar .dropdown:focus .dropdown-menu {
+    display: block;
+}
+
+.title{
+    margin-bottom: 10px;
 }
