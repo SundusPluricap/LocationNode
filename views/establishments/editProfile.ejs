@@ -1,13 +1,16 @@
 <!-- editProfile.ejs -->
 <%- include('../partials/header') -%>
 <title>Edit <%= param.firstName %> <%= param.lastName %> Profile</title>
+
+<% if (user.role === "kingAdmin" || user.establishmentId == param.id) { %>
+    
 <link rel="stylesheet" href="/css/editProfile.css">
 </head>
 <body>
     <div class="container">
         <%- include('../partials/sidebar') -%>
         <div class="main-content">
-            <h1>Modifier l'établissement</h1>
+            <h1>Modifier le nom d'établissement</h1>
             <form action="/establishments/<%= param.id %>/edit" method="POST">
                 <label for="name">Nom:</label>
                 <input type="text" id="name" name="name" value="<%= param.name %>">
@@ -17,6 +20,9 @@
         </div>
     </div>
 
+<% } else { %>
+    <h1 align="center">there's nothing here to see,<a href="/" style="text-decoration: none;"> go home.</a></h1>
+<% } %>
 <%- include('../partials/footer') -%>
 
 </body>

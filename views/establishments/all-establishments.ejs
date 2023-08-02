@@ -7,39 +7,79 @@
     <div class="container">
         <%- include('../partials/sidebar') -%>
         <div class="main-content">
-            <h1>Tous les établissements</h1>
-            <table class="user-table">
-                <thead>
-                <tr>
-                    <th>Nom</th>
-                    
-                    <th>Modifier</th>
-                    <th>Supprimer</th>
-                </tr>
-                </thead>
-                <tbody>
-                <% establishments.forEach(establishment => { %>
+            <% if (user.role === "kingAdmin") { %>
+            
+                <h1>Tous les établissements</h1>
+                <table class="user-table">
+                    <thead>
                     <tr>
-                        <td><%= establishment.name %> </td>
-                        <td align="center">
-                            <a href="/establishments/<%= establishment.id %>/edit" class="view-profile-button">Modifier</a>
-                        </td>
-                        <td align="center">
-                            <a href="/establishments/<%= establishment.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
-                        </td>
+                        <th>Nom</th>
                         
+                        <th>Modifier</th>
+                        <th>Supprimer</th>
                     </tr>
-                <% }) %>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <% establishments.forEach(establishment => { %>
+                        <tr>
+                            <td><%= establishment.name %> </td>
+                            <td align="center">
+                                <a href="/establishments/<%= establishment.id %>/edit" class="view-profile-button">Modifier</a>
+                            </td>
+                            <td align="center">
+                                <a href="/establishments/<%= establishment.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                            </td>
+                            
+                        </tr>
+                    <% }) %>
+                    </tbody>
+                </table>
+    
+                <a href='/establishments/create-establishment' class="add-user-button">Ajouter un établissement</a>
+                <% if (typeof errorMessage !== 'undefined') { %>
+                    <div class="alert alert-danger mt-3">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
+            
+            <% } else if (user.role === "superAdmin") { %>
 
-            <a href='/establishments/create-establishment' class="add-user-button">Ajouter un établissement</a>
-            <% if (typeof errorMessage !== 'undefined') { %>
-                <div class="alert alert-danger mt-3">
-                    <%= errorMessage %>
-                </div>
+                <h1>Votre établissement</h1>
+                <table class="user-table">
+                    <thead>
+                    <tr>
+                        <th>Nom</th>
+                        
+                        <th>Modifier</th>
+                        <th>Supprimer </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <% establishments.forEach(establishment => { %>
+                            <% if (establishment.id == user.establishmentId) { %>
+                                <tr>
+                                    <td><%= establishment.name %></td>
+                                    <td align="center">
+                                        <a href="/establishments/<%= establishment.id %>/edit" class="view-profile-button">Modifier</a>
+                                    </td>
+                                    <td align="center">
+                                        <a href="/establishments/<%= establishment.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        <% }) %>
+                        
+                    </tbody>
+                </table>
+            <% } else { %>
+                <h1 align="center">there's nothing here to see,<a href="/" style="text-decoration: none;"> go home.</a></h1>
+
             <% } %>
         </div>
+        
+
+
+        
     </div>
 
     <script src="/js/delete.js"></script>

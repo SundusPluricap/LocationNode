@@ -1,5 +1,6 @@
 <%- include('../partials/header') -%>
-
+<% if (user.role === "kingAdmin") { %>
+    
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -31,6 +32,8 @@
     </div>
 </div>
 
-
+<% } else { %>
+    <h1 align="center">there's nothing here to see,<a href="/" style="text-decoration: none;"> go home.</a></h1>
+<% } %>
 
 <%- include('../partials/footer') -%>

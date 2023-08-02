@@ -5,21 +5,14 @@ const { SESSION_SECRET } = process.env;
 
 export const create = (req, res) => {
   const user = req.session.user
-    
+
+  // console.log("here-----------------------------user",user)
   // Check if there's an error message in the session
   const errorMessage = req.session.errorMessage;
   // Clear the error message from the session
   delete req.session.errorMessage;
-  
-  res.render('establishments/createEstablishment', { errorMessage });
 
-  // if(user.role === "kingAdmin"){
-  //   res.render('establishments/createEstablishment', { errorMessage });
-  // }
-  // else if(user.role === "superAdmin"){
-  //   res.render('establishments/createEstablishment', { errorMessage });
-  // }
-  
+  res.render('establishments/createEstablishment', { errorMessage, user });
 };
 
 export const createEstablishment = async (req, res) => {
@@ -159,23 +152,30 @@ export const postEdit = async (req, res) => {
 };
 
 export const deleteEstablishment = async (req, res) => {
-//   console.log("here/////////////////////////////////////////////////////////////////////////////////////////////////////// req.params: ", req.params)
-  const establishmentId = parseInt(req.params.establishmentId, 10);
+  const user = req.session.user
   
-  try {
-    const establishment = await Establishment.findByPk(establishmentId);
+  const establishmentId = parseInt(req.params.establishmentId, 10);
+  if (user.role === "kingAdmin" || user.establishmentId == establishmentId){
 
-    if (!establishment) {
-      return res.status(404).send('establishment not found.');
+    try {
+      const establishment = await Establishment.findByPk(establishmentId);
+  
+      if (!establishment) {
+        return res.status(404).send('establishment not found.');
+      }
+  
+      // Delete the user from the database
+      await establishment.destroy();
+  
+      // Redirect to the list of all users or another page after successful deletion
+      res.redirect('/establishments'); // Adjust the URL to redirect to the appropriate page after deletion
+    } catch (error) {
+      console.error('Error deleting establishment:', error);
+      res.status(500).send('Error deleting establishment.');
     }
-
-    // Delete the user from the database
-    await establishment.destroy();
-
-    // Redirect to the list of all users or another page after successful deletion
-    res.redirect('/establishments'); // Adjust the URL to redirect to the appropriate page after deletion
-  } catch (error) {
-    console.error('Error deleting establishment:', error);
-    res.status(500).send('Error deleting establishment.');
+  } 
+  else {
+    res.status(403).redirect('/');
   }
+
 };

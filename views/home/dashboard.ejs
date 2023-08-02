@@ -6,8 +6,14 @@
 <body>
     <div class="container">
         <%- include('../partials/sidebar') -%>
+
         
             <div class="main-content">
+                <% if (typeof errorMessage !== 'undefined') { %>
+                    <div class="alert alert-danger mt-3">
+                        <%= errorMessage %>
+                    </div>
+                <% } %>
 
                 <div class="tabs">
                   <ul class="tab-list" id="tabList">
