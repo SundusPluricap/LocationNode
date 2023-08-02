@@ -42,17 +42,19 @@ export const getProfile = async (req, res) => {
 
 export const getEdit = async (req, res) => {
   const user = req.session.user
-
-  const users = await User.findAll();
   const userId = parseInt(req.params.userId, 10);
-  const findUser = users.find(user => user.id === userId);
+  const establishments = await Establishment.findAll({});
+  const findUser = await User.findOne({
+      where: { id: userId },
+      include: Establishment, // Include the associated Establishment model
+    });
 
   if (!findUser) {
     return res.status(404).send('User not found.');
   }
   
   // Render the edit profile template with the user data
-  res.render('users/editProfile', { user, findUser });
+  res.render('users/editProfile', { user, findUser, establishments });
 }
 
 export const postEdit = async (req, res) => {
@@ -65,12 +67,14 @@ export const postEdit = async (req, res) => {
       return res.status(404).send('User not found.');
     }
 
+    console.log("here------------------reqbody", req.body)
     // Update the user data with the form data
     await user.update({
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       email: req.body.email,
       role: req.body.role,
+      establishmentId : req.body.establishmentId
     });
 
     if(user.id === req.session.user.id){

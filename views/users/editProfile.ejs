@@ -19,29 +19,21 @@
                 <input type="email" id="email" name="email" value="<%= findUser.email %>">
 
                 
-                <% if (findUser.role === "kingAdmin") { %>
-                    <label for="role">Role:</label>
-                    <select id="role" name="role" value="<%= findUser.role %>">
-                        <option value="kingAdmin">King of the admins</option>
-                        <option value="superAdmin">Super Admin</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                <% } else if (findUser.role === "superAdmin") { %>
-                    <label for="role">Role:</label>
-                    <select id="role" name="role" value="<%= findUser.role %>">
-                        <option value="superAdmin">Super Admin</option>
-                        <option value="kingAdmin">King of the admins</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                <% } else if (findUser.role === "admin") { %>
-                    <label for="role">Role:</label>
-                    <select id="role" name="role" value="<%= findUser.role %>">
-                        <option value="admin">Admin</option>
-                        <option value="superAdmin">Super Admin</option>
-                        <option value="kingAdmin">King of the admins</option>
-                        
-                    </select>
-                <% } %>
+                <label for="role">Role:</label>
+                    <select id="role" name="role">
+                    <option value="admin" <%= findUser.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                    <option value="superAdmin" <%= findUser.role === 'superAdmin' ? 'selected' : '' %>>Super Admin</option>
+                    <option value="kingAdmin" <%= findUser.role === 'kingAdmin' ? 'selected' : '' %>>King of the admins</option>
+                </select>
+
+
+                <label for="email">Email:</label>
+                <select class="form-control" id="establishmentId" name="establishmentId" required>
+                    <% establishments.forEach((establishment) => { %>
+                      <option value="<%= establishment.id %>" <%= findUser.establishmentId === establishment.id ? 'selected' : '' %>><%= establishment.name %></option>
+                    <% }); %>
+                  </select>
+                  
 
                 <button type="submit">Save Changes</button>
             </form>
