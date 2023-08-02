@@ -1,24 +1,105 @@
-<!-- <%- include('../partials/sidebar') -%>
-<div id="content">
-<%- include('../partials/header2') -%>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-3">
-                
-            </div>
-                <div class="col-md-9">
-                    <div class="card">
-                        <div class="card-header bg-primary text-white">
-                            <h4 class="mb-0">Welcome to Our Website</h4>
+<%- include('../partials/header') -%>
+<link rel="stylesheet" href="/css/tabsProducts.css">
+
+<title>Location, Welcome</title>
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        
+            <div class="main-content">
+
+                <div class="tabs">
+                  <ul class="tab-list" id="tabList">
+                    <!-- First tab for all products -->
+                    <li class="tab-label" onclick="showTabContent('content-allStats')">
+                      All reservations' stats
+                    </li>
+                    
+                    <li class="tab-label" onclick="showTabContent('content-tab1')">
+                        tab1
+                    </li>
+                    <li class="tab-label" onclick="showTabContent('content-tab2')">
+                        tab2
+                    </li>
+                    <li class="tab-label" onclick="showTabContent('content-tab3')">
+                        tab3
+                    </li>
+                    
+                  </ul>
+                  <div class="tab-content" id="tabContent">
+                    <!-- Content section for the first tab (All Products) -->
+                    <div class="content" id="content-allStats">
+                      
+                        <div class="product-item">
+                          <div class="product-cart">
+                            <p><strong>Nom:</strong> </p>
+                            <p><strong>Capacité:</strong> </p>
+                            <p><strong>Prix:</strong> </p>
+                            
+                            
+                            <!-- Add other product details as needed -->
+                            
+                          </div>
                         </div>
-                        <div class="card-body">
-                            <p class="lead">Welcome to our website! We are excited to have you here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sit amet congue velit. Nulla facilisi. Nam ac sem nec tellus luctus interdum vel eu mauris.</p>
-                            <a href="/create-user" class="btn btn-primary btn-block">Get Started</a>
-                        </div>
+                      
                     </div>
+                    <!-- Content sections for other tabs -->
+                    
+                    <div class="content" id="content-tab1" style="display: none;">
+                        
+                        <div class="product-item">
+                            <div class="product-cart">
+                            <p><strong>Nom:</strong> </p>
+                            <p><strong>Capacité:</strong> </p>
+                            <p><strong>Prix:</strong> </p>
+                            <p><strong>Adresse:</strong> </p>
+        
+                            <!-- Add other product details as needed -->
+                            </div>
+                        </div>
+                          
+                        
+                    </div>
+
+                    <div class="content" id="content-tab2" style="display: none;">
+                        
+                        <div class="product-item">
+                            <div class="product-cart">
+                            <p><strong>Nom:</strong> </p>
+                            <p><strong>Capacité:</strong> </p>
+                            <p><strong>Prix:</strong> </p>
+                            <p><strong>Adresse:</strong> </p>
+        
+                            <!-- Add other product details as needed -->
+                            </div>
+                        </div>
+                          
+                        
+                    </div>
+
+                    <div class="content" id="content-tab3" style="display: none;">
+                        
+                        <div class="product-item">
+                            <div class="product-cart">
+                            <p><strong>Nom:</strong> </p>
+                            <p><strong>Capacité:</strong> </p>
+                            <p><strong>Prix:</strong> </p>
+                            <p><strong>Adresse:</strong> </p>
+        
+                            <!-- Add other product details as needed -->
+                            </div>
+                        </div>
+                          
+                        
+                    </div>
+                    
+                    
+                  </div>
                 </div>
-            </div>
+                
+             
         </div>
-    </div>
-</div>
-<%- include('../partials/footer2') -%> -->
+    </div><script src="/js/tabs.js"></script>
+<%- include('../partials/footer') -%>
+

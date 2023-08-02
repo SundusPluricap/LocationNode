@@ -7,10 +7,11 @@ export const showAllUsers = async (req, res) => {
     console.log("showAllUsers starting")
     // Fetch all users from the database
     const users = await User.findAll();
-    const firstName = req.session.user.firstName;
-    const lastName = req.session.user.lastName;
+    const user = req.session.user
+    // const firstName = req.session.user.firstName;
+    // const lastName = req.session.user.lastName;
     // Render the EJS template with the user data
-    res.render('users/users', { users , firstName, lastName});
+    res.render('users/users', { users , user});
     console.log("showAllUsers done")
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -19,34 +20,33 @@ export const showAllUsers = async (req, res) => {
 };
 
 export const getProfile = async (req, res) => {
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  const user = req.session.user
   const userId = parseInt(req.params.userId, 10); // Extract the user ID from the URL parameter and parse it as an integer.
   const users = await User.findAll();
   // Find the user with the given ID in the users array or database.
-  const user = users.find(user => user.id === userId);
+  const findUser = users.find(user => user.id === userId);
 
-  if (!user) {
+  if (!findUser) {
     return res.status(404).send('User not found.'); // Handle the case when the user ID is not found.
   }
 
   // Render the user profile template with the user data.
-  res.render('users/profile', { user, firstName, lastName });
+  res.render('users/profile', { findUser, user });
 }
 
 export const getEdit = async (req, res) => {
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  const user = req.session.user
+
   const users = await User.findAll();
   const userId = parseInt(req.params.userId, 10);
-  const user = users.find(user => user.id === userId);
+  const findUser = users.find(user => user.id === userId);
 
-  if (!user) {
+  if (!findUser) {
     return res.status(404).send('User not found.');
   }
-
+  
   // Render the edit profile template with the user data
-  res.render('users/editProfile', { user, firstName, lastName });
+  res.render('users/editProfile', { user, findUser });
 }
 
 export const postEdit = async (req, res) => {
@@ -103,11 +103,11 @@ export const deleteUser = async (req, res) => {
 
 
 export const exist = async (req, res) => {
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  const user = req.session.user
+
   const errorMessage = req.session.errorMessage;
   const users = await User.findAll();
   // Clear the error message from the session
   delete req.session.errorMessage;
-  res.render('users/users', { errorMessage, firstName, lastName, users });
+  res.render('users/users', { errorMessage, user, users });
 };

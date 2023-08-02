@@ -13,17 +13,20 @@ export const dashboard = (req, res) => {
   console.log("dashboard start")
 
   if (req.session.user.id) {
-    const firstName = req.session.user.firstName;
-    const lastName = req.session.user.lastName;
+    const user = req.session.user
+    // const firstName = req.session.user.firstName;
+    // const lastName = req.session.user.lastName;
+    // const idUser = req.session.user.id;
     console.log("The user is logged in (using session)")
     
-    if (req.session.user.role === 'admin') {
-      // Admin-specific dashboard logic
-      res.render('admin/dashboard', { firstName, lastName });
-    } else {
-      // Non-admin users will be redirected to another dashboard
-      res.render('assistant/dashboard', { firstName, lastName });
-    }
+    res.render('home/dashboard', { user });
+    // if (req.session.user.role === 'admin') {
+    //   // Admin-specific dashboard logic
+    //   res.render('admin/dashboard', { user });
+    // } else {
+    //   // Non-admin users will be redirected to another dashboard
+    //   res.render('assistant/dashboard', { user });
+    // }
   }
   else {
     console.log("Redirect the user to the login page (token not provided)")

@@ -9,16 +9,18 @@ export const create = (req, res) => {
     const errorMessage = req.session.errorMessage;
     // Clear the error message from the session
     delete req.session.errorMessage;
-    // Render the register view with the error message as a local variable
     res.render('batiments/createBatiment', { errorMessage });
 };
 
 export const createBatiment = async (req, res) => {
     console.log("createBatiment starting")
     try {
-        const firstName = req.session.user.firstName
-        const lastName = req.session.user.lastName
-        console.log("req.body//////////////////////", req.body)
+        // const firstName = req.session.user.firstName
+        // const lastName = req.session.user.lastName
+        // const idUser = req.session.user.id;
+        // console.log("req.body//////////////////////", req.body)
+        const user = req.session.user
+
         const { name,adresse } = req.body;
         const photo = req.file ? req.file.filename : null;
 
@@ -31,7 +33,7 @@ export const createBatiment = async (req, res) => {
 
         const batiments = await Batiment.findAll();
     
-        res.render('batiments/all-batiments', { firstName, lastName,  batiments });
+        res.render('batiments/all-batiments', { user, batiments });
         
     } catch (error) {
       console.error('Error creating batiment:', error);
@@ -46,11 +48,13 @@ export const showAlleBatiments = async (req, res) => {
       console.log("showAlleBatiments starting")
       // Fetch all users from the database
       const batiments = await Batiment.findAll();
-      const firstName = req.session.user.firstName;
-      const lastName = req.session.user.lastName;
+      const user = req.session.user
+      // const firstName = req.session.user.firstName;
+      // const lastName = req.session.user.lastName;
+      // const idUser = req.session.user.id;
     //   console.log("batiments", batiments)
       // Render the EJS template with the user data
-      res.render('batiments/all-batiments', { firstName, lastName, batiments });
+      res.render('batiments/all-batiments', { user, batiments });
       console.log("showAlleBatiments done")
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -61,8 +65,10 @@ export const showAlleBatiments = async (req, res) => {
 
 export const getProfileBatiment = async (req, res) => {
   console.log("getProfileBatiment starting")
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  // const firstName = req.session.user.firstName;
+  // const lastName = req.session.user.lastName;
+  // const idUser = req.session.user.id;
+  const user = req.session.user
   const batimentId = parseInt(req.params.batimentId, 10); // Extract the batiment ID from the URL parameter and parse it as an integer.
 
   try {
@@ -74,7 +80,7 @@ export const getProfileBatiment = async (req, res) => {
     }
     const param = batiment
     // Render the batiment profile template with the batiment data.
-    res.render('batiments/profileBatiment', {  firstName, lastName, param });
+    res.render('batiments/profileBatiment', {  user, param });
   } catch (error) {
     console.error('Error fetching Batiment:', error);
     res.status(500).send('Error fetching batiment. Please try again.');
@@ -84,8 +90,10 @@ export const getProfileBatiment = async (req, res) => {
 
 
 export const getEdit = async (req, res) => {
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  // const firstName = req.session.user.firstName;
+  // const lastName = req.session.user.lastName;
+  // const idUser = req.session.user.id;
+  const user = req.session.user
   const batimentId = parseInt(req.params.batimentId, 10);
 
   try {
@@ -97,7 +105,7 @@ export const getEdit = async (req, res) => {
     }
     const param = batiment
     // Render the batiment profile template with the batiment data.
-    res.render('batiments/editProfile', { param, firstName, lastName });
+    res.render('batiments/editProfile', { param, user });
     // res.render('batiments/profileClient', {  firstName, lastName, param });
   } catch (error) {
     console.error('Error fetching batiments:', error);

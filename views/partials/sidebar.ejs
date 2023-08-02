@@ -9,7 +9,7 @@
     <!-- Close icon -->
     <div class="close-icon" id="closeIcon">❌</div>
     <div class="user-profile">
-    👨‍💼 <span class="username"><%= `${firstName} ${lastName}` %></span>
+        <a  href="/users/<%= `${user.id}` %>" class="username">👨‍💼 <%= `${user.firstName} ${user.lastName}` %></a>
     </div>
 
     <form class="form-group">
@@ -23,14 +23,26 @@
 
     <div class="sidebar-links">
         <a class="title" href="/dashboard"> 🏠 Accueil</a>
-        <div class="dropdown">
-            <h2 class="dropdown-toggle title" data-toggle="dropdown">👥 Etablissments</h2>
-            <div class="dropdown-menu">
-                <a href="/establishments"> Etablissments</a>
-                <a href="/users"> Utilisateurs</a>
-                <a href="/clients"> Clients</a>
+        <% if ( user.role === "superAdmin" || user.role === "kingAdmin") { %>
+            <div class="dropdown">
+                <h2 class="dropdown-toggle title" data-toggle="dropdown">👥 Etablissments</h2>
+                <div class="dropdown-menu">
+                    <a href="/establishments"> Etablissments</a>
+                    <a href="/users"> Utilisateurs</a>
+                    <a href="/clients"> Clients</a>
+                </div>
             </div>
-        </div>
+        <% } else if (user.role === "admin") { %>
+            <div class="dropdown">
+                <h2 class="dropdown-toggle title" data-toggle="dropdown">👥 Utilisateurs</h2>
+                <div class="dropdown-menu">
+                    <a href="/users"> Utilisateurs</a>
+                    <a href="/clients"> Clients</a>
+                </div>
+            </div>
+        <% } else { %>
+            <a href="/clients" class=" title">👥 Clients</a>
+        <% } %>    
 
         <div class="dropdown">
             <h2 class="dropdown-toggle title" data-toggle="dropdown">🏠 Bâtiments</h2>
@@ -43,18 +55,11 @@
         <div class="dropdown">
             <h2 class="dropdown-toggle title" data-toggle="dropdown">📅 Reservations</h2>
             <div class="dropdown-menu">
-                <a href="/batiments"> Reservations</a>
+                <a href="/reservations"> Reservations</a>
                 <a href="/agenda"> Agenda</a>
             </div>
         </div>
-        <!-- <a href="/establishments"> 🏠 Etablissments</a>
-        <a href="/users"> 👥 Utilisateurs</a>
-        <a href="/clients"> 👥 Clients</a> -->
-        <!-- <a href="/batiments">🏢 Bâtiments</a>
-        <a href="/products"> 🛏️ Salles</a> -->
-        <!-- <a href="/reservation"> 📅 Reservations</a>
-        <a href="/agenda"> 📅 Agenda</a> -->
-        
+                
         
         <a class="btn btn-outline-danger logout-button" href="/logout">🔓 Déconnexion</a>
     </div>

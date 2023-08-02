@@ -9,15 +9,13 @@ export const create = (req, res) => {
     const errorMessage = req.session.errorMessage;
     // Clear the error message from the session
     delete req.session.errorMessage;
-    // Render the register view with the error message as a local variable
     res.render('establishments/createEstablishment', { errorMessage });
 };
 
 export const createEstablishment = async (req, res) => {
     console.log("createEstablishment starting")
     try {
-        const firstName = req.session.user.firstName
-        const lastName = req.session.user.lastName
+        const user = req.session.user
         const { name } = req.body;
         // console.log("test", req.body);
         // console.log("phoneNumber", phoneNumber);
@@ -46,7 +44,7 @@ export const createEstablishment = async (req, res) => {
 
         const establishments = await Establishment.findAll();
     
-        res.render('establishments/all-establishments', { firstName, lastName,  establishments });
+        res.render('establishments/all-establishments', { user, establishments });
         // res.redirect("/establishments",{ firstName, lastName, establishments }); // Redirect to the index page after successful user creation
         
     } catch (error) {
@@ -62,11 +60,10 @@ export const showAlleEstablishments = async (req, res) => {
       console.log("showAlleEstablishments starting")
       // Fetch all users from the database
       const establishments = await Establishment.findAll();
-      const firstName = req.session.user.firstName;
-      const lastName = req.session.user.lastName;
+      const user = req.session.user
     //   console.log("establishments", establishments)
       // Render the EJS template with the user data
-      res.render('establishments/all-establishments', { firstName, lastName, establishments });
+      res.render('establishments/all-establishments', { user, establishments });
       console.log("showAlleEstablishments done")
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -100,8 +97,10 @@ export const showAlleEstablishments = async (req, res) => {
 
 
 export const getEdit = async (req, res) => {
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  // const firstName = req.session.user.firstName;
+  // const lastName = req.session.user.lastName;
+  // const idUser = req.session.user.id;
+  const user = req.session.user
   const establishmentId = parseInt(req.params.establishmentId, 10);
 
   try {
@@ -113,7 +112,7 @@ export const getEdit = async (req, res) => {
     }
     const param = establishment
     // Render the establishment profile template with the establishment data.
-    res.render('establishments/editProfile', { param, firstName, lastName });
+    res.render('establishments/editProfile', { param, user});
     // res.render('establishments/profileClient', {  firstName, lastName, param });
   } catch (error) {
     console.error('Error fetching establishments:', error);

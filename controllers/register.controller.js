@@ -12,8 +12,7 @@ export const register = (req, res) => {
     const errorMessage = req.session.errorMessage;
     // Clear the error message from the session
     delete req.session.errorMessage;
-    // Render the register view with the error message as a local variable
-    res.render('home/register', { errorMessage });
+    res.render('users/register', { errorMessage });
 };
   
 export const createUser = async (req, res) => {
@@ -50,8 +49,8 @@ export const createUser = async (req, res) => {
         console.log('New user created:', newUser.toJSON());
 
         const users = await User.findAll();
-    
-        res.render('users/users', { firstName, lastName, users });
+        const user = req.session.user
+        res.render('users/users', { user, users });
         // res.redirect(`/dashboard`); // Redirect to the index page after successful user creation
         
     } catch (error) {

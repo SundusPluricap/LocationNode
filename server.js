@@ -9,6 +9,7 @@ import establishmentRouter from "./routes/establishment.route.js";
 import batimentstRouter from "./routes/batiment.route.js"
 import productRouter from "./routes/product.route.js"
 import agendaRouter from "./routes/agenda.route.js"
+import reservationRouter from "./routes/reservation.route.js"
 
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
@@ -74,6 +75,7 @@ app.use('/establishments', establishmentRouter);
 app.use('/batiments', batimentstRouter);
 app.use('/products', productRouter);
 app.use('/agenda', agendaRouter);
+app.use('/reservations', reservationRouter);
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });

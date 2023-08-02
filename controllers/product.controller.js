@@ -27,8 +27,7 @@ export const showTabsSalles = async (req, res) => {
       ],
     });
 
-    const firstName = req.session.user.firstName;
-    const lastName = req.session.user.lastName;
+    const user = req.session.user
 
     // Filter batiments to only include those that have associated products of type "Salle"
     const filteredBatiments = batiments.filter((batiment) =>
@@ -36,7 +35,7 @@ export const showTabsSalles = async (req, res) => {
     );
 
     // Render the EJS template and pass filtered batiments and filtered products as locals
-    res.render('products/all-salles', { batiments: filteredBatiments, products, firstName, lastName });
+    res.render('products/all-salles', { batiments: filteredBatiments, products, user });
   } catch (error) {
     console.error('Error fetching data:', error.message);
     res.status(500).send('Internal Server Error');
@@ -66,59 +65,59 @@ export const create = async (req, res) => {
 export const createSalle = async (req, res) => {
   console.log("createSalle starting")
   try {
-      const firstName = req.session.user.firstName
-      const lastName = req.session.user.lastName
-      console.log("req.body//////////////////////", req.body)
-      const { name, capacity, price, batimentId } = req.body;
-      const photo = req.file ? req.file.filename : null;
+    const user = req.session.user
 
-      const type = 'Salle';
-      const newSalle = await Product.create({
-        name,
-        capacity,
-        price,
-        type,
-        batiment_id : batimentId
-      });
+    console.log("req.body//////////////////////", req.body)
+    const { name, capacity, price, batimentId } = req.body;
+    const photo = req.file ? req.file.filename : null;
 
-      const image = await Image.create({
-        name: photo,
-        type : "Product",
-        product_id: newSalle.id, // Set the product_id to the newly created "Salle" (Product) id
-        description: null, // You can add a description if needed
-      });
+    const type = 'Salle';
+    const newSalle = await Product.create({
+      name,
+      capacity,
+      price,
+      type,
+      batiment_id : batimentId
+    });
+
+    const image = await Image.create({
+      name: photo,
+      type : "Product",
+      product_id: newSalle.id, // Set the product_id to the newly created "Salle" (Product) id
+      description: null, // You can add a description if needed
+    });
 
 
-      console.log('New Salle created:', newSalle.toJSON());
+    console.log('New Salle created:', newSalle.toJSON());
 
-      const batiments = await Batiment.findAll({
-        attributes: ['id', 'name', 'adresse'], // Include address in the query result
-      });
-  
-      const products = await Product.findAll({
-        where: {
-          type: 'Salle',
+    const batiments = await Batiment.findAll({
+      attributes: ['id', 'name', 'adresse'], // Include address in the query result
+    });
+
+    const products = await Product.findAll({
+      where: {
+        type: 'Salle',
+      },
+      include: [
+        {
+          model: Batiment,
+          attributes: ['id', 'name', 'adresse'],
         },
-        include: [
-          {
-            model: Batiment,
-            attributes: ['id', 'name', 'adresse'],
-          },
-          {
-            model: Establishment,
-            attributes: ['id', 'name'],
-          },
-        ],
-      });
+        {
+          model: Establishment,
+          attributes: ['id', 'name'],
+        },
+      ],
+    });
+
   
-    
-      // Filter batiments to only include those that have associated products of type "Salle"
-      const filteredBatiments = batiments.filter((batiment) =>
-        products.some((product) => product.batiment_id === batiment.id)
-      );
-  
-      // Render the EJS template and pass filtered batiments and filtered products as locals
-      res.render('products/all-salles', { batiments: filteredBatiments, products, firstName, lastName });      
+    // Filter batiments to only include those that have associated products of type "Salle"
+    const filteredBatiments = batiments.filter((batiment) =>
+      products.some((product) => product.batiment_id === batiment.id)
+    );
+
+    // Render the EJS template and pass filtered batiments and filtered products as locals
+    res.render('products/all-salles', { batiments: filteredBatiments, products, user });      
   } catch (error) {
     console.error('Error creating batiment:', error);
     res.status(500).send('Error creating batiment. Please try again.');
@@ -126,22 +125,12 @@ export const createSalle = async (req, res) => {
   console.log("createSalle done")
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 export const getProfile = async (req, res) => {
   console.log("getProfile starting");
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  // const firstName = req.session.user.firstName;
+  // const lastName = req.session.user.lastName;
+  // const idUser = req.session.user.id;
+  const user = req.session.user
   const productId = parseInt(req.params.productId, 10); // Extract the product ID from the URL parameter and parse it as an integer.
 
   try {
@@ -179,7 +168,7 @@ export const getProfile = async (req, res) => {
     console.log("product has:param ", param);
     console.log("product done ");
     // Render the product profile template with the product data and images.
-    res.render('products/profileProduct', { firstName, lastName, param });
+    res.render('products/profileProduct', { user, param});
   } catch (error) {
     console.error('Error fetching product:', error);
     res.status(500).send('Error fetching product. Please try again.');
@@ -211,8 +200,10 @@ export const deleteSalle = async (req, res) => {
 };
 
 export const getEdit = async (req, res) => {
-  const firstName = req.session.user.firstName;
-  const lastName = req.session.user.lastName;
+  // const firstName = req.session.user.firstName;
+  // const lastName = req.session.user.lastName;
+  // const idUser = req.session.user.id;
+  const user = req.session.user
   const productId = parseInt(req.params.productId, 10);
   const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });
 
@@ -225,7 +216,7 @@ export const getEdit = async (req, res) => {
     }
     const param = salle
     // Render the batiment profile template with the batiment data.
-    res.render('products/editProfile', {batiments, param, firstName, lastName });
+    res.render('products/editProfile', {batiments, param, user });
   } catch (error) {
     console.error('Error fetching prosucts:', error);
     res.status(500).send('Error fetching prosuct. Please try again.');
