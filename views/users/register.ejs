@@ -35,6 +35,15 @@
                             </select>
                         </div>
                         
+                        <div class="mb-3">
+                            <label for="establishmentId" class="form-label">Select Etablissement</label>
+                            <select class="form-control" id="establishmentId" name="establishmentId" required>
+                              <% establishments.forEach((establishment) => { %>
+                              <option value="<%= establishment.id %>"><%= establishment.name %></option>
+                              <% }); %>
+                            </select>
+                        </div>
+
                         
                         <div align="center">
                             <button type="submit"  class="btn btn-primary">Ajouter un utilisateur</button>

@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
+import Establishment from "./establishment-model.js";
 
 const { APP_LOCALHOST: hostname, APP_PORT: port, DATABASE :db, USERNAMESQL: username ,PASSWORDSQL:mdp} = process.env;
 
@@ -31,6 +32,14 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  establishmentId: { // Add this field
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
+
+
+Establishment.hasMany(User, { foreignKey: 'establishmentId', onDelete: 'CASCADE' });
+User.belongsTo(Establishment, { foreignKey: 'establishmentId', onDelete: 'CASCADE' });
 
 export default User;

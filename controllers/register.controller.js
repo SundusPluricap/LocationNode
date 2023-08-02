@@ -2,25 +2,27 @@ import User from "../models/user-model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
+import Establishment from '../models/establishment-model.js';
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
 // Middleware to handle user registration
-export const register = (req, res) => {
+export const register = async (req, res) => {
     // ...
     // Check if there's an error message in the session
+    const establishments = await Establishment.findAll({});
     const errorMessage = req.session.errorMessage;
     // Clear the error message from the session
     delete req.session.errorMessage;
-    res.render('users/register', { errorMessage });
+    res.render('users/register', { errorMessage,establishments });
 };
   
 export const createUser = async (req, res) => {
     console.log("createUser starting")
     try {
         
-        const { firstName, lastName, email, password, role } = req.body;
-        console.log("test");
+        const { firstName, lastName, email, password, role, establishmentId } = req.body;
+        // console.log("--------------------------------------",req.body);
     
         const hashedPassword = await bcrypt.hash(password, 10);
     
@@ -31,6 +33,7 @@ export const createUser = async (req, res) => {
             email,
             password: hashedPassword, // Store the hashed password in the database
             role,
+            establishmentId
         });
     
         const token = jwt.sign(

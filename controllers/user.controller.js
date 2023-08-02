@@ -1,7 +1,7 @@
 
 
 import User from "../models/user-model.js";
-
+import Establishment from "../models/establishment-model.js";
 export const showAllUsers = async (req, res) => {
   try {
     console.log("showAllUsers starting")
@@ -20,18 +20,24 @@ export const showAllUsers = async (req, res) => {
 };
 
 export const getProfile = async (req, res) => {
-  const user = req.session.user
-  const userId = parseInt(req.params.userId, 10); // Extract the user ID from the URL parameter and parse it as an integer.
-  const users = await User.findAll();
-  // Find the user with the given ID in the users array or database.
-  const findUser = users.find(user => user.id === userId);
+  const user = req.session.user;
+  const userId = parseInt(req.params.userId, 10);
 
-  if (!findUser) {
-    return res.status(404).send('User not found.'); // Handle the case when the user ID is not found.
+  try {
+    const findUser = await User.findOne({
+      where: { id: userId },
+      include: Establishment, // Include the associated Establishment model
+    });
+
+    if (!findUser) {
+      return res.status(404).send('User not found.');
+    }
+
+    res.render('users/profile', { findUser, user });
+  } catch (error) {
+    console.error('Error retrieving user profile:', error);
+    return res.status(500).send('Internal Server Error');
   }
-
-  // Render the user profile template with the user data.
-  res.render('users/profile', { findUser, user });
 }
 
 export const getEdit = async (req, res) => {

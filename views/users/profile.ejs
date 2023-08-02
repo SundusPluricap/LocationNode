@@ -34,6 +34,12 @@
                     <td><%= findUser.role %></td>
                     
                 </tr>
+
+                <tr>
+                    <td>Establishment:</td>
+                    <td><%= findUser.Establishment.name %></td>
+                </tr>
+                
                 <tr>
                     <td colspan="3" align="center">
                         <a href="<%= findUser.id %>/edit" class="edit-button">Edit</a>

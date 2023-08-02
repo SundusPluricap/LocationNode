@@ -4,12 +4,22 @@ dotenv.config();
 const { SESSION_SECRET } = process.env;
 
 export const create = (req, res) => {
-    // ...
-    // Check if there's an error message in the session
-    const errorMessage = req.session.errorMessage;
-    // Clear the error message from the session
-    delete req.session.errorMessage;
-    res.render('establishments/createEstablishment', { errorMessage });
+  const user = req.session.user
+    
+  // Check if there's an error message in the session
+  const errorMessage = req.session.errorMessage;
+  // Clear the error message from the session
+  delete req.session.errorMessage;
+  
+  res.render('establishments/createEstablishment', { errorMessage });
+
+  // if(user.role === "kingAdmin"){
+  //   res.render('establishments/createEstablishment', { errorMessage });
+  // }
+  // else if(user.role === "superAdmin"){
+  //   res.render('establishments/createEstablishment', { errorMessage });
+  // }
+  
 };
 
 export const createEstablishment = async (req, res) => {
