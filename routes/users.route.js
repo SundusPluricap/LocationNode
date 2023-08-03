@@ -7,7 +7,7 @@ const userRouter = express.Router();
 userRouter.get('/', isAuthenticated, showAllUsers);
 
 userRouter.get("/register", register);
-
+userRouter.get("/create-user", register);
 userRouter.post("/create-user", checkUserExistence, createUser);
 // Route handler for /users/:userId
 userRouter.get('/:userId', isAuthenticated, getProfile);

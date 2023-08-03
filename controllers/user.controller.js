@@ -53,9 +53,21 @@ export const createUser = async (req, res) => {
     // console.log('User ID set in token:', token.userId);
     // console.log('newUser.id:', newUser.id);
     console.log('New user created:', newUser.toJSON());
-
-    const users = await User.findAll();
     const user = req.session.user
+    let users;
+
+    if (user.role === "kingAdmin") {
+      // If the user is a "kingAdmin", fetch all users
+      users = await User.findAll();
+    } else {
+      // If the user is not a "kingAdmin", fetch users with the same establishment ID
+      users = await User.findAll({
+        where: {
+          establishmentId: user.establishmentId
+        }
+      });
+    }
+    
     res.render('users/users', { user, users, errorMessage });
     // res.redirect(`/dashboard`); // Redirect to the index page after successful user creation
       
@@ -192,12 +204,12 @@ export const deleteUser = async (req, res) => {
 };
 
 
-export const exist = async (req, res) => {
-  const user = req.session.user
+// export const exist = async (req, res) => {
+//   const user = req.session.user
 
-  const errorMessage = req.session.errorMessage;
-  const users = await User.findAll();
-  // Clear the error message from the session
-  delete req.session.errorMessage;
-  res.render('users/users', { errorMessage, user, users });
-};
+//   const errorMessage = req.session.errorMessage;
+//   const users = await User.findAll();
+//   // Clear the error message from the session
+//   delete req.session.errorMessage;
+//   res.render('users/users', { errorMessage, user, users });
+// };

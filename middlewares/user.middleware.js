@@ -44,9 +44,9 @@ export const ifManyUsers = async (req, res, next) => {
         req.session.manyEstablishmentsForSameUser = existingUser;
         req.session.passwordTemp = password;
 
-        if (userCount) {
+        if (userCount>1) {
             console.log("User has many ids existingUser -------->", userCount,"<-----------" )
-            req.session.errorMessage = 'User with this email already exists.';
+            req.session.errorMessage = "Vous avez plus d'un compte, choisissez l'établissement.";
             return res.redirect('/chooseEstablishment');
         }
     

@@ -19,7 +19,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Role</th>
-                    <th>Email</th>
+                    
                     <th>Profile</th>
                 </tr>
                 </thead>
@@ -28,7 +28,6 @@
                         <tr>
                             <td><%= user.firstName %> <%= user.lastName %> 👉👤</td>
                             <td><%= user.role %> </td>
-                            <td><%= user.email %> <%= user.establishmentId %></td>
                             <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
                         </tr>
 
@@ -37,7 +36,6 @@
                                 <tr>
                                     <td><%= userLoop.firstName %> <%= userLoop.lastName %></td>
                                     <td><%= userLoop.role %> </td>
-                                    <td><%= userLoop.email %> <%= userLoop.establishmentId %></td>
                                     <td><a href="/users/<%= userLoop.id %>" class="view-profile-button">View Profile</a></td>
                                 </tr>
                             <% } %>
@@ -49,7 +47,7 @@
                             <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
                         </tr>
                         <% users.forEach(userLoop => { %>
-                            <% if (userLoop.role === "admin" && (userLoop.id !== user.id)) { %>
+                            <%  if (userLoop.role !== "kingAdmin" && userLoop.role !== "superAdmin" && (userLoop.id !== user.id)) { %>
                                 <tr>
                                     <td><%= userLoop.firstName %> <%= userLoop.lastName %></td>
                                     <td><%= userLoop.role %> </td>
@@ -59,15 +57,30 @@
                         <% }) %>
 
                         
+                    <% } else if (user.role === "admin"){ %>
+                        <tr>
+                            <td><%= user.firstName %> <%= user.lastName %> 👉👤</td>
+                            <td><%= user.role %> </td>
+                            <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
+                        </tr>
+                        <% users.forEach(userLoop => { %>
+                            <% if (userLoop.role !== "admin" && (userLoop.id !== user.id)) { %>
+                                <tr>
+                                    <td><%= userLoop.firstName %> <%= userLoop.lastName %></td>
+                                    <td><%= userLoop.role %> </td>
+                                    <td><a href="/users/<%= userLoop.id %>" class="view-profile-button">View Profile</a></td>
+                                </tr>
+                            <% } %>
+                        <% }) %>
+    
                     <% } else { %>
                         <tr>
                             <td><%= user.firstName %> <%= user.lastName %> 👉👤</td>
                             <td><%= user.role %> </td>
                             <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
                         </tr>
-                        
                     <% } %>
-
+                    
                     
                 </tbody>
             </table>

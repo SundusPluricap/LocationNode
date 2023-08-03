@@ -6,38 +6,53 @@
 <body>
     <div class="container">
         <%- include('../partials/sidebar') -%>
-        <div class="main-content">
-            <h1>Edit User Profile</h1>
-            <form action="/users/<%= findUser.id %>/edit" method="POST">
-                <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" value="<%= findUser.firstName %>">
+        <% if (user.role === "kingAdmin" || user.role === "superAdmin" || user.role === "admin" || user.id === findUser.id ) { %>
+            <div class="main-content">
+                <h1>Edit User Profile</h1>
+                <form action="/users/<%= findUser.id %>/edit" method="POST">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" value="<%= findUser.firstName %>">
 
-                <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" value="<%= findUser.lastName %>">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" value="<%= findUser.lastName %>">
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="<%= findUser.email %>">
-
-                
-                <label for="role">Role:</label>
-                    <select id="role" name="role">
-                    <option value="admin" <%= findUser.role === 'admin' ? 'selected' : '' %>>Admin</option>
-                    <option value="superAdmin" <%= findUser.role === 'superAdmin' ? 'selected' : '' %>>Super Admin</option>
-                    <option value="kingAdmin" <%= findUser.role === 'kingAdmin' ? 'selected' : '' %>>King of the admins</option>
-                </select>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="<%= findUser.email %>">
 
 
-                <label for="email">Email:</label>
-                <select class="form-control" id="establishmentId" name="establishmentId" required>
-                    <% establishments.forEach((establishment) => { %>
-                      <option value="<%= establishment.id %>" <%= findUser.establishmentId === establishment.id ? 'selected' : '' %>><%= establishment.name %></option>
-                    <% }); %>
-                  </select>
-                  
+                    <% if (user.role === "kingAdmin") { %>
+                        <% if (findUser.role !== "kingAdmin") { %>
 
-                <button type="submit">Save Changes</button>
-            </form>
-        </div>
+                            <label for="role">Role:</label>
+                            <select id="role" name="role">
+                                <option value="editor" <%= findUser.role === 'editor' ? 'selected' : '' %>>Rédacteur</option>
+                                <option value="admin" <%= findUser.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                                <option value="superAdmin" <%= findUser.role === 'superAdmin' ? 'selected' : '' %>>Super Admin</option>
+                            </select>
+                        <% } %>
+                    <% } else if (user.role === "superAdmin") { %>
+
+                        <label for="role">Role:</label>
+                        <select id="role" name="role">
+                            <option value="editor" <%= findUser.role === 'editor' ? 'selected' : '' %>>Rédacteur</option>
+                            <option value="admin" <%= findUser.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                        </select>
+                    <% } %>
+
+
+
+
+                    
+
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        <% } else { %>
+            <h1 align="center">there's nothing here to see,<a href="/" style="text-decoration: none;"> go home.</a></h1>
+
+        <% } %>
+
+
     </div>
 
 <%- include('../partials/footer') -%>
