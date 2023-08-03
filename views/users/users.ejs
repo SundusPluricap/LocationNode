@@ -5,6 +5,13 @@
 <body>
     <div class="container">
         <%- include('../partials/sidebar') -%>
+        <% if (user.role === "kingAdmin") { %>
+
+        <% } else if (user.role === "superAdmin") { %>
+
+        <% } else { %>
+
+        <% } %>
         <div class="main-content">
             <h1>All Users</h1>
             <table class="user-table">
@@ -12,21 +19,60 @@
                 <tr>
                     <th>Name</th>
                     <th>Role</th>
+                    <th>Email</th>
                     <th>Profile</th>
                 </tr>
                 </thead>
                 <tbody>
-                <% users.forEach(user => { %>
-                    <tr>
-                        <td><%= user.firstName %> <%= user.lastName %></td>
-                        <td><%= user.role %> </td>
-                        <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
-                    </tr>
-                <% }) %>
+                    <% if (user.role === "kingAdmin") { %>
+                        <tr>
+                            <td><%= user.firstName %> <%= user.lastName %> 👉👤</td>
+                            <td><%= user.role %> </td>
+                            <td><%= user.email %> <%= user.establishmentId %></td>
+                            <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
+                        </tr>
+
+                        <% users.forEach(userLoop => { %>
+                            <% if (userLoop.id !== user.id) { %>
+                                <tr>
+                                    <td><%= userLoop.firstName %> <%= userLoop.lastName %></td>
+                                    <td><%= userLoop.role %> </td>
+                                    <td><%= userLoop.email %> <%= userLoop.establishmentId %></td>
+                                    <td><a href="/users/<%= userLoop.id %>" class="view-profile-button">View Profile</a></td>
+                                </tr>
+                            <% } %>
+                        <% }) %>
+                    <% } else if (user.role === "superAdmin") { %>
+                        <tr>
+                            <td><%= user.firstName %> <%= user.lastName %> 👉👤</td>
+                            <td><%= user.role %> </td>
+                            <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
+                        </tr>
+                        <% users.forEach(userLoop => { %>
+                            <% if (userLoop.role === "admin" && (userLoop.id !== user.id)) { %>
+                                <tr>
+                                    <td><%= userLoop.firstName %> <%= userLoop.lastName %></td>
+                                    <td><%= userLoop.role %> </td>
+                                    <td><a href="/users/<%= userLoop.id %>" class="view-profile-button">View Profile</a></td>
+                                </tr>
+                            <% } %>
+                        <% }) %>
+
+                        
+                    <% } else { %>
+                        <tr>
+                            <td><%= user.firstName %> <%= user.lastName %> 👉👤</td>
+                            <td><%= user.role %> </td>
+                            <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
+                        </tr>
+                        
+                    <% } %>
+
+                    
                 </tbody>
             </table>
 
-            <a href="/register" class="add-user-button">Add a user</a>
+            <a href="/users/register" class="add-user-button">Add a user</a>
             <% if (typeof errorMessage !== 'undefined') { %>
                 <div class="alert alert-danger mt-3">
                     <%= errorMessage %>

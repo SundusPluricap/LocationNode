@@ -5,26 +5,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
-// Middleware to check if the user already exists
-export const checkUserExistence = async (req, res, next) => {
-  try {
-    const { email } = req.body;
-
-    // Check if the user already exists in the database
-    const existingUser = await User.findOne({ where: { email } });
-
-    if (existingUser) {
-      req.session.errorMessage = 'User with this email already exists.';
-      return res.redirect('/userExist');
-    }
-
-    // User does not exist, proceed to the next middleware (createUser)
-    next();
-  } catch (error) {
-    console.error('Error checking user existence:', error);
-    res.status(500).send('Error checking user existence. Please try again.');
-  }
-};
 
 // Middleware to check if the user is logged in (authentication check)
 // export const isAuthenticateds = (req, res, next) => {
@@ -59,8 +39,6 @@ export const isAuthenticated = (req, res, next) => {
       console.log("Redirect the user to the login page (token not provided)")
       return res.redirect('/login');
     }
-
-     
 
     // Verify the token
     jwt.verify(token, SESSION_SECRET, (err, decoded) => {

@@ -1,11 +1,14 @@
 import express from "express";
-import {showAllUsers, getProfile, getEdit, postEdit, deleteUser} from "../controllers/user.controller.js";
-import {isAuthenticated} from "../middlewares/auth-middleware.js"
+import {register, createUser, showAllUsers, getProfile, getEdit, postEdit, deleteUser} from "../controllers/user.controller.js";
+import { isAuthenticated} from "../middlewares/auth-middleware.js"
+import {checkUserExistence} from "../middlewares/user.middleware.js"
 
 const userRouter = express.Router();
 userRouter.get('/', isAuthenticated, showAllUsers);
 
+userRouter.get("/register", register);
 
+userRouter.post("/create-user", checkUserExistence, createUser);
 // Route handler for /users/:userId
 userRouter.get('/:userId', isAuthenticated, getProfile);
 
