@@ -27,24 +27,39 @@
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Rôle</label>
-                            <select class="form-control" id="role" name="role" required>
-                                <option value="kingAdmin">King of the admins</option>
-                                <option value="superAdmin">Super Admin</option>
-                                <option value="admin">Admin</option>
-                                <option value="editor">Rédacteur</option>
-                                <!-- Add other roles if needed -->
-                            </select>
+                            <% if (user.role === "kingAdmin") { %>
+                                <select class="form-control" id="role" name="role" required>
+                                    <option value="superAdmin">Super Admin</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="editor">Rédacteur</option>
+                                    <!-- Add other roles if needed -->
+                                </select>
+                           
+                            <% } else if (user.role === "superAdmin")  { %>
+                                <select class="form-control" id="role" name="role" required>
+                                    <option value="admin">Admin</option>
+                                    <option value="editor">Rédacteur</option>
+                                    <!-- Add other roles if needed -->
+                                </select>
+                            
+                            <%}else if (user.role === "admin" )  { %>
+                                <select class="form-control" id="role" name="role" required>
+                                    <option value="editor">Rédacteur</option>
+                                    <!-- Add other roles if needed -->
+                                </select>
+                            <% } %>
+                                
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="establishmentId" class="form-label">Select Etablissement</label>
-                            <select class="form-control" id="establishmentId" name="establishmentId" required>
-                              <% establishments.forEach((establishment) => { %>
-                              <option value="<%= establishment.id %>"><%= establishment.name %></option>
-                              <% }); %>
-                            </select>
-                        </div>
-
+                        <% if (user.role === "kingAdmin") { %>
+                            <div class="mb-3">
+                                <label for="establishmentId" class="form-label">Select Etablissement</label>
+                                <select class="form-control" id="establishmentId" name="establishmentId" required>
+                                <% establishments.forEach((establishment) => { %>
+                                <option value="<%= establishment.id %>"><%= establishment.name %></option>
+                                <% }); %>
+                                </select>
+                            </div>
+                        <% } %>
                         
                         <div align="center">
                             <button type="submit"  class="btn btn-primary">Ajouter un utilisateur</button>

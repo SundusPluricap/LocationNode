@@ -6,9 +6,9 @@ import {checkUserExistence} from "../middlewares/user.middleware.js"
 const userRouter = express.Router();
 userRouter.get('/', isAuthenticated, showAllUsers);
 
-userRouter.get("/register", register);
-userRouter.get("/create-user", register);
-userRouter.post("/create-user", checkUserExistence, createUser);
+userRouter.get("/register",isAuthenticated, register);
+userRouter.get("/create-user",isAuthenticated, register); // to fix, this isn't right
+userRouter.post("/create-user",isAuthenticated, checkUserExistence, createUser);
 // Route handler for /users/:userId
 userRouter.get('/:userId', isAuthenticated, getProfile);
 

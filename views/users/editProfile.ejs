@@ -6,7 +6,6 @@
 <body>
     <div class="container">
         <%- include('../partials/sidebar') -%>
-        <% if (user.role === "kingAdmin" || user.role === "superAdmin" || user.role === "admin" || user.id === findUser.id ) { %>
             <div class="main-content">
                 <h1>Edit User Profile</h1>
                 <form action="/users/<%= findUser.id %>/edit" method="POST">
@@ -20,17 +19,17 @@
                     <input type="email" id="email" name="email" value="<%= findUser.email %>">
 
 
-                    <% if (user.role === "kingAdmin") { %>
-                        <% if (findUser.role !== "kingAdmin") { %>
+                    <% if (user.role === "kingAdmin" && user.id !== findUser.id) { %>
+                    
 
-                            <label for="role">Role:</label>
-                            <select id="role" name="role">
-                                <option value="editor" <%= findUser.role === 'editor' ? 'selected' : '' %>>Rédacteur</option>
-                                <option value="admin" <%= findUser.role === 'admin' ? 'selected' : '' %>>Admin</option>
-                                <option value="superAdmin" <%= findUser.role === 'superAdmin' ? 'selected' : '' %>>Super Admin</option>
-                            </select>
-                        <% } %>
-                    <% } else if (user.role === "superAdmin") { %>
+                        <label for="role">Role:</label>
+                        <select id="role" name="role">
+                            <option value="editor" <%= findUser.role === 'editor' ? 'selected' : '' %>>Rédacteur</option>
+                            <option value="admin" <%= findUser.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                            <option value="superAdmin" <%= findUser.role === 'superAdmin' ? 'selected' : '' %>>Super Admin</option>
+                        </select>
+                        
+                    <% } else if (user.role === "superAdmin" && user.id !== findUser.id ) { %>
 
                         <label for="role">Role:</label>
                         <select id="role" name="role">
@@ -39,18 +38,10 @@
                         </select>
                     <% } %>
 
-
-
-
-                    
-
                     <button type="submit">Save Changes</button>
                 </form>
             </div>
-        <% } else { %>
-            <h1 align="center">there's nothing here to see,<a href="/" style="text-decoration: none;"> go home.</a></h1>
-
-        <% } %>
+       
 
 
     </div>

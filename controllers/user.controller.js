@@ -5,27 +5,38 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import Establishment from '../models/establishment-model.js';
+import {bigger_than, establishmentCheck} from '../utiles/role.permission.js'
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
 // Middleware to handle user registration
 export const register = async (req, res) => {
-  // ...
+  const user = req.session.user
   // Check if there's an error message in the session
   const establishments = await Establishment.findAll({});
   const errorMessage = req.session.errorMessage;
   // Clear the error message from the session
   delete req.session.errorMessage;
-  res.render('users/register', { errorMessage,establishments });
+  res.render('users/register', { errorMessage,establishments, user });
 };
   
 export const createUser = async (req, res) => {
   console.log("createUser starting")
+  
   try {
+    const user = req.session.user
     const errorMessage = req.session.errorMessage;
     delete req.session.errorMessage;
+    
     const { firstName, lastName, email, password, role, establishmentId } = req.body;
     // console.log("--------------------------------------",req.body);
+    let establishment
+    if(!establishmentId || user.role !== "kingAdmin"){
+      
+      establishment = user.establishmentId
+    }else{
+      establishment = establishmentId
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -36,7 +47,7 @@ export const createUser = async (req, res) => {
       email,
       password: hashedPassword, // Store the hashed password in the database
       role,
-      establishmentId
+      establishmentId:establishment
     });
 
     const token = jwt.sign(
@@ -53,7 +64,7 @@ export const createUser = async (req, res) => {
     // console.log('User ID set in token:', token.userId);
     // console.log('newUser.id:', newUser.id);
     console.log('New user created:', newUser.toJSON());
-    const user = req.session.user
+    
     let users;
 
     if (user.role === "kingAdmin") {
@@ -86,7 +97,8 @@ export const showAllUsers = async (req, res) => {
     console.log("showAllUsers starting")
     // Fetch the user from the session
     const user = req.session.user;
-
+    
+    // role_has_permission(user.role, "list")
     let users;
 
     if (user.role === "kingAdmin") {
@@ -114,7 +126,8 @@ export const showAllUsers = async (req, res) => {
 export const getProfile = async (req, res) => {
   const user = req.session.user;
   const userId = parseInt(req.params.userId, 10);
-
+  
+  // role_has_permission(user.role, "view")
   try {
     const findUser = await User.findOne({
       where: { id: userId },
@@ -124,8 +137,14 @@ export const getProfile = async (req, res) => {
     if (!findUser) {
       return res.status(404).send('User not found.');
     }
+    if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.Establishment.id, user.Establishment.id, user.role)  ){
+      res.render('users/profile', { user, findUser});
+    }
+    else {
+      res.render('home/403', {user})
+    }
 
-    res.render('users/profile', { findUser, user });
+    
   } catch (error) {
     console.error('Error retrieving user profile:', error);
     return res.status(500).send('Internal Server Error');
@@ -135,6 +154,7 @@ export const getProfile = async (req, res) => {
 export const getEdit = async (req, res) => {
   const user = req.session.user
   const userId = parseInt(req.params.userId, 10);
+  
   const establishments = await Establishment.findAll({});
   const findUser = await User.findOne({
       where: { id: userId },
@@ -144,10 +164,17 @@ export const getEdit = async (req, res) => {
   if (!findUser) {
     return res.status(404).send('User not found.');
   }
-  
+  if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.Establishment.id, user.Establishment.id, user.role)  ){
+    res.render('users/editProfile', { user, findUser, establishments});
+  }
+  else {
+    res.render('home/403', {user})
+  }
+
   // Render the edit profile template with the user data
-  res.render('users/editProfile', { user, findUser, establishments });
+    
 }
+
 
 export const postEdit = async (req, res) => {
   const userId = parseInt(req.params.userId, 10);
@@ -184,32 +211,24 @@ export const postEdit = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   const userId = parseInt(req.params.userId, 10);
-  
+  const user = req.session.user
   try {
-    const user = await User.findByPk(userId);
+    const findUser = await User.findByPk(userId);
 
-    if (!user) {
+    if (!findUser) {
       return res.status(404).send('User not found.');
     }
 
-    // Delete the user from the database
-    await user.destroy();
-
-    // Redirect to the list of all users or another page after successful deletion
-    res.redirect('/users'); // Adjust the URL to redirect to the appropriate page after deletion
+    if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.establishmentId, user.Establishment.id, user.role)  ){
+      await findUser.destroy();
+      res.redirect('/users');
+    }
+    else {
+      res.render('home/403', {user})
+    }
+    
   } catch (error) {
     console.error('Error deleting user:', error);
     res.status(500).send('Error deleting user.');
   }
 };
-
-
-// export const exist = async (req, res) => {
-//   const user = req.session.user
-
-//   const errorMessage = req.session.errorMessage;
-//   const users = await User.findAll();
-//   // Clear the error message from the session
-//   delete req.session.errorMessage;
-//   res.render('users/users', { errorMessage, user, users });
-// };

@@ -1,57 +1,63 @@
 <!-- profile.ejs -->
-<%- include('../partials/header') -%>
 
-<title><%= findUser.firstName %> <%= findUser.lastName %> Profile</title>
-<link rel="stylesheet" href="/css/profile.css">
-</head>
-<body>
-    <div class="container">
-        <%- include('../partials/sidebar') -%>
-        <div class="main-content">
-            <h1>User Profile</h1>
-            <table class="user-profile-table">
-                <tr>
-                    <td>ID:</td>
-                    <td><%= findUser.id %></td>
-                </tr>
-                <tr>
-                    <td>First Name:</td>
-                    <td><%= findUser.firstName %></td>
-                    
-                </tr>
-                <tr>
-                    <td>Last Name:</td>
-                    <td><%= findUser.lastName %></td>
-                    
-                </tr>
-                <tr>
-                    <td>Email:</td>
-                    <td><%= findUser.email %></td>
-                    
-                </tr>
-                <tr>
-                    <td>Role:</td>
-                    <td><%= findUser.role %></td>
-                    
-                </tr>
+    <%- include('../partials/header') -%>
 
-                <tr>
-                    <td>Establishment:</td>
-                    <td><%= findUser.Establishment.name %></td>
-                </tr>
-                
-                <tr>
-                    <td colspan="3" align="center">
-                        <a href="<%= findUser.id %>/edit" class="edit-button">Edit</a>
+    <title><%= findUser.firstName %> <%= findUser.lastName %> Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+    </head>
+    <body>
+        <div class="container">
+            <%- include('../partials/sidebar') -%>
+            
+                <div class="main-content">
+                    <h1>User Profile</h1>
+                    <table class="user-profile-table">
+                        <tr>
+                            <td>ID:</td>
+                            <td><%= findUser.id %></td>
+                        </tr>
+                        <tr>
+                            <td>First Name:</td>
+                            <td><%= findUser.firstName %></td>
+                            
+                        </tr>
+                        <tr>
+                            <td>Last Name:</td>
+                            <td><%= findUser.lastName %></td>
+                            
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td><%= findUser.email %></td>
+                            
+                        </tr>
+                        <tr>
+                            <td>Role:</td>
+                            <td><%= findUser.role %></td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td>Establishment:</td>
+                            <td><%= findUser.Establishment.name %></td>
+                        </tr>
                         
-                        <a href="<%= findUser.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
-                    </td>
-                </tr>
-            </table>
+                        <tr>
+                            <% if (user.role === "kingAdmin" || user.role === "superAdmin" || user.role === "admin" || user.id === findUser.id ) { %>
+                                <td colspan="3" align="center">
+                                    <a href="<%= findUser.id %>/edit" class="edit-button">Edit</a>
+                                    
+                                    <a href="<%= findUser.id %>/delete" class="delete-button" onclick="return confirmDelete()">Delete</a>
+                                </td>
+                            <% } %>
+                            
+                        </tr>
+                    </table>
+                </div>
+            
         </div>
-    </div>
 
-<script src="/js/delete.js"></script>
+    <script src="/js/delete.js"></script>
 
-<%- include('../partials/footer') -%>
+    <%- include('../partials/footer') -%>
 
