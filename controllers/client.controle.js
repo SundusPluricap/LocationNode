@@ -1,4 +1,6 @@
 import Client from "../models/client-model.js";
+import User from "../models/user-model.js";
+import Establishment from "../models/establishment-model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
@@ -17,14 +19,11 @@ export const create = (req, res) => {
 export const createClient = async (req, res) => {
   console.log("createClient starting")
   try {
-    const user = req.session.user
+    const user = req.session.user;
     const { firstName, lastName, email, phoneNumber } = req.body;
-    console.log("test", req.body);
-    console.log("phoneNumber", phoneNumber);
-    const idUser = req.session.user.id
-    // const hashedPassword = await bcrypt.hash(password, 10);
+    const idUser = req.session.user.id;
 
-    // Create a new user in the database with the hashed password
+    // Create a new client in the database
     const newClient = await Client.create({
       firstName,
       lastName,
@@ -33,25 +32,11 @@ export const createClient = async (req, res) => {
       idUser 
     });
 
-    // const token = jwt.sign(
-    //     {
-    //         userId: newClient.id, // You can include any user-specific data in the token payload
-    //         role: newClient.role,
-    //     },
-    //     SESSION_SECRET,
-    //     { expiresIn: '1h' } // Token will expire in 1 hour
-    // );
-    // req.session.user = newUser;
-    
     console.log('User ID set in session:', req.session.user.id);
-    // console.log('User ID set in token:', token.userId);
-    // console.log('newUser.id:', newUser.id);
     console.log('New Client created:', newClient.toJSON());
 
-    const clients = await Client.findAll();
-
-    res.render('clients/all-clients', { user, clients, idUser });
-    // res.redirect("/clients",{ firstName, lastName, clients }); // Redirect to the index page after successful user creation
+    // Redirect to the desired link after successful client creation
+    res.redirect('/clients'); // Replace '/another-link' with the actual URL you want to redirect to
     
   } catch (error) {
     console.error('Error creating client:', error);
@@ -62,19 +47,61 @@ export const createClient = async (req, res) => {
 
 
 export const showAllClients = async (req, res) => {
-    try {
-      console.log("showAllClients starting")
-      // Fetch all users from the database
-      const clients = await Client.findAll();
-      const user = req.session.user
-      console.log("clients", clients)
-      // Render the EJS template with the user data
-      res.render('clients/all-clients', { clients , user});
-      console.log("showAllClients done")
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      res.status(500).send('Error fetching client. Please try again.');
+  try {
+    console.log("showAllClients starting");
+    const user = req.session.user; // Assuming you have the user data in the session
+
+    if (!user) {
+      // Handle cases where user is not authenticated
+      res.status(401).send('User not authenticated.');
+      return;
     }
+
+    // Check if the user's role is 'kingAdmin'
+    if (user.role === 'kingAdmin') {
+      // Fetch all clients since the user has 'kingAdmin' role
+      const clients = await Client.findAll(
+      {
+        include: {
+          model: User,
+          attributes: ['firstName', 'lastName', 'role','establishmentId'],
+          include: {
+            model: Establishment, // Assuming your User model is associated with Establishment
+            attributes: ['name'], // Include the establishment's name attribute
+          },
+        }
+      });
+      // clients.forEach(client => {
+      //   console.log("User for client:", client.User);
+      //   console.log("Client's first name:", client.User.firstName);
+      //   console.log("Client's last name:", client.User.lastName);
+      //   // ... and so on for other user attributes
+      // });
+      // console.log("clients", clients.User);
+      res.render('clients/all-clients', { clients, user });
+    } else if (user.establishmentId) {
+      // Fetch clients associated with the user's establishment
+      const clients = await Client.findAll({
+        include: {
+          model: User,
+          attributes: ['firstName', 'lastName', 'role','establishmentId'],
+          where: {
+            establishmentId: user.establishmentId,
+          },
+        },
+      });
+      // console.log("clients", clients.user);
+      res.render('clients/all-clients', { clients, user });
+    } else {
+      // Handle cases where user's role is not 'kingAdmin' and no establishment is associated
+      res.status(403).send('Access denied.');
+    }
+
+    console.log("showAllClients done");
+  } catch (error) {
+    console.error('Error fetching clients:', error);
+    res.status(500).send('Error fetching clients. Please try again.');
+  }
 };  
 
 

@@ -36,7 +36,7 @@ const Client = sequelize.define('Client', {
 });
 
 // Create the association between User and Client
-User.hasMany(Client, { foreignKey: 'idUser', as: 'clients' });
-Client.belongsTo(User, { foreignKey: 'idUser', as: 'user' });
+User.hasMany(Client, { foreignKey: 'idUser', onDelete: 'CASCADE'});
+Client.belongsTo(User, { foreignKey: 'idUser', onDelete: 'CASCADE' });
 
 export default Client;

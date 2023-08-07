@@ -1,6 +1,10 @@
 <%- include('../partials/header') -%>
 <title>Location, Clients</title>
 <link rel="stylesheet" href="/css/user.css">
+<link rel="stylesheet" href="/css/tooltip.css">
+<style>
+    
+</style>
 </head>
 <body>
     <div class="container">
@@ -18,7 +22,16 @@
                 <tbody>
                 <% clients.forEach(client => { %>
                     <tr>
-                        <td><%= client.firstName %> <%= client.lastName %></td>
+                        <td>
+                            <%= client.firstName %> <%= client.lastName %>
+                            <div class="hoverMe"> 👤
+                                <% if (user.role === "kingAdmin") { %>
+                                <span class="hoverText"><%= client.User.firstName %> de <%= client.User.Establishment.name %></span>
+                                <% } else { %>
+                                    <span class="hoverText"><%= client.User.firstName %></span>
+                                <% } %>
+                            </div>
+                        </td>
                         
                         <td><a href="/clients/<%= client.id %>" class="view-profile-button">Voir profile</a></td>
                     </tr>
