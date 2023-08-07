@@ -4,6 +4,9 @@ import Establishment from "../models/establishment-model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
+import {bigger_than,belongTo} from '../utiles/role.permission.js'
+import {clientFindOne} from '../utiles/client.reqetes.js'
+
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
@@ -111,15 +114,13 @@ export const getProfile = async (req, res) => {
   const clientId = parseInt(req.params.clientId, 10); // Extract the client ID from the URL parameter and parse it as an integer.
 
   try {
-    // Find the client with the given ID in the database.
-    const client = await Client.findOne({ where: { id: clientId } });
+    const param = await clientFindOne(clientId);
 
-    if (!client) {
-      return res.status(404).send('Client not found.'); // Handle the case when the client ID is not found.
+    if (!param) {
+      return res.status(404).send('Client not found.');
     }
-    const param = client
     // Render the client profile template with the client data.
-    res.render('clients/profileClient', {  user, param });
+    res.render('clients/profileClient', {  user, param, bigger_than, belongTo });
   } catch (error) {
     console.error('Error fetching client:', error);
     res.status(500).send('Error fetching client. Please try again.');
@@ -137,14 +138,20 @@ export const getEdit = async (req, res) => {
 
   try {
     // Find the client with the given ID in the database.
-    const client = await Client.findOne({ where: { id: clientId } });
+    const param = await clientFindOne(clientId);
 
-    if (!client) {
+    if (!param) {
       return res.status(404).send('Client not found.'); // Handle the case when the client ID is not found.
     }
-    const param = client
-    // Render the client profile template with the client data.
-    res.render('clients/editProfile', { param, user });
+
+    if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)){
+      res.render('clients/editProfile', { param, user });
+    }
+    else{
+      // Render the client profile template with the client data.
+      res.render('home/403', {user})
+    }
+    
     // res.render('clients/profileClient', {  firstName, lastName, param });
   } catch (error) {
     console.error('Error fetching client:', error);
@@ -170,12 +177,6 @@ export const postEdit = async (req, res) => {
       phoneNumber: req.body.phoneNumber,
     });
 
-    // if(user.id === req.session.user.id){
-    //   req.session.user = user
-    // }
-    // console.log("user update: " , user)
-    // console.log("user logged in: " , req.session.user)
-    // Redirect to the user's profile page after successful update
     res.redirect(`/clients/${clientId}`);
   } catch (error) {
     console.error('Error updating user:', error);
@@ -186,19 +187,26 @@ export const postEdit = async (req, res) => {
 export const deleteClient = async (req, res) => {
   console.log("here/////////////////////////////////////////////////////////////////////////////////////////////////////// req.params: ", req.params)
   const clientId = parseInt(req.params.clientId, 10);
-  
+  const user = req.session.user
+
   try {
-    const client = await Client.findByPk(clientId);
+    const client = await clientFindOne(clientId);
 
     if (!client) {
       return res.status(404).send('client not found.');
     }
 
-    // Delete the user from the database
-    await client.destroy();
+    if ((bigger_than(user.role, client.User.role) || user.id == client.User.id) || belongTo(client.User.id,user.id) ){
 
-    // Redirect to the list of all users or another page after successful deletion
-    res.redirect('/clients'); // Adjust the URL to redirect to the appropriate page after deletion
+      // Delete the client from the database
+      await client.destroy();
+      // Redirect to the list of all the clients after successful deletion
+      res.redirect('/clients');
+    }
+    else {
+      res.render('home/403', {user})
+    }
+    // Adjust the URL to redirect to the appropriate page after deletion
   } catch (error) {
     console.error('Error deleting client:', error);
     res.status(500).send('Error deleting client.');

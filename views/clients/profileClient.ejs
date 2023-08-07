@@ -31,15 +31,25 @@
                 </tr>
                 <tr>
                     <td>Numéro de tél:</td>
-                    <td><%= param.phoneNumber %></td>
+                    <td><%= param.phoneNumber %> </td>
                     
                 </tr>
                 <tr>
-                    <td colspan="3" align="center">
-                        <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
-                        
-                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
-                    </td>
+                    <td>Créé par:</td>
+                    <td><%= param.User.firstName %> </td>
+                    
+                </tr>
+                <tr>
+                    <% if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)) { %>
+                    
+                        <td colspan="3" align="center">
+                            <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                            
+                            <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                        </td>
+                    <% } else { %>
+                    <% } %>
+                   
                 </tr>
             </table>
         </div>

@@ -35,3 +35,8 @@ export const bigger_than = (role1, role2) => {
 export const establishmentCheck = (e1, e2, role) => {
     return e1 === e2 || role === "kingAdmin";
 }
+
+
+export const belongTo = (id1, id2) => {
+    return id1 === id2 ;
+}
