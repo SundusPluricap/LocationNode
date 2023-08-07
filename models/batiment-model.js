@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
+import Establishment from "./establishment-model.js";
 dotenv.config();
 
 const { APP_LOCALHOST: hostname, APP_PORT: port, DATABASE: db, USERNAMESQL: username, PASSWORDSQL: mdp } = process.env;
@@ -24,18 +25,14 @@ const Batiment = sequelize.define('Batiment', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  establishmentId: { 
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
-// Synchronize the model with the database (create the table if it doesn't exist)
-// Note: This should be done only once in the application, for example, during the initialization phase.
-// You can use Sequelize migrations in a real-world application to manage database schema changes.
-// (async () => {
-//   try {
-//     await sequelize.sync();
-//     console.log('Batiment table synced successfully.');
-//   } catch (error) {
-//     console.error('Error syncing Batiment table:', error);
-//   }
-// })();
+Establishment.hasMany(Batiment, { foreignKey: 'establishmentId', onDelete: 'CASCADE' });
+Batiment.belongsTo(Establishment, { foreignKey: 'establishmentId', onDelete: 'CASCADE' });
+
 
 export default Batiment;

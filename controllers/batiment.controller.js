@@ -1,39 +1,43 @@
 import Batiment from "../models/batiment-model.js";
+import {batimentFindAll} from '../utiles/batiment.reqetes.js'
+import {bigger_than,belongTo} from '../utiles/role.permission.js'
 import dotenv from 'dotenv';
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
 export const create = (req, res) => {
-    // ...
-    // Check if there's an error message in the session
-    const errorMessage = req.session.errorMessage;
-    // Clear the error message from the session
-    delete req.session.errorMessage;
-    res.render('batiments/createBatiment', { errorMessage });
+  // ...
+  // Check if there's an error message in the session
+  const errorMessage = req.session.errorMessage;
+  // Clear the error message from the session
+  delete req.session.errorMessage;
+  res.render('batiments/createBatiment', { errorMessage });
 };
 
 export const createBatiment = async (req, res) => {
     console.log("createBatiment starting")
     try {
-        // const firstName = req.session.user.firstName
-        // const lastName = req.session.user.lastName
-        // const idUser = req.session.user.id;
-        // console.log("req.body//////////////////////", req.body)
-        const user = req.session.user
+      const user = req.session.user
+      let batiments;
+      const { name,adresse } = req.body;
+      const photo = req.file ? req.file.filename : null;
 
-        const { name,adresse } = req.body;
-        const photo = req.file ? req.file.filename : null;
+      const newBatiment = await Batiment.create({
+        name,
+        adresse,
+        photo,
+        establishmentId : user.establishmentId 
+      });
+      console.log('New Batiment created:', newBatiment.toJSON());
 
-        const newBatiment = await Batiment.create({
-            name,
-            adresse,
-            photo
-        });
-        console.log('New Batiment created:', newBatiment.toJSON());
-
-        const batiments = await Batiment.findAll();
-    
-        res.render('batiments/all-batiments', { user, batiments });
+      if(user.role === "kingAdmin"){
+        batiments = await Batiment.findAll();
+      }
+      else{
+        batiments = await batimentFindAll(user)
+      }
+      
+      res.render('batiments/all-batiments', { user, batiments });
         
     } catch (error) {
       console.error('Error creating batiment:', error);
@@ -44,16 +48,21 @@ export const createBatiment = async (req, res) => {
 
 
 export const showAlleBatiments = async (req, res) => {
-    try {
-      console.log("showAlleBatiments starting")
-      // Fetch all users from the database
-      const batiments = await Batiment.findAll();
+    
+    try {      
       const user = req.session.user
-      // const firstName = req.session.user.firstName;
-      // const lastName = req.session.user.lastName;
-      // const idUser = req.session.user.id;
-    //   console.log("batiments", batiments)
-      // Render the EJS template with the user data
+      console.log("showAlleBatiments starting")
+      
+      let batiments;
+      if(user.role === "kingAdmin"){
+        batiments = await Batiment.findAll();
+      }
+      else{
+        batiments = await batimentFindAll(user)
+      }
+      // const batiments = await Batiment.findAll();
+      
+      
       res.render('batiments/all-batiments', { user, batiments });
       console.log("showAlleBatiments done")
     } catch (error) {

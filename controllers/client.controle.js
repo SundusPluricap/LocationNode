@@ -74,13 +74,7 @@ export const showAllClients = async (req, res) => {
           },
         }
       });
-      // clients.forEach(client => {
-      //   console.log("User for client:", client.User);
-      //   console.log("Client's first name:", client.User.firstName);
-      //   console.log("Client's last name:", client.User.lastName);
-      //   // ... and so on for other user attributes
-      // });
-      // console.log("clients", clients.User);
+      
       res.render('clients/all-clients', { clients, user });
     } else if (user.establishmentId) {
       // Fetch clients associated with the user's establishment

@@ -2,9 +2,7 @@
 <title>Location, Clients</title>
 <link rel="stylesheet" href="/css/user.css">
 <link rel="stylesheet" href="/css/tooltip.css">
-<style>
-    
-</style>
+
 </head>
 <body>
     <div class="container">
@@ -13,29 +11,37 @@
             <h1>Tous les clients</h1>
             <table class="user-table">
                 <thead>
-                <tr>
-                    <th>Nom</th>
-                    
-                    <th>Profile</th>
-                </tr>
+                    <tr>
+                        <th>Nom</th>
+                        <% if (user.role === "kingAdmin") { %>
+                            
+                            <th>Établissement</th>
+                        <% } %>
+                        <th>Profile</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <% clients.forEach(client => { %>
-                    <tr>
-                        <td>
-                            <%= client.firstName %> <%= client.lastName %>
-                            <div class="hoverMe"> 👤
-                                <% if (user.role === "kingAdmin") { %>
-                                <span class="hoverText"><%= client.User.firstName %> de <%= client.User.Establishment.name %></span>
-                                <% } else { %>
-                                    <span class="hoverText"><%= client.User.firstName %></span>
-                                <% } %>
-                            </div>
-                        </td>
-                        
-                        <td><a href="/clients/<%= client.id %>" class="view-profile-button">Voir profile</a></td>
-                    </tr>
-                <% }) %>
+                    <% clients.forEach(client => { %>
+                        <tr>
+                            <td>
+                                <%= client.firstName %> <%= client.lastName %>
+                                <div class="hoverMe"> 👤
+                                    <span class="hoverText">
+                                        <% if (user.role === "kingAdmin") { %>
+                                            <%= client.User.firstName %> de <%= client.User.Establishment.name %>
+                                        <% } else { %>
+                                            <%= client.User.firstName %>
+                                        <% } %>
+                                    </span>
+                                </div>
+                            </td>
+                            <% if (user.role === "kingAdmin") { %>
+                                <td><%= client.User.Establishment.name %></td>
+                            
+                            <% } %>
+                            <td><a href="/clients/<%= client.id %>" class="view-profile-button">Voir profile</a></td>
+                        </tr>
+                    <% }) %>
                 </tbody>
             </table>
 
@@ -49,6 +55,5 @@
     </div>
 
 <%- include('../partials/footer') -%>
-
 </body>
 </html>

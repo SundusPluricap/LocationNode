@@ -1,4 +1,5 @@
 import Establishment from "../models/establishment-model.js";
+
 import dotenv from 'dotenv';
 dotenv.config();
 const { SESSION_SECRET } = process.env;
@@ -20,29 +21,11 @@ export const createEstablishment = async (req, res) => {
     try {
         const user = req.session.user
         const { name } = req.body;
-        // console.log("test", req.body);
-        // console.log("phoneNumber", phoneNumber);
-        // const idUser = req.session.user.id
-        // const hashedPassword = await bcrypt.hash(password, 10);
-    
-        // Create a new user in the database with the hashed password
+        
         const newEstablishment = await Establishment.create({
-            name
+          name
         });
     
-        // const token = jwt.sign(
-        //     {
-        //         userId: newClient.id, // You can include any user-specific data in the token payload
-        //         role: newClient.role,
-        //     },
-        //     SESSION_SECRET,
-        //     { expiresIn: '1h' } // Token will expire in 1 hour
-        // );
-        // req.session.user = newUser;
-        
-        // console.log('User ID set in session:', req.session.user.id);
-        // console.log('User ID set in token:', token.userId);
-        // console.log('newUser.id:', newUser.id);
         console.log('New Establishment created:', newEstablishment.toJSON());
 
         const establishments = await Establishment.findAll();

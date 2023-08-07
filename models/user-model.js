@@ -1,11 +1,11 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
 import Establishment from "./establishment-model.js";
-
+dotenv.config();
 const { APP_LOCALHOST: hostname, APP_PORT: port, DATABASE :db, USERNAMESQL: username ,PASSWORDSQL:mdp} = process.env;
 
 // Create a new instance of Sequelize with your MySQL connection details
-const sequelize = new Sequelize("loc-test-v1",'root','', {
+const sequelize = new Sequelize(db, username, mdp, {
   host: hostname,
   dialect: 'mysql',
 });
@@ -32,7 +32,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  establishmentId: { // Add this field
+  establishmentId: { 
     type: DataTypes.INTEGER,
     allowNull: false,
   },
