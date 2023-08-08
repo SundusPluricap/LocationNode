@@ -21,6 +21,19 @@
                             <label for="photo">Sélectionner une photo:</label>
                             <input type="file" id="photo" name="photo" accept="image/*" >
                         </div>
+
+                        <% if (user.role === "kingAdmin") { %>
+                            <div class="mb-3">
+                                <label for="establishment" class="form-label">Establishment</label>
+                                <select class="form-select" id="establishment" name="establishment" required>
+                                <option value="" selected disabled>Select an establishment</option>
+                                
+                                <% establishments.forEach(establishment => { %>
+                                    <option value="<%= establishment.id %>"><%= establishment.name %> </option>
+                                <% }); %>
+                                </select>
+                            </div>
+                        <% } %>
                         
                         <div align="center">
                             <button type="submit"  class="btn btn-primary">Ajouter le bâtiment</button>

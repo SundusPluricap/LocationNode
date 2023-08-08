@@ -1,17 +1,21 @@
 import Batiment from "../models/batiment-model.js";
+import Establishment from "../models/establishment-model.js";
+
 import {batimentFindAllInEstablishment, batimentFindAll} from '../utiles/batiment.reqetes.js'
 import {bigger_than,belongTo} from '../utiles/role.permission.js'
 import dotenv from 'dotenv';
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
-export const create = (req, res) => {
+export const create = async (req, res) => {
+  const user = req.session.user
+  const establishments = await Establishment.findAll();
   // ...
   // Check if there's an error message in the session
   const errorMessage = req.session.errorMessage;
   // Clear the error message from the session
   delete req.session.errorMessage;
-  res.render('batiments/createBatiment', { errorMessage });
+  res.render('batiments/createBatiment', { errorMessage, establishments, user });
 };
 
 export const createBatiment = async (req, res) => {
@@ -21,12 +25,18 @@ export const createBatiment = async (req, res) => {
       let batiments;
       const { name,adresse } = req.body;
       const photo = req.file ? req.file.filename : null;
+      let establishmentId = user.establishmentId;
+
+      if (user.role === 'kingAdmin') {
+        // If the logged-in user is kingAdmin, get the selected user's ID from the request body
+        establishmentId = req.body.establishment;
+      }
 
       const newBatiment = await Batiment.create({
         name,
         adresse,
         photo,
-        establishmentId : user.establishmentId 
+        establishmentId  
       });
       console.log('New Batiment created:', newBatiment.toJSON());
 
