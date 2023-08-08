@@ -113,6 +113,7 @@ export const getEdit = async (req, res) => {
   // const lastName = req.session.user.lastName;
   // const idUser = req.session.user.id;
   const user = req.session.user
+  const establishments = await Establishment.findAll();
   const batimentId = parseInt(req.params.batimentId, 10);
 
   try {
@@ -124,7 +125,7 @@ export const getEdit = async (req, res) => {
     }
     const param = batiment
     // Render the batiment profile template with the batiment data.
-    res.render('batiments/editProfile', { param, user });
+    res.render('batiments/editProfile', { param, user,establishments });
     // res.render('batiments/profileClient', {  firstName, lastName, param });
   } catch (error) {
     console.error('Error fetching batiments:', error);
