@@ -13,32 +13,42 @@
                 <thead>
                     <tr>
                         <th>Nom</th>
-                        <% if (user.role === "kingAdmin") { %>
-                            
-                            <th>Établissement</th>
-                        <% } %>
+                        
                         <th>Profile</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <% let currentEstablishment = null; %>
                     <% clients.forEach(client => { %>
+                        <% if (user.role === "kingAdmin") { %>
+                            <% if (client.User.Establishment.name !== currentEstablishment) { %>
+                                <tr class="establishmentTab">
+                                    <td colspan="3" class="center establishmentName"><%= client.User.Establishment.name %></td>
+                                </tr>
+                                <% currentEstablishment = client.User.Establishment.name; %>
+                            <% } %>
+                        <% } %>
                         <tr>
                             <td>
                                 <%= client.firstName %> <%= client.lastName %>
-                                <div class="hoverMe"> 👤
-                                    <span class="hoverText">
-                                        <% if (user.role === "kingAdmin") { %>
+                                <% if (user.role === "kingAdmin") { %>
+                                    <div class="hoverMe"> 👤
+                                        <span class="hoverText">
                                             <%= client.User.firstName %> de <%= client.User.Establishment.name %>
-                                        <% } else { %>
+                                        </span>
+                                    </div>
+                                <% }else {%>
+                                    <div class="hoverMe"> 👤
+                                        <span class="hoverText">
                                             <%= client.User.firstName %>
-                                        <% } %>
-                                    </span>
-                                </div>
+                                        </span>
+                                    </div>
+
+                                <%} %>
+                                
+                                
                             </td>
-                            <% if (user.role === "kingAdmin") { %>
-                                <td><%= client.User.Establishment.name %></td>
                             
-                            <% } %>
                             <td><a href="/clients/<%= client.id %>" class="view-profile-button">Voir profile</a></td>
                         </tr>
                     <% }) %>

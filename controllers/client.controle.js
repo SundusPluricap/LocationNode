@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import {bigger_than,belongTo} from '../utiles/role.permission.js'
-import {clientFindOne} from '../utiles/client.reqetes.js'
+import {clientFindOne,clientFindAll, clientFindAllInOneEstablishment} from '../utiles/client.reqetes.js'
 import {getUsersOrderedByEstablishmentId} from '../utiles/user.requete.js'
 
 dotenv.config();
@@ -68,41 +68,23 @@ export const showAllClients = async (req, res) => {
       res.status(401).send('User not authenticated.');
       return;
     }
-
+    let clients
     // Check if the user's role is 'kingAdmin'
     if (user.role === 'kingAdmin') {
       // Fetch all clients since the user has 'kingAdmin' role
-      const clients = await Client.findAll(
-      {
-        include: {
-          model: User,
-          attributes: ['firstName', 'lastName', 'role','establishmentId'],
-          include: {
-            model: Establishment, // Assuming your User model is associated with Establishment
-            attributes: ['name'], // Include the establishment's name attribute
-          },
-        }
-      });
+      clients = await clientFindAll()
       
-      res.render('clients/all-clients', { clients, user });
+      
     } else if (user.establishmentId) {
       // Fetch clients associated with the user's establishment
-      const clients = await Client.findAll({
-        include: {
-          model: User,
-          attributes: ['firstName', 'lastName', 'role','establishmentId'],
-          where: {
-            establishmentId: user.establishmentId,
-          },
-        },
-      });
+      clients = await clientFindAllInOneEstablishment(user.establishmentId)
       // console.log("clients", clients.user);
-      res.render('clients/all-clients', { clients, user });
     } else {
       // Handle cases where user's role is not 'kingAdmin' and no establishment is associated
       res.status(403).send('Access denied.');
     }
 
+    res.render('clients/all-clients', { clients, user });
     console.log("showAllClients done");
   } catch (error) {
     console.error('Error fetching clients:', error);
