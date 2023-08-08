@@ -7,24 +7,32 @@ import dotenv from 'dotenv';
 import {bigger_than,belongTo} from '../utiles/role.permission.js'
 import {clientFindOne} from '../utiles/client.reqetes.js'
 
+import {getUsersOrderedByEstablishmentId} from '../utiles/user.requete.js'
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
-export const create = (req, res) => {
+export const create = async (req, res) => {
+    const users = await getUsersOrderedByEstablishmentId()
+    const user = req.session.user;
     // ...
     // Check if there's an error message in the session
     const errorMessage = req.session.errorMessage;
     // Clear the error message from the session
     delete req.session.errorMessage;
-    res.render('clients/createClient', { errorMessage });
+    res.render('clients/createClient', { errorMessage,users,user });
 };
 
 export const createClient = async (req, res) => {
-  console.log("createClient starting")
+  console.log("createClient starting");
   try {
     const user = req.session.user;
     const { firstName, lastName, email, phoneNumber } = req.body;
-    const idUser = req.session.user.id;
+    let idUser = req.session.user.id; // Default to the logged-in user's ID
+
+    if (user.role === 'kingAdmin') {
+      // If the logged-in user is kingAdmin, get the selected user's ID from the request body
+      idUser = req.body.userName;
+    }
 
     // Create a new client in the database
     const newClient = await Client.create({
@@ -45,8 +53,9 @@ export const createClient = async (req, res) => {
     console.error('Error creating client:', error);
     res.status(500).send('Error creating client. Please try again.');
   }
-  console.log("createClients done")
+  console.log("createClients done");
 };
+
 
 
 export const showAllClients = async (req, res) => {
@@ -127,6 +136,7 @@ export const getEdit = async (req, res) => {
   // const firstName = req.session.user.firstName;
   // const lastName = req.session.user.lastName;
   // const idUser = req.session.user.id;
+  const users = await getUsersOrderedByEstablishmentId()
   const user = req.session.user
   const clientId = parseInt(req.params.clientId, 10);
 
@@ -139,7 +149,7 @@ export const getEdit = async (req, res) => {
     }
 
     if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)){
-      res.render('clients/editProfile', { param, user });
+      res.render('clients/editProfile', { param, user, users });
     }
     else{
       // Render the client profile template with the client data.

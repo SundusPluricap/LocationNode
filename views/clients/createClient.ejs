@@ -25,7 +25,23 @@
                             <label for="phoneNumber" class="form-label">Numéro de tél</label>
                             <input type="phoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="+3300000000" required>
                         </div>
-                       
+                        
+                        <% if (user.role === "kingAdmin") { %>
+                            <div class="mb-3">
+                                <label for="userName" class="form-label">User Name</label>
+                                <select class="form-select" id="userName" name="userName" required>
+                                <option value="" selected disabled>Select a user</option>
+                                <% let currentEstablishment = null; %>
+                                <% users.forEach(findUser => { %>
+                                    <% if (findUser.Establishment.id !== currentEstablishment) { %>
+                                    <optgroup label="<%= findUser.Establishment.name %>" disabled></optgroup>
+                                    <% currentEstablishment = findUser.Establishment.id; %>
+                                    <% } %>
+                                    <option value="<%= findUser.id %>"><%= findUser.firstName %> <%= findUser.lastName %></option>
+                                <% }); %>
+                                </select>
+                            </div>
+                        <% } %>
                         
                         
                         <div align="center">

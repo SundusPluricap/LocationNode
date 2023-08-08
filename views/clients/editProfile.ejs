@@ -21,6 +21,25 @@
                 <label for="phoneNumber">Numéro de tél:</label>
                 <input type="text" id="phoneNumber" name="phoneNumber" value="<%= param.phoneNumber %>">
 
+                <% if (user.role === "kingAdmin") { %>
+                    <div class="mb-3">
+                      <label for="userName" class="form-label">User Name</label>
+                      <select class="form-select" id="userName" name="userName" required>
+                        <option value="" disabled>Select a user</option>
+                        <% let currentEstablishment = null; %>
+                        <% users.forEach(findUser => { %>
+                          <% if (findUser.Establishment.id !== currentEstablishment) { %>
+                            <optgroup label="<%= findUser.Establishment.name %>" disabled></optgroup>
+                            <% currentEstablishment = findUser.Establishment.id; %>
+                          <% } %>
+                          <option value="<%= findUser.id %>" <%= findUser.id === param.User.id ? 'selected' : '' %>><%= findUser.firstName %> <%= findUser.lastName %></option>
+                        <% }); %>
+                      </select>
+                    </div>
+                  <% } %>
+                  
+
+
                 <button type="submit">Enregistrer les modifications</button>
             </form>
         </div>
