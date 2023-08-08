@@ -16,13 +16,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% batiments.forEach(batiment => { %>
-                    <tr>
-                        <td><%= batiment.name %></td>
-                        
-                        <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td>
-                    </tr>
-                <% }) %>
+                    <% if (user.role === "kingAdmin") { %>
+                        <% let currentEstablishment = null; %>
+                        <% batiments.forEach(batiment => { %>
+                            <% if (batiment.Establishment.id !== currentEstablishment) { %>
+                                <tr class="establishmentTab">
+                                    <td colspan="2" class="center establishmentName"><%= batiment.Establishment.name %></td>
+                                </tr>
+                                <% currentEstablishment = batiment.Establishment.id; %>
+                            <% } %>
+                            <tr>
+                                <td><%= batiment.name %></td>
+                                <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <% batiments.forEach(batiment => { %>
+                            <tr>
+                                <td><%= batiment.name %></td>
+                                <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
                 </tbody>
             </table>
             <% if (user.role === "kingAdmin" || user.role === "superAdmin" || user.role === "admin") { %>

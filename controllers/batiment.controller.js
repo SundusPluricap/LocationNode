@@ -1,5 +1,5 @@
 import Batiment from "../models/batiment-model.js";
-import {batimentFindAll} from '../utiles/batiment.reqetes.js'
+import {batimentFindAllInEstablishment, batimentFindAll} from '../utiles/batiment.reqetes.js'
 import {bigger_than,belongTo} from '../utiles/role.permission.js'
 import dotenv from 'dotenv';
 dotenv.config();
@@ -31,10 +31,10 @@ export const createBatiment = async (req, res) => {
       console.log('New Batiment created:', newBatiment.toJSON());
 
       if(user.role === "kingAdmin"){
-        batiments = await Batiment.findAll();
+        batiments = await batimentFindAll();
       }
       else{
-        batiments = await batimentFindAll(user)
+        batiments = await batimentFindAllInEstablishment(user)
       }
       
       res.render('batiments/all-batiments', { user, batiments });
@@ -55,10 +55,10 @@ export const showAlleBatiments = async (req, res) => {
       
       let batiments;
       if(user.role === "kingAdmin"){
-        batiments = await Batiment.findAll();
+        batiments = await batimentFindAll();
       }
       else{
-        batiments = await batimentFindAll(user)
+        batiments = await batimentFindAllInEstablishment(user)
       }
       // const batiments = await Batiment.findAll();
       
