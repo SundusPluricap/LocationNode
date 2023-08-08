@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import {bigger_than,belongTo} from '../utiles/role.permission.js'
 import {clientFindOne} from '../utiles/client.reqetes.js'
-
 import {getUsersOrderedByEstablishmentId} from '../utiles/user.requete.js'
+
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 

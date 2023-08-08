@@ -6,6 +6,9 @@ import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import Establishment from '../models/establishment-model.js';
 import {bigger_than, establishmentCheck} from '../utiles/role.permission.js'
+import {getUsersOrderedByEstablishmentId} from '../utiles/user.requete.js'
+
+
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
@@ -69,7 +72,7 @@ export const createUser = async (req, res) => {
 
     if (user.role === "kingAdmin") {
       // If the user is a "kingAdmin", fetch all users
-      users = await User.findAll();
+      users = await getUsersOrderedByEstablishmentId()
     } else {
       // If the user is not a "kingAdmin", fetch users with the same establishment ID
       users = await User.findAll({
@@ -103,7 +106,7 @@ export const showAllUsers = async (req, res) => {
 
     if (user.role === "kingAdmin") {
       // If the user is a "kingAdmin", fetch all users
-      users = await User.findAll();
+      users = await getUsersOrderedByEstablishmentId()
     } else {
       // If the user is not a "kingAdmin", fetch users with the same establishment ID
       users = await User.findAll({

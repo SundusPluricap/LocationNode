@@ -12,7 +12,7 @@ h1 {
     padding: 10px;
     text-align: center; /* Center the content in cells */
 }
-.user-table th {
+.user-table th , .establishmentTab{
     background-color: #f2f2f2;
 }
 .view-profile-button , .add-user-button{
@@ -60,8 +60,11 @@ h1 {
     }
 }
 
-/* Style for the tooltip */
-/* Style for the tooltip */
-/* Style for the tooltip */
-/* Style for the tooltip */
-/* Style for the tooltip */
+/* .establishmentTab{
+    background-color: #07264729;
+} */
+
+.establishmentName{
+    font-weight: bold;
+    font-style: italic;
+}

@@ -26,13 +26,22 @@
                 <tbody>
                     <% if (user.role === "kingAdmin") { %>
                         <tr>
+                            
                             <td><%= user.firstName %> <%= user.lastName %> 👉👤</td>
                             <td><%= user.role %> </td>
                             <td><a href="/users/<%= user.id %>" class="view-profile-button">View Profile</a></td>
                         </tr>
-
+                        <% let currentEstablishment = null; %>
+                        
                         <% users.forEach(userLoop => { %>
                             <% if (userLoop.id !== user.id) { %>
+                               
+                                <% if (userLoop.Establishment.id !== currentEstablishment) { %>
+                                    <tr class="establishmentTab">
+                                        <td colspan="3" class="center establishmentName"><%= userLoop.Establishment.name %></td>
+                                    </tr>
+                                    <% currentEstablishment = userLoop.Establishment.id; %>
+                                <% } %>
                                 <tr>
                                     <td><%= userLoop.firstName %> <%= userLoop.lastName %></td>
                                     <td><%= userLoop.role %> </td>
