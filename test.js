@@ -6,7 +6,7 @@ import './models/user-has-permisssion-model.js';
 const userIdExist = 39;
 const userIdDoesntExist = 1;
 const permission = "view";
-const doesnthasPermission = "delete";
+const doesnthasPermission = "delete"
 
 describe('User Permissions', () => {
   it('should return true if the user has the desired permission', async () => {
