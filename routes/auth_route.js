@@ -15,7 +15,7 @@ router.post("/login", ifManyUsers, verifyLogin);
 router.get("/chooseEstablishment", chooseEstablishment);
 router.post("/chooseEstablishment", chooseEstablishmentPost);
 router.get("/dashboard", isAuthenticated, dashboard);
-router.get('/logout', logout);
+router.get('/logout',isAuthenticated, logout);
 
 
 export default router;

@@ -21,6 +21,6 @@ clientRouter.get('/:clientId/edit', isAuthenticated, getEdit);
 // // Route handler for handling form submission and updating user data
 clientRouter.post('/:clientId/edit', isAuthenticated, postEdit);
 
-clientRouter.get('/:clientId/delete', deleteClient);
+clientRouter.get('/:clientId/delete',isAuthenticated, deleteClient);
 
 export default clientRouter;

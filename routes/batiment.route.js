@@ -27,6 +27,6 @@ batimentstRouter.get('/:batimentId/edit', isAuthenticated, getEdit);
 
 batimentstRouter.post('/:batimentId/edit', isAuthenticated, upload.single('photo'), postEdit);
 
-batimentstRouter.get('/:batimentId/delete', deleteBatiment);
+batimentstRouter.get('/:batimentId/delete',isAuthenticated, deleteBatiment);
 
 export default batimentstRouter;

@@ -17,6 +17,6 @@ productRouter.get('/:productId/edit', isAuthenticated, getEdit);
 
 productRouter.post('/:productId/edit', isAuthenticated, upload.single('photo'), editSalle);
 
-productRouter.get('/:productId/delete', deleteSalle);
+productRouter.get('/:productId/delete',isAuthenticated, deleteSalle);
 
 export default productRouter;

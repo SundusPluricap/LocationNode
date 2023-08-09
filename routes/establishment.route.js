@@ -24,6 +24,6 @@ establishmentRouter.get('/:establishmentId/edit', isAuthenticated, getEdit);
 // // // Route handler for handling form submission and updating user data
 establishmentRouter.post('/:establishmentId/edit', isAuthenticated, postEdit);
 
-establishmentRouter.get('/:establishmentId/delete', deleteEstablishment);
+establishmentRouter.get('/:establishmentId/delete',isAuthenticated, deleteEstablishment);
 
 export default establishmentRouter;

@@ -19,6 +19,6 @@ userRouter.get('/:userId/edit', isAuthenticated, getEdit);
 // Route handler for handling form submission and updating user data
 userRouter.post('/:userId/edit', isAuthenticated, postEdit);
 
-userRouter.get('/:userId/delete', deleteUser);
+userRouter.get('/:userId/delete',isAuthenticated, deleteUser);
 
 export default userRouter;
