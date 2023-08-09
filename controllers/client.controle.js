@@ -104,8 +104,16 @@ export const getProfile = async (req, res) => {
     if (!param) {
       return res.status(404).send('Client not found.');
     }
+
+    if (user.role === "kingAdmin" || belongTo(param.User.establishmentId,user.establishmentId) ){
+      res.render('clients/profileClient', {  user, param, bigger_than, belongTo });
+    }
+    else {
+      res.render('home/403', {user})
+    }
+
     // Render the client profile template with the client data.
-    res.render('clients/profileClient', {  user, param, bigger_than, belongTo });
+    // res.render('clients/profileClient', {  user, param, bigger_than, belongTo });
   } catch (error) {
     console.error('Error fetching client:', error);
     res.status(500).send('Error fetching client. Please try again.');
@@ -115,9 +123,7 @@ export const getProfile = async (req, res) => {
 
 
 export const getEdit = async (req, res) => {
-  // const firstName = req.session.user.firstName;
-  // const lastName = req.session.user.lastName;
-  // const idUser = req.session.user.id;
+  
   const users = await getUsersOrderedByEstablishmentId()
   const user = req.session.user
   const clientId = parseInt(req.params.clientId, 10);
@@ -130,14 +136,15 @@ export const getEdit = async (req, res) => {
       return res.status(404).send('Client not found.'); // Handle the case when the client ID is not found.
     }
 
-    if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)){
+    
+    if ( (user.role === "kingAdmin" || belongTo(param.User.establishmentId,user.establishmentId)) && bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id) ){
       res.render('clients/editProfile', { param, user, users });
     }
-    else{
-      // Render the client profile template with the client data.
+    else {
       res.render('home/403', {user})
     }
-    
+
+   
     // res.render('clients/profileClient', {  firstName, lastName, param });
   } catch (error) {
     console.error('Error fetching client:', error);
@@ -181,8 +188,7 @@ export const deleteClient = async (req, res) => {
     if (!client) {
       return res.status(404).send('client not found.');
     }
-
-    if ((bigger_than(user.role, client.User.role) || user.id == client.User.id) || belongTo(client.User.id,user.id) ){
+    if ( (user.role === "kingAdmin" || belongTo(client.User.establishmentId,user.establishmentId)) && (bigger_than(user.role, client.User.role) || belongTo(client.User.id,user.id)) ){
 
       // Delete the client from the database
       await client.destroy();
