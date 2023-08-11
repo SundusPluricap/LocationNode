@@ -64,8 +64,39 @@ export const oneUserWithRole = async (establishmentId, role) => {
   }
 };
 
+export const specificUserWithRole = async (id) => {
+  try {
+    const foundUser = await User.findOne({
+      where: {
+        id
+      },
+      include: Permission // Include the associated Permission model
+    });
+
+    return foundUser;
+  } catch (error) {
+    console.error('Error retrieving users with role:', error);
+    throw error;
+  }
+};
+
+
 export const getPermissionForRole = async (establishmentId, role) => {
   const userWithPermissions = await oneUserWithRole(establishmentId, role); // Replace currentUser with the actual user object
+  // console.log('User permissions:', userWithPermissions);
+  let permissions
+  if (userWithPermissions) {
+       permissions = userWithPermissions.Permissions; // Assuming the association is named 'Permissions'
+      // console.log('User permissions:', permissions);
+      // console.log('User permissions:', permissions);
+  } else {
+      // console.log('User not found with the specified role.');
+  }
+  return permissions
+}
+
+export const getPermissionForUser = async (id) => {
+  const userWithPermissions = await specificUserWithRole(id); // Replace currentUser with the actual user object
   // console.log('User permissions:', userWithPermissions);
   let permissions
   if (userWithPermissions) {

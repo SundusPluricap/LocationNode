@@ -5,7 +5,7 @@ import Establishment from '../models/establishment-model.js';
 import {oneUserWithRole,getPermissionForRole} from '../utiles/user.requete.js'
 permissionsList
 import {permissionsList} from '../utiles/permission.requetes.js'
-import {test} from '../utiles/role.js'
+import {setPermissions} from '../utiles/role.js'
 
 // Sample permissions data
 // const permissions = ['create', 'read', 'update', 'delete', 'manageRoles'];
@@ -91,7 +91,7 @@ export const setPermissionsForSuper = async (req, res) => {
     const user = req.session.user
     const selectedPermissions = req.body.superPermissions || [];
     // console.log("!!!!!!!!!!!!!!!selectedPermissions!!!!!!!!!!!!!!!!!",selectedPermissions)
-    test(req,establishmentId,"superAdmin")
+    setPermissions(req,establishmentId,"superAdmin")
     // if(selectedPermissions){
 
     // }
@@ -105,7 +105,7 @@ export const setPermissionsForAdmin = async (req, res) => {
     const user = req.session.user
     const selectedPermissions = req.body.superPermissions || [];
     // console.log("!!!!!!!!!!!!!!!selectedPermissions!!!!!!!!!!!!!!!!!",selectedPermissions)
-    test(req,establishmentId,"admin")
+    setPermissions(req,establishmentId,"admin")
     // if(selectedPermissions){
 
     // }
@@ -116,11 +116,11 @@ export const setPermissionsForAdmin = async (req, res) => {
 
 export const setPermissionsForEditor = async (req, res) => {
     const establishmentId = req.params.establishmentId
-    const user = req.session.user
-    const selectedPermissions = req.body.superPermissions || [];
+    // const user = req.session.user
+    // const selectedPermissions = req.body.superPermissions || [];
     
     // console.log("!!!!!!!!!!!!!!!selectedPermissions!!!!!!!!!!!!!!!!!",selectedPermissions)
-    test(req,establishmentId,"editor")
+    setPermissions(req,establishmentId,"editor")
     // if(selectedPermissions){
 
     // }

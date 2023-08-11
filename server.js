@@ -11,7 +11,7 @@ import productRouter from "./routes/product.route.js"
 import agendaRouter from "./routes/agenda.route.js"
 import reservationRouter from "./routes/reservation.route.js"
 import roleRouter from "./routes/roles.route.js"
-
+import {kingAdminPermissions} from './utiles/role.permission.js'
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -59,14 +59,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 
-///////////////// test upload images //////////////////
-// app.get("/upload",(req, res)=>{
-//   res.render("batiments/createBatiment")
-// })
+///////////////// run kingAdminPermissions to give the kingAdmin all permissions//////////////////
 
-// app.post("/upload", upload.single('photo'), (req, res)=>{
-//   res.send("uploaded")
-// })
+// kingAdminPermissions()
+//   .then(() => {
+//     console.log('Permissions granted to kingAdmin role successfully.');
+//   })
+//   .catch(error => {
+//     console.error('Error granting permissions:', error);
+//   });
+
 
 /************ Routes */
 app.use('/', authRoute);

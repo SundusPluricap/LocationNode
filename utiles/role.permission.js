@@ -1,3 +1,8 @@
+import User from "../models/user-model.js";
+import Establishment from "../models/establishment-model.js";
+import Permission from "../models/permission-model.js";
+import '../models/user-has-permisssion-model.js';
+
 // // Sample roles and permissions data
 // const roles = [
 //     {
@@ -63,4 +68,18 @@ export const establishmentCheck = (e1, e2, role) => {
 
 export const belongTo = (id1, id2) => {
     return id1 === id2 ;
+}
+
+export const kingAdminPermissions = async () => {
+    const foundUser = await User.findOne({
+        where: {
+          role: "kingAdmin"
+        },include: Permission // Include the associated Permission model
+    });
+
+    
+    const selectedPermissionInstances = await Permission.findAll();
+
+    await foundUser.addPermissions(selectedPermissionInstances);
+    
 }

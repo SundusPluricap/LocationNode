@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import {bigger_than,belongTo} from '../utiles/role.permission.js'
 import {clientFindOne,clientFindAll, clientFindAllInOneEstablishment} from '../utiles/client.reqetes.js'
-import {getUsersOrderedByEstablishmentId} from '../utiles/user.requete.js'
+import {getUsersOrderedByEstablishmentId,getPermissionForUser} from '../utiles/user.requete.js'
 
 dotenv.config();
 const { SESSION_SECRET } = process.env;
@@ -59,10 +59,13 @@ export const createClient = async (req, res) => {
 
 
 export const showAllClients = async (req, res) => {
+
   try {
     console.log("showAllClients starting");
     const user = req.session.user; // Assuming you have the user data in the session
 
+    const userPermissions = await getPermissionForUser(user.id);
+    // console.log('hererrerererrerererer--------',userPermissions)
     if (!user) {
       // Handle cases where user is not authenticated
       res.status(401).send('User not authenticated.');
@@ -94,8 +97,20 @@ export const showAllClients = async (req, res) => {
 
 
 export const getProfile = async (req, res) => {
+
   console.log("getProfile starting")
   const user = req.session.user
+
+  const userPermissions = await getPermissionForUser(user.id);
+  // console.log('hererrerererrerererer--------',userPermissions)
+
+  // userPermissions.forEach(element => {
+  //   console.log('hererrerererrerererer--------',element.name)
+    
+  // });
+  let hasPermission = userPermissions.some(perm => perm.name.trim() === "view Client")
+  console.log('-----------testPermission--------',hasPermission)
+  
   const clientId = parseInt(req.params.clientId, 10); // Extract the client ID from the URL parameter and parse it as an integer.
 
   try {
@@ -105,12 +120,18 @@ export const getProfile = async (req, res) => {
       return res.status(404).send('Client not found.');
     }
 
-    if (user.role === "kingAdmin" || belongTo(param.User.establishmentId,user.establishmentId) ){
+    if(hasPermission || belongTo(param.User.id,user.id)){
       res.render('clients/profileClient', {  user, param, bigger_than, belongTo });
     }
     else {
       res.render('home/403', {user})
     }
+    // if (user.role === "kingAdmin" || belongTo(param.User.establishmentId,user.establishmentId) ){
+    //   res.render('clients/profileClient', {  user, param, bigger_than, belongTo });
+    // }
+    // else {
+    //   res.render('home/403', {user})
+    // }
 
     // Render the client profile template with the client data.
     // res.render('clients/profileClient', {  user, param, bigger_than, belongTo });
