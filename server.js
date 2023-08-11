@@ -10,6 +10,7 @@ import batimentstRouter from "./routes/batiment.route.js"
 import productRouter from "./routes/product.route.js"
 import agendaRouter from "./routes/agenda.route.js"
 import reservationRouter from "./routes/reservation.route.js"
+import roleRouter from "./routes/roles.route.js"
 
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
@@ -74,8 +75,9 @@ app.use('/clients', clientRouter);
 app.use('/establishments', establishmentRouter);
 app.use('/batiments', batimentstRouter);
 app.use('/products', productRouter);
-app.use('/agenda', agendaRouter);
+app.use('/agenda', agendaRouter);roleRouter
 app.use('/reservations', reservationRouter);
+app.use('/roles', roleRouter);
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });

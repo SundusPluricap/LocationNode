@@ -1,0 +1,101 @@
+<%- include('../partials/header') -%>
+<title>Location, Clients</title>
+<link rel="stylesheet" href="/css/user.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>Roles and Permissions</h1>
+            
+            <table class="user-table">
+                <thead>
+                    <tr>
+                        <th>Role</th>
+                        <th>Permissions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (user.role === "kingAdmin") { %>
+                        <tr>
+                            
+                            <td>superAdmin</td>
+                            
+                            <td>
+                                
+                                
+                                <form action="/roles/<%= establishmentId %>/updatePermissionsForSuper/" method="post">
+                                    <% permissions.forEach(permission => { %>
+                                        <label>
+
+                                        
+                                        <input type="checkbox" name="superPermissions" value="<%= permission.id %>"
+                                        <% if ((superPermissions) && superPermissions.some(perm => perm.name.trim() === permission.name.trim())) { %>
+                                            checked
+                                            <% } %>
+                                        >
+                                        <%= permission.name %>
+                                        </label><br>
+                                    <% }) %>
+                                    <button type="submit">Update Permissions</button>
+                                    </form>
+                            </td>
+                        </tr>
+
+                    <% }%>
+                    <tr>
+                        <td>admin</td>
+                        
+                        <td>
+                            <form action="/roles/<%= establishmentId %>/updatePermissionsForAdmin/" method="post">
+                                <% permissions.forEach(permission => { %>
+                                    <label>
+
+                                    
+                                        <input type="checkbox" name="superPermissions" value="<%= permission.id %>"
+                                        <% if ((adminPermissions) && adminPermissions.some(perm => perm.name.trim() === permission.name.trim())) { %>
+                                            checked
+                                            <% } %>
+                                        >
+                                        <%= permission.name %>
+                                    </label><br>
+                                <% }) %>
+                                <button type="submit">Update Permissions</button>
+                                </form>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Editor</td>
+                        
+                        
+                        <td>
+                            
+
+                            <form action="/roles/<%= establishmentId %>/updatePermissionsForEditor/" method="post">
+                                <% permissions.forEach(permission => { %>
+                                    <label>
+
+                                    
+                                    <input type="checkbox" name="superPermissions" value="<%= permission.id %>"
+                                    <% if ((editorPermissions) && editorPermissions.some(perm => perm.name.trim() === permission.name.trim())) { %>
+                                        checked
+                                        <% } %>
+                                    >
+                                    <%= permission.name %>
+                                    </label><br>
+                                <% }) %>
+                                <button type="submit">Update Permissions</button>
+                            </form>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+
+<%- include('../partials/footer') -%>
+</body>
+</html>

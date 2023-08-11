@@ -15,6 +15,10 @@ const Permission = sequelize.define('Permission', {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    object: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
 });
 
 // Define associations

@@ -21,7 +21,8 @@ export const createEstablishment = async (req, res) => {
     try {
         const user = req.session.user
         const { name } = req.body;
-        
+        const successMessage = req.session.successMessage;
+       delete req.session.successMessage;
         const newEstablishment = await Establishment.create({
           name
         });
@@ -30,7 +31,7 @@ export const createEstablishment = async (req, res) => {
 
         const establishments = await Establishment.findAll();
     
-        res.render('establishments/all-establishments', { user, establishments });
+        res.render('establishments/all-establishments', { user, establishments,successMessage });
         // res.redirect("/establishments",{ firstName, lastName, establishments }); // Redirect to the index page after successful user creation
         
     } catch (error) {
@@ -43,13 +44,16 @@ export const createEstablishment = async (req, res) => {
 
 export const showAlleEstablishments = async (req, res) => {
     try {
+      const successMessage = req.session.successMessage;
+      console.log("_______________successMessage yyayayayayayayayayay____________________",successMessage,'___________here here')
+      delete req.session.successMessage;
       console.log("showAlleEstablishments starting")
       // Fetch all users from the database
       const establishments = await Establishment.findAll();
       const user = req.session.user
     //   console.log("establishments", establishments)
       // Render the EJS template with the user data
-      res.render('establishments/all-establishments', { user, establishments });
+      res.render('establishments/all-establishments', { user, establishments,successMessage });
       console.log("showAlleEstablishments done")
     } catch (error) {
       console.error('Error fetching users:', error);

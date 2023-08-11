@@ -61,6 +61,51 @@
                             </div>
                         <% } %>
                         
+
+                        <% if (user.role !== "editor") { %>
+                            <div class="mb-3">
+                              <label class="form-label">Select permissions</label>
+                              <% permissions.forEach(permission => { %>
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" id="permission_<%= permission.id %>" name="permissions[]" value="<%= permission.id %>">
+                                  <label class="form-check-label" for="permission_<%= permission.id %>"><%= permission.name %></label>
+                                </div>
+                              <% }); %>
+                            </div>
+                        <% } %>
+
+                        <div class="mb-3">
+                            <label class="form-label">to whom</label>
+                            <% if (user.role === "kingAdmin" || user.role === "superAdmin") { %>
+                                
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="role_permission_superAdmin" name="roles[]" value="superAdmin">
+                                        <label class="form-check-label" for="permission_superAdmin">Super Admin</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="permission_admin" name="roles[]" value="admin">
+                                        <label class="form-check-label" for="permission_admin">Admin</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="permission_editor" name="roles[]" value="editor">
+                                        <label class="form-check-label" for="permission_editor">Rédacteur</label>
+                                    </div>
+                                    
+                                    <!-- Add other roles if needed -->
+                           
+                            <%}else if (user.role === "admin" )  { %>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="permission_admin" name="permissions[]" value="permission_admin">
+                                    <label class="form-check-label" for="permission_admin">Admin</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="permission_editor" name="permissions[]" value="permission_editor">
+                                    <label class="form-check-label" for="permission_editor">Rédacteur</label>
+                                </div>
+                            
+                            <%} %>
+                        </div>
+                          
                         <div align="center">
                             <button type="submit"  class="btn btn-primary">Ajouter un utilisateur</button>
                             <!-- <a href="/login" class="btn btn-secondary">Login</a> -->

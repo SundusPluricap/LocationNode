@@ -23,6 +23,7 @@
 
     <div class="sidebar-links">
         <a class="title" href="/dashboard"> 🏠 Accueil</a>
+        
         <% if ( user.role === "superAdmin" || user.role === "kingAdmin") { %>
             <div class="dropdown">
                 <h2 class="dropdown-toggle title" data-toggle="dropdown">👥 Etablissments</h2>

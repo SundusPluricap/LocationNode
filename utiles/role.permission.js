@@ -1,3 +1,27 @@
+// // Sample roles and permissions data
+// const roles = [
+//     {
+//       id: 1,
+//       name: 'admin',
+//       permissions: ['create', 'read', 'update', 'delete']
+//     },
+//     {
+//       id: 2,
+//       name: 'SuperAdmin',
+//       permissions: ['create', 'read', 'update', 'delete', 'manageRoles']
+//     },
+//     {
+//       id: 3,
+//       name: 'editor',
+//       permissions: ['read', 'update']
+//     }
+//   ];
+  
+//   // Helper function to check if a role has a certain permission
+// export const roleHasPermission = (role, permission) => {
+//     return role.permissions.includes(permission);
+// }
+
 
 export const role_has_permission = (role, action) => {
     let permission = false

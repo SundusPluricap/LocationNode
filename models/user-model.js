@@ -1,6 +1,5 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
-import Permission from "./permission-model.js";
 import Establishment from "./establishment-model.js";
 dotenv.config();
 const { APP_LOCALHOST: hostname, APP_PORT: port, DATABASE :db, USERNAMESQL: username ,PASSWORDSQL:mdp} = process.env;

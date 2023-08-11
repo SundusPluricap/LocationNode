@@ -5,9 +5,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import Establishment from '../models/establishment-model.js';
+import Permission from '../models/permission-model.js';
 import {bigger_than, establishmentCheck} from '../utiles/role.permission.js'
-import {getUsersOrderedByEstablishmentId} from '../utiles/user.requete.js'
-
+import {getUsersOrderedByEstablishmentId, getUsersFromSameEstablishment, getUsersWithRole} from '../utiles/user.requete.js'
+import {permissionsList} from '../utiles/permission.requetes.js'
+import '../models/user-has-permisssion-model.js';
 
 dotenv.config();
 const { SESSION_SECRET } = process.env;
@@ -15,12 +17,13 @@ const { SESSION_SECRET } = process.env;
 // Middleware to handle user registration
 export const register = async (req, res) => {
   const user = req.session.user
-  // Check if there's an error message in the session
+  // Check if there's an error message in the sessionPermission
   const establishments = await Establishment.findAll({});
+  const permissions = await permissionsList("user");
   const errorMessage = req.session.errorMessage;
   // Clear the error message from the session
   delete req.session.errorMessage;
-  res.render('users/register', { errorMessage,establishments, user });
+  res.render('users/register', { errorMessage,establishments, user,permissions });
 };
   
 export const createUser = async (req, res) => {
@@ -28,6 +31,43 @@ export const createUser = async (req, res) => {
   
   try {
     const user = req.session.user
+    // const selectedPermissions = req.body.permissions || [];
+    // console.log("//////selectedPermissions///////////: ",selectedPermissions)
+
+    // const selectedRoles = req.body.roles || [];
+    // console.log("//////selectedRoles///////////: ",selectedRoles)
+
+    // if(selectedRoles){
+    //   selectedRoles.forEach(role => { 
+    //     getUsersWithRole(role)
+      
+      
+    //   })
+    // }
+      const selectedPermissions = req.body.permissions || [];
+      const selectedRoles = req.body.roles || [];
+      console.log("//////selectedPermissions///////////: ",selectedPermissions)
+      console.log("//////selectedRoles///////////: ",selectedRoles)
+      if (selectedRoles) {
+        for (const role of selectedRoles) {
+          console.log("//////role in loop///////////: ",role)
+          const usersWithRole = await getUsersWithRole(user,role);
+          console.log("//////result of find all users with role///////////: ",usersWithRole)
+          const selectedPermissionInstances = await Permission.findAll({
+            where: {
+              id: selectedPermissions,
+            },
+          });
+          
+          console.log("//////users ids///////////: ",usersWithRole)
+          for (const userWithRole of usersWithRole) {
+            console.log("//////users ids///////////: ",userWithRole.id)
+            await userWithRole.addPermissions(selectedPermissionInstances);
+          }
+        }
+      }
+  
+   
     const errorMessage = req.session.errorMessage;
     delete req.session.errorMessage;
     
@@ -75,11 +115,7 @@ export const createUser = async (req, res) => {
       users = await getUsersOrderedByEstablishmentId()
     } else {
       // If the user is not a "kingAdmin", fetch users with the same establishment ID
-      users = await User.findAll({
-        where: {
-          establishmentId: user.establishmentId
-        }
-      });
+      users = await getUsersFromSameEstablishment(user.establishmentId)
     }
     
     res.render('users/users', { user, users, errorMessage });
@@ -109,11 +145,7 @@ export const showAllUsers = async (req, res) => {
       users = await getUsersOrderedByEstablishmentId()
     } else {
       // If the user is not a "kingAdmin", fetch users with the same establishment ID
-      users = await User.findAll({
-        where: {
-          establishmentId: user.establishmentId
-        }
-      });
+      users = await getUsersFromSameEstablishment(user.establishmentId)
     }
     
     // Render the EJS template with the user data
