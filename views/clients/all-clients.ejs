@@ -49,7 +49,18 @@
                                 
                             </td>
                             
-                            <td><a href="/clients/<%= client.id %>" class="view-profile-button">Voir profile</a></td>
+                            
+                                <% let hasPermission = isKing(user) || (viewPermission && belongTo(client.User.establishmentId,user.establishmentId)) || belongTo(client.idUser,user.id)
+                                    
+                                %>
+                                
+                                <% if (hasPermission) { %>
+                                    <td><a href="/clients/<%= client.id %>" class="view-profile-button">Voir profile</a></td>
+                                <% } else { %>
+                                    <td>
+                                        <button type="button" class=" disabled" disabled>Can't View this Client</button>
+                                    </td>
+                                <% } %>
                         </tr>
                     <% }) %>
                 </tbody>

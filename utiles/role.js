@@ -38,3 +38,7 @@ export const setPermissions = async (req,establishmentId,role) => {
 
     // }
 }
+
+export const isKing = (user) => {
+    return user.role === "kingAdmin"
+}

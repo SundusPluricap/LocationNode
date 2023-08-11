@@ -95,7 +95,7 @@ export const getProfileBatiment = async (req, res) => {
     const batiment = await Batiment.findOne({ where: { id: batimentId } });
 
     if (!batiment) {
-      return res.status(404).send('Batiment not found.'); // Handle the case when the batiment ID is not found.
+      return res.status(404).render('home/404', {user}); // Handle the case when the batiment ID is not found.
     }
     const param = batiment
     // Render the batiment profile template with the batiment data.
@@ -121,7 +121,7 @@ export const getEdit = async (req, res) => {
     const batiment = await Batiment.findOne({ where: { id: batimentId } });
 
     if (!batiment) {
-      return res.status(404).send('Batiment not found.'); // Handle the case when the batiment ID is not found.
+      return res.status(404).render('home/404', {user}); // Handle the case when the batiment ID is not found.
     }
     const param = batiment
     // Render the batiment profile template with the batiment data.
@@ -135,12 +135,12 @@ export const getEdit = async (req, res) => {
 
 export const postEdit = async (req, res) => {
   const batimentId = parseInt(req.params.batimentId, 10);
-  
+  const user = req.session.user
   try {
     const batiment = await Batiment.findByPk(batimentId);
 
     if (!batiment) {
-      return res.status(404).send('batiment not found.');
+      return res.status(404).render('home/404', {user});
     }
 
     // Update the user data with the form data
@@ -160,12 +160,12 @@ export const postEdit = async (req, res) => {
 export const deleteBatiment = async (req, res) => {
 //   console.log("here/////////////////////////////////////////////////////////////////////////////////////////////////////// req.params: ", req.params)
   const batimentId = parseInt(req.params.batimentId, 10);
-  
+  const user = req.session.user
   try {
     const batiment = await Batiment.findByPk(batimentId);
 
     if (!batiment) {
-      return res.status(404).send('batiment not found.');
+      return res.status(404).render('home/404', {user});
     }
 
     // Delete the user from the database

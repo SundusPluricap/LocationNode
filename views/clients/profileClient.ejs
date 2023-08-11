@@ -3,6 +3,7 @@
 
 <title><%= param.firstName %> <%= param.lastName %> Profile</title>
 <link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/user.css">
 </head>
 <body>
     <div class="container">
@@ -40,15 +41,49 @@
                     
                 </tr>
                 <tr>
-                    <% if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)) { %>
+                <!-- ////////////////////////// -->
+                <% let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+
+                <% if (hasPermission) { %>
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                    </td>
                     
-                        <td colspan="3" align="center">
+                <% } else { %>
+                    <td>
+                        <button type="button" class="disabled" disabled>Can't Edit this Client</button>
+                    </td>
+                <% } %>
+                <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+
+                <% if (hasPermission2) { %>
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                    </td>
+                    
+                <% } else { %>
+                    <td>
+                        <button type="button" class="disabled" disabled>Can't Delete this Client</button>
+                    </td>
+                <% } %>
+
+
+                <!-- ////////////////////////// -->
+
+
+
+
+
+
+                    <% /* if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)) { */%>
+                    
+                        <!-- <td colspan="3" align="center">
                             <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
                             
                             <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
-                        </td>
-                    <% } else { %>
-                    <% } %>
+                        </td> -->
+                    <% /*} else { */%>
+                    <%/* }*/ %>
                    
                 </tr>
             </table>

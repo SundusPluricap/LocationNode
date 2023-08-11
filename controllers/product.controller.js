@@ -212,7 +212,7 @@ export const getEdit = async (req, res) => {
     const salle = await Product.findOne({ where: { id: productId } });
 
     if (!salle) {
-      return res.status(404).send('Batiment not found.'); // Handle the case when the batiment ID is not found.
+      return res.status(404).render('home/404', {user}); // Handle the case when the batiment ID is not found.
     }
     const param = salle
     // Render the batiment profile template with the batiment data.

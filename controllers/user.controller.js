@@ -170,7 +170,7 @@ export const getProfile = async (req, res) => {
     });
 
     if (!findUser) {
-      return res.status(404).send('User not found.');
+      return res.status(404).render('home/404', {user});;
     }
     if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.Establishment.id, user.Establishment.id, user.role)  ){
       res.render('users/profile', { user, findUser});
@@ -197,7 +197,7 @@ export const getEdit = async (req, res) => {
     });
 
   if (!findUser) {
-    return res.status(404).send('User not found.');
+    return res.status(404).render('home/404', {user});
   }
   if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.Establishment.id, user.Establishment.id, user.role)  ){
     res.render('users/editProfile', { user, findUser, establishments});
@@ -218,7 +218,7 @@ export const postEdit = async (req, res) => {
     const user = await User.findByPk(userId);
 
     if (!user) {
-      return res.status(404).send('User not found.');
+      return res.status(404).render('home/404', {user});
     }
 
     console.log("here------------------reqbody", req.body)
@@ -251,7 +251,7 @@ export const deleteUser = async (req, res) => {
     const findUser = await User.findByPk(userId);
 
     if (!findUser) {
-      return res.status(404).send('User not found.');
+      return res.status(404).render('home/404', {user});
     }
 
     if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.establishmentId, user.Establishment.id, user.role)  ){

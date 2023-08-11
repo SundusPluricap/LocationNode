@@ -98,7 +98,7 @@ export const getEdit = async (req, res) => {
     const establishment = await Establishment.findOne({ where: { id: establishmentId } });
 
     if (!establishment) {
-      return res.status(404).send('Establishment not found.'); // Handle the case when the establishment ID is not found.
+      return res.status(404).render('home/404', {user}); // Handle the case when the establishment ID is not found.
     }
     const param = establishment
     // Render the establishment profile template with the establishment data.
@@ -111,13 +111,14 @@ export const getEdit = async (req, res) => {
 }
 
 export const postEdit = async (req, res) => {
+  const user = req.session.user
   const establishmentId = parseInt(req.params.establishmentId, 10);
   
   try {
     const establishment = await Establishment.findByPk(establishmentId);
 
     if (!establishment) {
-      return res.status(404).send('establishment not found.');
+      return res.status(404).render('home/404', {user});
     }
 
     // Update the user data with the form data
@@ -148,7 +149,7 @@ export const deleteEstablishment = async (req, res) => {
       const establishment = await Establishment.findByPk(establishmentId);
   
       if (!establishment) {
-        return res.status(404).send('establishment not found.');
+        return res.status(404).render('home/404', {user});
       }
   
       // Delete the user from the database
