@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/user.css">
 </head>
 <body>
     <div class="container">
@@ -42,8 +43,37 @@
 
             <div class="actions-container text-center mt-4">
                 <a href="/products#content-<%= param.name %>" class="view-button">Voir les salles</a>
-                <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
-                <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+
+                <% let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+
+                <% if (hasPermission) { %>
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                    </td>
+                    
+                <% } else { %>
+                    <td>
+                        <button type="button" class="disabled" disabled>Can't Edit this Building's info</button>
+                    </td>
+                <% } %>
+                <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+
+                <% if (hasPermission2) { %>
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                    </td>
+                    
+                <% } else { %>
+                    <td>
+                        <button type="button" class="disabled" disabled>Can't Delete this Building</button>
+                    </td>
+                <% } %>
+
+
+
+
+                <!-- <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a> -->
             </div>
         </div>
     </div>

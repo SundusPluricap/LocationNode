@@ -64,7 +64,7 @@ export const oneUserWithRole = async (establishmentId, role) => {
   }
 };
 
-export const specificUserWithRole = async (id) => {
+export const specificUser = async (id) => {
   try {
     const foundUser = await User.findOne({
       where: {
@@ -96,7 +96,7 @@ export const getPermissionForRole = async (establishmentId, role) => {
 }
 
 export const getPermissionForUser = async (id) => {
-  const userWithPermissions = await specificUserWithRole(id); // Replace currentUser with the actual user object
+  const userWithPermissions = await specificUser(id); // Replace currentUser with the actual user object
   // console.log('User permissions:', userWithPermissions);
   let permissions
   if (userWithPermissions) {
@@ -104,7 +104,7 @@ export const getPermissionForUser = async (id) => {
       // console.log('User permissions:', permissions);
       // console.log('User permissions:', permissions);
   } else {
-      // console.log('User not found with the specified role.');
+      console.log('User not found with the specified role.');
   }
   return permissions
 }

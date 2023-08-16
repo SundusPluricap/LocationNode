@@ -1,11 +1,14 @@
 import Batiment from "../models/batiment-model.js";
 import Establishment from "../models/establishment-model.js";
+import {getPermissionForUser} from '../utiles/user.requete.js'
 
 import {batimentFindAllInEstablishment, batimentFindAll} from '../utiles/batiment.reqetes.js'
-import {bigger_than,belongTo} from '../utiles/role.permission.js'
+import {belongTo} from '../utiles/role.permission.js'
+import {isKing} from '../utiles/role.js'
 import dotenv from 'dotenv';
 dotenv.config();
-const { SESSION_SECRET } = process.env;
+const { VIEW_BUILDING, EDIT_BUILDING, DELETE_BUILDING , CREATE_BUILDING} = process.env;
+
 
 export const create = async (req, res) => {
   const user = req.session.user
@@ -22,7 +25,7 @@ export const createBatiment = async (req, res) => {
     console.log("createBatiment starting")
     try {
       const user = req.session.user
-      let batiments;
+      // let batiments;
       const { name,adresse } = req.body;
       const photo = req.file ? req.file.filename : null;
       let establishmentId = user.establishmentId;
@@ -40,14 +43,7 @@ export const createBatiment = async (req, res) => {
       });
       console.log('New Batiment created:', newBatiment.toJSON());
 
-      if(user.role === "kingAdmin"){
-        batiments = await batimentFindAll();
-      }
-      else{
-        batiments = await batimentFindAllInEstablishment(user)
-      }
-      
-      res.render('batiments/all-batiments', { user, batiments });
+      res.redirect('/batiments');
         
     } catch (error) {
       console.error('Error creating batiment:', error);
@@ -58,27 +54,32 @@ export const createBatiment = async (req, res) => {
 
 
 export const showAlleBatiments = async (req, res) => {
-    
-    try {      
-      const user = req.session.user
-      console.log("showAlleBatiments starting")
-      
-      let batiments;
-      if(user.role === "kingAdmin"){
-        batiments = await batimentFindAll();
-      }
-      else{
-        batiments = await batimentFindAllInEstablishment(user)
-      }
-      // const batiments = await Batiment.findAll();
-      
-      
-      res.render('batiments/all-batiments', { user, batiments });
-      console.log("showAlleBatiments done")
-    } catch (error) {
-      console.error('Error fetching users:', error);
-      res.status(500).send('Error fetching batiments. Please try again.');
+  try {      
+    const user = req.session.user
+    console.log("showAlleBatiments starting")
+   
+    const userPermissions = await getPermissionForUser(user.id);
+    let createPermission = userPermissions.some(perm => perm.name.trim() === CREATE_BUILDING)
+    let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_BUILDING)
+    // userPermissions.forEach(permission => {console.log('try',permission.name)})
+    // console.log("test viewPermission", viewPermission, VIEW_BUILDING)
+    let batiments;
+
+    if(user.role === "kingAdmin"){
+      batiments = await batimentFindAll();
     }
+    else{
+      batiments = await batimentFindAllInEstablishment(user)
+    }
+    // const batiments = await Batiment.findAll();
+    
+    
+    res.render('batiments/all-batiments', { user, batiments, viewPermission,createPermission, isKing, belongTo  });
+    console.log("showAlleBatiments done")
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).send('Error fetching batiments. Please try again.');
+  }
 };  
 
 
@@ -88,6 +89,13 @@ export const getProfileBatiment = async (req, res) => {
   // const lastName = req.session.user.lastName;
   // const idUser = req.session.user.id;
   const user = req.session.user
+  const userPermissions = await getPermissionForUser(user.id);
+  let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_BUILDING)
+  let editPermission = userPermissions.some(perm => perm.name.trim() === EDIT_BUILDING)
+  let deletePermission = userPermissions.some(perm => perm.name.trim() === DELETE_BUILDING)
+  console.log("////////////////////////////////")
+  console.log("test Permissions : ", "viewPermission",viewPermission,"editPermission", editPermission,"deletePermission",deletePermission)
+  console.log("////////////////////////////////")
   const batimentId = parseInt(req.params.batimentId, 10); // Extract the batiment ID from the URL parameter and parse it as an integer.
 
   try {
@@ -98,8 +106,16 @@ export const getProfileBatiment = async (req, res) => {
       return res.status(404).render('home/404', {user}); // Handle the case when the batiment ID is not found.
     }
     const param = batiment
+
+    let hasPermission = isKing(user) || (viewPermission && belongTo(param.establishmentId,user.establishmentId)) 
     // Render the batiment profile template with the batiment data.
-    res.render('batiments/profileBatiment', {  user, param });
+    
+    if(hasPermission ){
+      res.render('batiments/profileBatiment', {  user, param, editPermission, deletePermission, isKing, belongTo });
+    }
+    else {
+      res.render('home/403', {user})
+    }
   } catch (error) {
     console.error('Error fetching Batiment:', error);
     res.status(500).send('Error fetching batiment. Please try again.');
@@ -115,7 +131,10 @@ export const getEdit = async (req, res) => {
   const user = req.session.user
   const establishments = await Establishment.findAll();
   const batimentId = parseInt(req.params.batimentId, 10);
-
+  const userPermissions = await getPermissionForUser(user.id);
+  let editPermission = userPermissions.some(perm => perm.name.trim() === EDIT_BUILDING)
+ 
+  
   try {
     // Find the batiment with the given ID in the database.
     const batiment = await Batiment.findOne({ where: { id: batimentId } });
@@ -124,8 +143,18 @@ export const getEdit = async (req, res) => {
       return res.status(404).render('home/404', {user}); // Handle the case when the batiment ID is not found.
     }
     const param = batiment
-    // Render the batiment profile template with the batiment data.
-    res.render('batiments/editProfile', { param, user,establishments });
+
+
+    let hasPermission = editPermission && (isKing(user) || belongTo(param.establishmentId,user.establishmentId) )
+    console.log('-----------editPermission--------',hasPermission)
+      // if 
+    if(hasPermission ){
+      res.render('batiments/editProfile', { param, user,establishments });
+    }
+
+    else {
+      res.render('home/403', {user})
+    }
     // res.render('batiments/profileClient', {  firstName, lastName, param });
   } catch (error) {
     console.error('Error fetching batiments:', error);
@@ -161,6 +190,10 @@ export const deleteBatiment = async (req, res) => {
 //   console.log("here/////////////////////////////////////////////////////////////////////////////////////////////////////// req.params: ", req.params)
   const batimentId = parseInt(req.params.batimentId, 10);
   const user = req.session.user
+
+  const userPermissions = await getPermissionForUser(user.id);
+  let deletePermission = userPermissions.some(perm => perm.name.trim() === DELETE_BUILDING)
+
   try {
     const batiment = await Batiment.findByPk(batimentId);
 
@@ -168,11 +201,24 @@ export const deleteBatiment = async (req, res) => {
       return res.status(404).render('home/404', {user});
     }
 
+    let hasPermission = deletePermission && (isKing(user) || belongTo(param.establishmentId,user.establishmentId))
+
+    if ( hasPermission ){
+
+      // Delete the client from the database
+      await batiment.destroy();
+      // Redirect to the list of all the clients after successful deletion
+      res.redirect('/batiments');
+    }
+    else {
+      res.render('home/403', {user})
+    }
+
     // Delete the user from the database
-    await batiment.destroy();
+    // await batiment.destroy();
 
     // Redirect to the list of all users or another page after successful deletion
-    res.redirect('/batiments'); // Adjust the URL to redirect to the appropriate page after deletion
+    // res.redirect('/batiments'); // Adjust the URL to redirect to the appropriate page after deletion
   } catch (error) {
     console.error('Error deleting batiment:', error);
     res.status(500).send('Error deleting batiment.');

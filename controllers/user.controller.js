@@ -44,28 +44,28 @@ export const createUser = async (req, res) => {
       
     //   })
     // }
-      const selectedPermissions = req.body.permissions || [];
-      const selectedRoles = req.body.roles || [];
-      console.log("//////selectedPermissions///////////: ",selectedPermissions)
-      console.log("//////selectedRoles///////////: ",selectedRoles)
-      if (selectedRoles) {
-        for (const role of selectedRoles) {
-          console.log("//////role in loop///////////: ",role)
-          const usersWithRole = await getUsersWithRole(user,role);
-          console.log("//////result of find all users with role///////////: ",usersWithRole)
-          const selectedPermissionInstances = await Permission.findAll({
-            where: {
-              id: selectedPermissions,
-            },
-          });
+      // const selectedPermissions = req.body.permissions || [];
+      // const selectedRoles = req.body.roles || [];
+      // console.log("//////selectedPermissions///////////: ",selectedPermissions)
+      // console.log("//////selectedRoles///////////: ",selectedRoles)
+      // if (selectedRoles) {
+      //   for (const role of selectedRoles) {
+      //     console.log("//////role in loop///////////: ",role)
+      //     const usersWithRole = await getUsersWithRole(user,role);
+      //     console.log("//////result of find all users with role///////////: ",usersWithRole)
+      //     const selectedPermissionInstances = await Permission.findAll({
+      //       where: {
+      //         id: selectedPermissions,
+      //       },
+      //     });
           
-          console.log("//////users ids///////////: ",usersWithRole)
-          for (const userWithRole of usersWithRole) {
-            console.log("//////users ids///////////: ",userWithRole.id)
-            await userWithRole.addPermissions(selectedPermissionInstances);
-          }
-        }
-      }
+      //     console.log("//////users ids///////////: ",usersWithRole)
+      //     for (const userWithRole of usersWithRole) {
+      //       console.log("//////users ids///////////: ",userWithRole.id)
+      //       await userWithRole.addPermissions(selectedPermissionInstances);
+      //     }
+      //   }
+      // }
   
    
     const errorMessage = req.session.errorMessage;

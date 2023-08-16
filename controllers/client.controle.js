@@ -4,12 +4,12 @@ import Establishment from "../models/establishment-model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
-import {bigger_than,belongTo} from '../utiles/role.permission.js'
+import {belongTo} from '../utiles/role.permission.js'
 import {clientFindOne,clientFindAll, clientFindAllInOneEstablishment} from '../utiles/client.reqetes.js'
 import {getUsersOrderedByEstablishmentId,getPermissionForUser} from '../utiles/user.requete.js'
 import {isKing} from '../utiles/role.js'
 dotenv.config();
-const { SESSION_SECRET } = process.env;
+const { VIEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } = process.env;
 
 export const create = async (req, res) => {
     const users = await getUsersOrderedByEstablishmentId()
@@ -73,7 +73,7 @@ export const showAllClients = async (req, res) => {
     }
 
     const userPermissions = await getPermissionForUser(user.id);
-    let viewPermission = userPermissions.some(perm => perm.name.trim() === "view Client")
+    let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_CLIENT)
  
     let clients
     // Check if the user's role is 'kingAdmin'
@@ -109,9 +109,9 @@ export const getProfile = async (req, res) => {
   const user = req.session.user
 
   const userPermissions = await getPermissionForUser(user.id);
-  let viewPermission = userPermissions.some(perm => perm.name.trim() === "view Client")
-  let editPermission = userPermissions.some(perm => perm.name.trim() === "edit Client")
-  let deletePermission = userPermissions.some(perm => perm.name.trim() === "delete Client")
+  let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_CLIENT)
+  let editPermission = userPermissions.some(perm => perm.name.trim() === EDIT_CLIENT)
+  let deletePermission = userPermissions.some(perm => perm.name.trim() === DELETE_CLIENT)
 
   
   const clientId = parseInt(req.params.clientId, 10); // Extract the client ID from the URL parameter and parse it as an integer.
@@ -149,7 +149,7 @@ export const getEdit = async (req, res) => {
 
   const userPermissions = await getPermissionForUser(user.id);
 
-  let editPermission = userPermissions.some(perm => perm.name.trim() === "edit Client")
+  let editPermission = userPermissions.some(perm => perm.name.trim() === EDIT_CLIENT)
  
   
   
@@ -210,7 +210,7 @@ export const deleteClient = async (req, res) => {
   const clientId = parseInt(req.params.clientId, 10);
   const user = req.session.user
   const userPermissions = await getPermissionForUser(user.id);
-  let deletePermission = userPermissions.some(perm => perm.name.trim() === "delete Client")
+  let deletePermission = userPermissions.some(perm => perm.name.trim() === DELETE_CLIENT)
 
   try {
     const client = await clientFindOne(clientId);

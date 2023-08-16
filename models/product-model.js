@@ -61,9 +61,9 @@ const Product = sequelize.define('products', {
 });
 
 // Define the association between Product and Batiment
-Product.belongsTo(Batiment, { foreignKey: 'batiment_id' });
+Product.belongsTo(Batiment, { foreignKey: 'batiment_id' , onDelete: 'CASCADE' });
 
 // Define the association between Product and Establishment
-Product.belongsTo(Establishment, { foreignKey: 'establishment_id' });
+Product.belongsTo(Establishment, { foreignKey: 'establishment_id' , onDelete: 'CASCADE' });
 
 export default Product;

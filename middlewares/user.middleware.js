@@ -8,7 +8,7 @@ export const checkUserExistence = async (req, res, next) => {
     
     console.log("checkUserExistence starting req: |||||||||", req.body)
     const { email, establishmentId } = req.body;
-    if(!establishmentId !== user.role !== "kingAdmin"){
+    if(!establishmentId || user.role !== "kingAdmin"){
       establishment = user.establishmentId
     }else{
       establishment = establishmentId

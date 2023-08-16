@@ -2,13 +2,23 @@ import Batiment from "../models/batiment-model.js";
 import Product from "../models/product-model.js";
 import Image from "../models/image-model.js";
 import Establishment from "../models/establishment-model.js";
+import {batimentFindAllInEstablishment, batimentFindAll} from '../utiles/batiment.reqetes.js'
 
 export const showTabsSalles = async (req, res) => {
   try {
+    const user = req.session.user
     // Fetch batiments from the database
-    const batiments = await Batiment.findAll({
-      attributes: ['id', 'name', 'adresse'], // Include address in the query result
-    });
+    // const batiments = await Batiment.findAll({
+    //   attributes: ['id', 'name', 'adresse'], // Include address in the query result
+    // });
+
+    let batiments
+    if(user.role === "kingAdmin"){
+      batiments = await batimentFindAll();
+    }
+    else{
+      batiments = await batimentFindAllInEstablishment(user)
+    }
 
     // Fetch products from the database and include associated Batiment and Establishment data
     const products = await Product.findAll({
@@ -27,7 +37,7 @@ export const showTabsSalles = async (req, res) => {
       ],
     });
 
-    const user = req.session.user
+    
 
     // Filter batiments to only include those that have associated products of type "Salle"
     const filteredBatiments = batiments.filter((batiment) =>
@@ -54,8 +64,15 @@ export const showTabsSalles = async (req, res) => {
 export const create = async (req, res) => {
   // Check if there's an error message in the session
   const errorMessage = req.session.errorMessage;
-  const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });
-
+  // const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });
+  const user = req.session.user
+  let batiments
+  if(user.role === "kingAdmin"){
+    batiments = await batimentFindAll();
+  }
+  else{
+    batiments = await batimentFindAllInEstablishment(user)
+  }
   // Clear the error message from the session
   delete req.session.errorMessage;
 
@@ -90,34 +107,7 @@ export const createSalle = async (req, res) => {
 
     console.log('New Salle created:', newSalle.toJSON());
 
-    const batiments = await Batiment.findAll({
-      attributes: ['id', 'name', 'adresse'], // Include address in the query result
-    });
-
-    const products = await Product.findAll({
-      where: {
-        type: 'Salle',
-      },
-      include: [
-        {
-          model: Batiment,
-          attributes: ['id', 'name', 'adresse'],
-        },
-        {
-          model: Establishment,
-          attributes: ['id', 'name'],
-        },
-      ],
-    });
-
-  
-    // Filter batiments to only include those that have associated products of type "Salle"
-    const filteredBatiments = batiments.filter((batiment) =>
-      products.some((product) => product.batiment_id === batiment.id)
-    );
-
-    // Render the EJS template and pass filtered batiments and filtered products as locals
-    res.render('products/all-salles', { batiments: filteredBatiments, products, user });      
+    res.redirect('/products');
   } catch (error) {
     console.error('Error creating batiment:', error);
     res.status(500).send('Error creating batiment. Please try again.');
@@ -205,8 +195,14 @@ export const getEdit = async (req, res) => {
   // const idUser = req.session.user.id;
   const user = req.session.user
   const productId = parseInt(req.params.productId, 10);
-  const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });
-
+  // const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });
+  let batiments
+  if(user.role === "kingAdmin"){
+    batiments = await batimentFindAll();
+  }
+  else{
+    batiments = await batimentFindAllInEstablishment(user)
+  }
   try {
     // Find the batiment with the given ID in the database.
     const salle = await Product.findOne({ where: { id: productId } });

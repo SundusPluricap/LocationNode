@@ -48,16 +48,17 @@ body, ul {
 .product-item {
     border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 12px;
-    margin: 8px;
+    padding: 15px;
+    margin: 2%;
+    /* ma */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: inline-block;
-    /* width: 100%; */
+    width: 45%;
 }
 
 /* Style product cart based on screen size */
 .product-cart {
-    width: 430px; /* Full width by default */
+    width: 100%; /* Full width by default */
 }
 
 /* Adjust product cart width for larger screens */

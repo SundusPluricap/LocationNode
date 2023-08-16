@@ -52,7 +52,7 @@ const Reservation = sequelize.define('Reservation', {
 // })();
 
 
-Client.hasMany(Reservation, { foreignKey: 'clientId' });
-Reservation.belongsTo(Client, { foreignKey: 'clientId' });
+Client.hasMany(Reservation, { foreignKey: 'clientId' , onDelete: 'CASCADE' });
+Reservation.belongsTo(Client, { foreignKey: 'clientId' , onDelete: 'CASCADE' });
 
 export default Reservation;

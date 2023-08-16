@@ -16,32 +16,38 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <% if (user.role === "kingAdmin") { %>
-                        <% let currentEstablishment = null; %>
-                        <% batiments.forEach(batiment => { %>
+                   <% let currentEstablishment = null; %>
+                    <% batiments.forEach(batiment => { %>
+                        <% if (user.role === "kingAdmin") { %>
+                            
                             <% if (batiment.Establishment.id !== currentEstablishment) { %>
                                 <tr class="establishmentTab">
                                     <td colspan="2" class="center establishmentName"><%= batiment.Establishment.name %></td>
                                 </tr>
                                 <% currentEstablishment = batiment.Establishment.id; %>
+                            <% } %> 
+                        <% } %>
+                        <tr>
+                            <td><%= batiment.name %></td>
+                            <% let hasPermission = isKing(user) || viewPermission
+                            if (hasPermission) { %>
+                                <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td>
+                            <% } else { %>
+                                <td><button type="button" class="disabled" disabled>Can't view a building</button>   </td>
                             <% } %>
-                            <tr>
-                                <td><%= batiment.name %></td>
-                                <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td>
-                            </tr>
-                        <% }) %>
-                    <% } else { %>
-                        <% batiments.forEach(batiment => { %>
-                            <tr>
-                                <td><%= batiment.name %></td>
-                                <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td>
-                            </tr>
-                        <% }) %>
-                    <% } %>
+                            <!-- <td><a href="/batiments/<%= batiment.id %>" class="view-profile-button">Voir le bâtiment</a></td> -->
+                        </tr>
+                    <% }) %>
+                    
                 </tbody>
             </table>
-            <% if (user.role === "kingAdmin" || user.role === "superAdmin" || user.role === "admin") { %>
+            
+
+            <% let hasPermission2 = isKing(user) || createPermission
+            if (hasPermission2) { %>
                 <a href='/batiments/create-batiment' class="add-user-button">Ajouter un bâtiment</a>
+            <% } else { %>
+                <button type="button" class=" disabled" disabled>Can't create a building</button>   
             <% } %>
 
             <% if (typeof errorMessage !== 'undefined') { %>

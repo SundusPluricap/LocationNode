@@ -42,7 +42,7 @@ const Image = sequelize.define('Image', {
 });
 
 // Define the associations
-Image.belongsTo(Product, { foreignKey: 'product_id', as: 'product' });
-Image.belongsTo(Batiment, { foreignKey: 'batiment_id', as: 'batiment' });
+Image.belongsTo(Product, { foreignKey: 'product_id', as: 'product' , onDelete: 'CASCADE' });
+Image.belongsTo(Batiment, { foreignKey: 'batiment_id', as: 'batiment' , onDelete: 'CASCADE' });
 
 export default Image;
