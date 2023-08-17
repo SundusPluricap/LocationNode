@@ -231,6 +231,10 @@ export const getEdit = async (req, res) => {
   
   const user = req.session.user
   const productId = parseInt(req.params.productId, 10);
+
+  const userPermissions = await getPermissionForUser(user.id);
+  let editPermission = userPermissions.some(perm => perm.name.trim() === EDIT_SALLE)
+
   // const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });
   let batiments
   if(user.role === "kingAdmin"){
@@ -241,43 +245,41 @@ export const getEdit = async (req, res) => {
   }
   try {
     // Find the batiment with the given ID in the database.
-    const salle = await Product.findOne({ where: { id: productId } });
+    const salle = await Product.findOne({ 
+      where: { id: productId } ,
+      include: [
+        {
+          model: Batiment,
+        },
+      ],
+    });
 
     if (!salle) {
       return res.status(404).render('home/404', {user}); // Handle the case when the batiment ID is not found.
     }
     const param = salle
+    // console.log('-----------param--------')
+    console.log('-----------param--------',    param.Batiment.establishmentId)
+
+    
+    let hasPermission = editPermission && (isKing(user) || belongTo(param.Batiment.establishmentId,user.establishmentId) )
+    console.log('-----------editPermission--------',hasPermission)
+      // if 
+    if(hasPermission ){
+      res.render('products/editProfile', {batiments, param, user });
+    }
+
+    else {
+      res.render('home/403', {user})
+    }
     // Render the batiment profile template with the batiment data.
-    res.render('products/editProfile', {batiments, param, user });
+    
   } catch (error) {
     console.error('Error fetching prosucts:', error);
     res.status(500).send('Error fetching prosuct. Please try again.');
   }
 }
 
-export const postEdit = async (req, res) => {
-//   const batimentId = parseInt(req.params.batimentId, 10);
-  
-//   try {
-//     const batiment = await Batiment.findByPk(batimentId);
-
-//     if (!batiment) {
-//       return res.status(404).send('batiment not found.');
-//     }
-
-//     // Update the user data with the form data
-//     await batiment.update({
-//       name: req.body.name,
-//       adresse: req.body.adresse,
-//       photo: req.file ? req.file.filename : batiment.photo, // Use existing photo if no new photo is uploaded
-//     });
-
-//     res.redirect(`/batiments/${batimentId}`);
-//   } catch (error) {
-//     console.error('Error updating batiment:', error);
-//     res.status(500).send('Error updating batiment.');
-//   }
-};
 
 export const editSalle = async (req, res) => {
   console.log("editSalle starting");
