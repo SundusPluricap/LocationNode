@@ -1,7 +1,6 @@
 import Batiment from "../models/batiment-model.js";
 import Establishment from "../models/establishment-model.js";
 import {getPermissionForUser} from '../utiles/user.requete.js'
-
 import {batimentFindAllInEstablishment, batimentFindAll} from '../utiles/batiment.reqetes.js'
 import {belongTo} from '../utiles/role.permission.js'
 import {isKing} from '../utiles/role.js'
@@ -14,17 +13,33 @@ export const create = async (req, res) => {
   const user = req.session.user
   const establishments = await Establishment.findAll();
   // ...
-  // Check if there's an error message in the session
-  const errorMessage = req.session.errorMessage;
-  // Clear the error message from the session
-  delete req.session.errorMessage;
-  res.render('batiments/createBatiment', { errorMessage, establishments, user });
+  const userPermissions = await getPermissionForUser(user.id);
+  let createPermission = userPermissions.some(perm => perm.name.trim() === CREATE_BUILDING)
+
+  let hasPermission = isKing(user) || createPermission
+  // Render the batiment profile template with the batiment data.
+  
+  if(hasPermission ){
+    // Check if there's an error message in the session
+    const errorMessage = req.session.errorMessage;
+    // Clear the error message from the session
+    delete req.session.errorMessage;
+    res.render('batiments/createBatiment', { errorMessage, establishments, user });
+  }
+  else {
+    res.render('home/403', {user})
+  }
+  
+  
 };
 
 export const createBatiment = async (req, res) => {
+    
     console.log("createBatiment starting")
     try {
       const user = req.session.user
+
+      
       // let batiments;
       const { name,adresse } = req.body;
       const photo = req.file ? req.file.filename : null;
@@ -74,7 +89,7 @@ export const showAlleBatiments = async (req, res) => {
     // const batiments = await Batiment.findAll();
     
     
-    res.render('batiments/all-batiments', { user, batiments, viewPermission,createPermission, isKing, belongTo  });
+    res.render('batiments/all-batiments', { user, batiments, viewPermission,createPermission, isKing });
     console.log("showAlleBatiments done")
   } catch (error) {
     console.error('Error fetching users:', error);
@@ -85,9 +100,6 @@ export const showAlleBatiments = async (req, res) => {
 
 export const getProfileBatiment = async (req, res) => {
   console.log("getProfileBatiment starting")
-  // const firstName = req.session.user.firstName;
-  // const lastName = req.session.user.lastName;
-  // const idUser = req.session.user.id;
   const user = req.session.user
   const userPermissions = await getPermissionForUser(user.id);
   let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_BUILDING)
@@ -143,7 +155,6 @@ export const getEdit = async (req, res) => {
       return res.status(404).render('home/404', {user}); // Handle the case when the batiment ID is not found.
     }
     const param = batiment
-
 
     let hasPermission = editPermission && (isKing(user) || belongTo(param.establishmentId,user.establishmentId) )
     console.log('-----------editPermission--------',hasPermission)
@@ -201,7 +212,7 @@ export const deleteBatiment = async (req, res) => {
       return res.status(404).render('home/404', {user});
     }
 
-    let hasPermission = deletePermission && (isKing(user) || belongTo(param.establishmentId,user.establishmentId))
+    let hasPermission = deletePermission && (isKing(user) || belongTo(batiment.establishmentId,user.establishmentId))
 
     if ( hasPermission ){
 

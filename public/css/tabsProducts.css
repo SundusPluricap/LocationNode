@@ -20,7 +20,7 @@ body, ul {
 }
 
 .tab-label {
-    flex: 1; /* Distribute equal width among tabs */
+    /* flex: 1; Distribute equal width among tabs */
     padding: 8px 16px;
     cursor: pointer;
     user-select: none;
@@ -62,9 +62,13 @@ body, ul {
 }
 
 /* Adjust product cart width for larger screens */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 968px) {
     .product-cart {
         width: 270px;
+    }
+    .product-item {
+        
+        width: 100%;
     }
 }
 
@@ -91,7 +95,7 @@ body, ul {
 
 .edit-button, .delete-button, .add-salle-button, .reserve-button{
     display: inline-block;
-    width: 70%; /* Full width by default */
+    width: 77%; /* Full width by default */
     margin: 10px; /* Add some margin between the buttons */
     padding:10px;
     text-align: center;
@@ -148,7 +152,7 @@ body, ul {
 }
 
 /* Responsive styles for tabs buttons */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
     .tab-list {
         flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
     }

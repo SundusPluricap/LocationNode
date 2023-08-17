@@ -44,7 +44,7 @@
             <div class="actions-container text-center mt-4">
                 <a href="/products#content-<%= param.name %>" class="view-button">Voir les salles</a>
 
-                <% let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+                <% let hasPermission = isKing(user) || (editPermission && belongTo(param.establishmentId,user.establishmentId)) %>
 
                 <% if (hasPermission) { %>
                     <td colspan="3" align="center">
@@ -56,7 +56,9 @@
                         <button type="button" class="disabled" disabled>Can't Edit this Building's info</button>
                     </td>
                 <% } %>
-                <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+                <%
+                
+                let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.establishmentId,user.establishmentId)) %>
 
                 <% if (hasPermission2) { %>
                     <td colspan="3" align="center">

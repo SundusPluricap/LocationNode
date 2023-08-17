@@ -2,8 +2,12 @@
 
 <title><%= param.name %> Profile</title>
 <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="/css/tabsProducts.css">
+<link rel="stylesheet" href="/css/user.css">
+
 <link rel="stylesheet" href="/css/profile.css">
 <link rel="stylesheet" href="/css/slider.css">
+
 <!-- Slick CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
@@ -76,63 +80,32 @@
                         <% } %>
                     </div>
                       
-
-                    
-                </div>
-
-
-
-
-
-
-
-
-
-
-<!-- 
-
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" rel="stylesheet" />
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
-                 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
+                </div>                
             </div>
 
             <div class="actions-container text-center mt-4">
-                <a href="<%= param.product.id %>/edit" class="edit-button">Modifier</a>
-                <a href="/products/<%= param.product.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                <% let hasPermission1 = isKing(user) || reservePermission
+                    let hasPermission2 = isKing(user) || editPermission
+                    let hasPermission3 = isKing(user) || deletePermission 
+                %>
+                <% if (hasPermission1) { %>
+                    <a href="/products/<%= param.product.id %>/reserve" class="reserve-button">Réserve</a>
+                <% } else { %>
+                    <button type="button" class="disabled" disabled>Can't Reserve this Salle</button>
+                <% } %>
+
+                <% if (hasPermission2) { %>
+                    <a href="<%= param.product.id %>/edit" class="edit-button">Modifier</a>
+                <% } else { %>
+                    <button type="button" class="disabled" disabled>Can't Edit this Salle's info</button>
+                <% } %>
+
+                <% if (hasPermission3) { %>
+                    <a href="/products/<%= param.product.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+
+                <% } else { %>
+                    <button type="button" class="disabled" disabled>Can't delete this Salle</button>
+                <% } %>
             </div>
         </div>
     </div>

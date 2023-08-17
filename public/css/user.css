@@ -80,14 +80,14 @@ h1 {
 }
 
 .disabled{
-    display: block;
+    /* display: block; */
     background-color: rgb(188, 188, 188);
     color: linen;
     opacity: 1;
     /* display: inline-block; */
     width: 80%;
     max-width: 200px;
-    margin: 20px auto;
+    /* margin: 20px auto; */
     padding:10px;
     text-align: center;
     text-decoration: none;

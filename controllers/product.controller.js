@@ -3,15 +3,16 @@ import Product from "../models/product-model.js";
 import Image from "../models/image-model.js";
 import Establishment from "../models/establishment-model.js";
 import {batimentFindAllInEstablishment, batimentFindAll} from '../utiles/batiment.reqetes.js'
+import {belongTo} from '../utiles/role.permission.js'
+import {isKing} from '../utiles/role.js'
+// import { Sequelize, DataTypes } from 'sequelize';
+import {getPermissionForUser} from '../utiles/user.requete.js'
+const { CREATE_SALLE, VIEW_SALLE, EDIT_SALLE , DELETE_SALLE, RESERVE_SALLE} = process.env;
+
 
 export const showTabsSalles = async (req, res) => {
   try {
     const user = req.session.user
-    // Fetch batiments from the database
-    // const batiments = await Batiment.findAll({
-    //   attributes: ['id', 'name', 'adresse'], // Include address in the query result
-    // });
-
     let batiments
     if(user.role === "kingAdmin"){
       batiments = await batimentFindAll();
@@ -20,32 +21,34 @@ export const showTabsSalles = async (req, res) => {
       batiments = await batimentFindAllInEstablishment(user)
     }
 
-    // Fetch products from the database and include associated Batiment and Establishment data
+    const buildingIds = batiments.map(building => building.id);
+
     const products = await Product.findAll({
-      where: {
-        type: 'Salle',
-      },
       include: [
         {
           model: Batiment,
-          attributes: ['id', 'name', 'adresse'],
-        },
-        {
-          model: Establishment,
-          attributes: ['id', 'name'],
+          where: {
+            id: buildingIds,
+          },
         },
       ],
     });
-
     
 
     // Filter batiments to only include those that have associated products of type "Salle"
     const filteredBatiments = batiments.filter((batiment) =>
       products.some((product) => product.batiment_id === batiment.id)
     );
+    const userPermissions = await getPermissionForUser(user.id);
+    let createPermission = userPermissions.some(perm => perm.name.trim() === CREATE_SALLE)
+    let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_SALLE)
+    let reservePermission = userPermissions.some(perm => perm.name.trim() === RESERVE_SALLE)
 
+    let hasPermission = isKing(user) || viewPermission
+    let hasPermission1 = isKing(user) || reservePermission
+    let hasPermission2 = isKing(user) || createPermission
     // Render the EJS template and pass filtered batiments and filtered products as locals
-    res.render('products/all-salles', { batiments: filteredBatiments, products, user });
+    res.render('products/all-salles', { batiments: filteredBatiments, products, user, hasPermission, hasPermission1, hasPermission2  });
   } catch (error) {
     console.error('Error fetching data:', error.message);
     res.status(500).send('Internal Server Error');
@@ -53,36 +56,42 @@ export const showTabsSalles = async (req, res) => {
 };
 
 
-// import multer from 'multer';
-
-// // Set up multer to handle file uploads
-// const upload = multer({ dest: 'uploads/' }); // Change 'uploads/' to the appropriate directory path for storing the images
-
-// ...
-
 // Controller function for rendering the createSalle view
 export const create = async (req, res) => {
   // Check if there's an error message in the session
   const errorMessage = req.session.errorMessage;
   // const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });
   const user = req.session.user
-  let batiments
-  if(user.role === "kingAdmin"){
-    batiments = await batimentFindAll();
-  }
-  else{
-    batiments = await batimentFindAllInEstablishment(user)
-  }
-  // Clear the error message from the session
-  delete req.session.errorMessage;
+  
+  const userPermissions = await getPermissionForUser(user.id);
+  let createPermission = userPermissions.some(perm => perm.name.trim() === CREATE_SALLE)
 
-  res.render('products/createSalle', {  batiments, errorMessage });
+  let hasPermission = isKing(user) || createPermission
+  // Render the batiment profile template with the batiment data.
+  
+  if( hasPermission ){
+    let batiments
+    if(user.role === "kingAdmin"){
+      batiments = await batimentFindAll();
+    }
+    else{
+      batiments = await batimentFindAllInEstablishment(user)
+    }
+    // Clear the error message from the session
+    delete req.session.errorMessage;
+  
+    res.render('products/createSalle', {  batiments, errorMessage });
+  }
+  else {
+    res.render('home/403', {user})
+  }
+ 
 };
 
 export const createSalle = async (req, res) => {
   console.log("createSalle starting")
   try {
-    const user = req.session.user
+    // const user = req.session.user
 
     console.log("req.body//////////////////////", req.body)
     const { name, capacity, price, batimentId } = req.body;
@@ -117,12 +126,18 @@ export const createSalle = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   console.log("getProfile starting");
-  // const firstName = req.session.user.firstName;
-  // const lastName = req.session.user.lastName;
-  // const idUser = req.session.user.id;
+  
   const user = req.session.user
   const productId = parseInt(req.params.productId, 10); // Extract the product ID from the URL parameter and parse it as an integer.
-
+  const userPermissions = await getPermissionForUser(user.id);
+  // let createPermission = userPermissions.some(perm => perm.name.trim() === CREATE_SALLE)
+  let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_SALLE)
+  let reservePermission = userPermissions.some(perm => perm.name.trim() === RESERVE_SALLE)
+  let editPermission = userPermissions.some(perm => perm.name.trim() === EDIT_SALLE)
+  let deletePermission = userPermissions.some(perm => perm.name.trim() === DELETE_SALLE)
+  // console.log("////////////////////////////////")
+  // console.log("test Permissions : ", "viewPermission",viewPermission,"editPermission", editPermission,"deletePermission",deletePermission,"reservePermission",reservePermission)
+  // console.log("////////////////////////////////")
   try {
     // Find the product with the given ID in the database.
     const product = await Product.findOne({ 
@@ -130,7 +145,6 @@ export const getProfile = async (req, res) => {
       include: [
         {
           model: Batiment,
-          attributes: ['id', 'name', 'adresse'],
         },
         {
           model: Establishment,
@@ -154,11 +168,24 @@ export const getProfile = async (req, res) => {
       product: product,
       images: productImages,
     };
-
-    console.log("product has:param ", param);
+    console.log("////////////////////////////////")
+    console.log("product has:param ", param.product.Batiment.establishmentId);
     console.log("product done ");
+    console.log("////////////////////////////////")
+    // let hasPermission = isKing(user) || viewPermission
+    // let hasPermission1 = isKing(user) || reservePermission
+    // let hasPermission2 = isKing(user) || editPermission
+    // let hasPermission3 = isKing(user) || deletePermission
+    let hasPermission = isKing(user) || (viewPermission && belongTo(param.product.Batiment.establishmentId,user.establishmentId)) 
     // Render the product profile template with the product data and images.
-    res.render('products/profileProduct', { user, param});
+    if(hasPermission ){
+      res.render('products/profileProduct', { user, param, reservePermission, editPermission, deletePermission,isKing, belongTo});
+    }
+    else {
+      res.render('home/403', {user})
+    }
+
+    
   } catch (error) {
     console.error('Error fetching product:', error);
     res.status(500).send('Error fetching product. Please try again.');
@@ -170,6 +197,9 @@ export const getProfile = async (req, res) => {
 export const deleteSalle = async (req, res) => {
 //   console.log("here/////////////////////////////////////////////////////////////////////////////////////////////////////// req.params: ", req.params)
   const productId = parseInt(req.params.productId, 10);
+  const userPermissions = await getPermissionForUser(user.id);
+  let deletePermission = userPermissions.some(perm => perm.name.trim() === DELETE_SALLE)
+
   
   try {
     const salle = await Product.findByPk(productId);
@@ -178,11 +208,19 @@ export const deleteSalle = async (req, res) => {
       return res.status(404).send('salle not found.');
     }
 
-    // Delete the user from the database
-    await salle.destroy();
+    let hasPermission = deletePermission && (isKing(user) || belongTo(param.establishmentId,user.establishmentId))
 
-    // Redirect to the list of all users or another page after successful deletion
-    res.redirect('/products'); // Adjust the URL to redirect to the appropriate page after deletion
+    if ( hasPermission ){
+
+      // Delete the client from the database
+      await salle.destroy();
+      // Redirect to the list of all users or another page after successful deletion
+      res.redirect('/products'); // Adjust the URL to redirect to the appropriate page after deletion
+    }
+    else {
+      res.render('home/403', {user})
+    }
+   
   } catch (error) {
     console.error('Error deleting salle:', error);
     res.status(500).send('Error deleting salle.');
@@ -190,9 +228,7 @@ export const deleteSalle = async (req, res) => {
 };
 
 export const getEdit = async (req, res) => {
-  // const firstName = req.session.user.firstName;
-  // const lastName = req.session.user.lastName;
-  // const idUser = req.session.user.id;
+  
   const user = req.session.user
   const productId = parseInt(req.params.productId, 10);
   // const batiments = await Batiment.findAll({ attributes: ['id', 'name'] });

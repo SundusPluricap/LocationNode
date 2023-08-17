@@ -1,6 +1,8 @@
 <%- include('../partials/header') -%>
 <title>Location, Salles</title>
 <link rel="stylesheet" href="/css/tabsProducts.css">
+<link rel="stylesheet" href="/css/user.css">
+
 </head>
 <body>
  
@@ -39,8 +41,18 @@
                     <p><strong>Appartient au bâtiment:</strong> Non spécifié</p>
                   <% } %>
                   <div class="button-container">
-                    <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
-                    <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
+                    <% if (hasPermission) { %>
+                      <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
+                    <% } else { %>
+                      <button type="button" class="disabled" disabled>Can't view this salle</button>
+                    <% } %>
+                   
+                    <% if (hasPermission1) { %>
+                      <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
+                    <% } else { %>
+                      <button type="button" class="disabled" disabled>Can't reserve this salle</button>
+                    <% } %>
+                    
                   </div>
                   <!-- Add other product details as needed -->
                   
@@ -61,8 +73,18 @@
                       <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
 
                       <div class="button-container">
-                        <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
-                        <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
+                        <% if (hasPermission) { %>
+                          <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
+                        <% } else { %>
+                          <button type="button" class="disabled" disabled>Can't view this salle</button>
+                        <% } %>
+                       
+                        <% if (hasPermission1) { %>
+                          <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
+                        <% } else { %>
+                          <button type="button" class="disabled" disabled>Can't reserve this salle</button>
+                        <% } %>
+
                       </div>
                       <!-- Add other product details as needed -->
                     </div>
@@ -71,8 +93,12 @@
               <% }); %>
             </div>
           <% }); %>
-          
-          <a href="/products/create-salle" class="add-salle-button">Ajouter une salle</a>
+          <% 
+          if (hasPermission2) { %>
+            <a href="/products/create-salle" class="add-salle-button">Ajouter une salle</a>
+            <% } else { %>
+            <button type="button" class=" disabled" disabled>Can't create a building</button>   
+          <% } %>
         </div>
       </div>
       
