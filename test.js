@@ -3,9 +3,9 @@ import User from './models/user-model.js';
 import './models/user-has-permisssion-model.js';
 
 // Assuming you have a user ID
-const userIdExist = 39;
+const userIdExist = 38;
 const userIdDoesntExist = 1;
-const permission = "view";
+const permission = "view Salle";
 const doesnthasPermission = "delete"
 
 describe('User Permissions', () => {

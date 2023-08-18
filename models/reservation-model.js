@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
-import Client from "./client-model";
+import Client from "./client-model.js";
 dotenv.config();
 
 const { APP_LOCALHOST: hostname, APP_PORT: port, DATABASE: db, USERNAMESQL: username, PASSWORDSQL: mdp } = process.env;
