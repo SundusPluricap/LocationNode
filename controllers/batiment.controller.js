@@ -30,7 +30,6 @@ export const create = async (req, res) => {
     res.render('home/403', {user})
   }
   
-  
 };
 
 export const createBatiment = async (req, res) => {
@@ -86,9 +85,7 @@ export const showAlleBatiments = async (req, res) => {
     else{
       batiments = await batimentFindAllInEstablishment(user)
     }
-    // const batiments = await Batiment.findAll();
-    
-    
+
     res.render('batiments/all-batiments', { user, batiments, viewPermission,createPermission, isKing });
     console.log("showAlleBatiments done")
   } catch (error) {
