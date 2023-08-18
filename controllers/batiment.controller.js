@@ -134,9 +134,6 @@ export const getProfileBatiment = async (req, res) => {
 
 
 export const getEdit = async (req, res) => {
-  // const firstName = req.session.user.firstName;
-  // const lastName = req.session.user.lastName;
-  // const idUser = req.session.user.id;
   const user = req.session.user
   const establishments = await Establishment.findAll();
   const batimentId = parseInt(req.params.batimentId, 10);
