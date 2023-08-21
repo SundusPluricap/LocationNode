@@ -218,12 +218,6 @@ export const deleteBatiment = async (req, res) => {
     else {
       res.render('home/403', {user})
     }
-
-    // Delete the user from the database
-    // await batiment.destroy();
-
-    // Redirect to the list of all users or another page after successful deletion
-    // res.redirect('/batiments'); // Adjust the URL to redirect to the appropriate page after deletion
   } catch (error) {
     console.error('Error deleting batiment:', error);
     res.status(500).send('Error deleting batiment.');

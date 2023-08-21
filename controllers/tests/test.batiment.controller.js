@@ -227,25 +227,7 @@ describe('Controller postEdit Tests', () => {
             await postEdit(req, res);
             sinon.assert.calledWith(res.redirect, `/batiments/${req.params.batimentId}`);
         });
-
-        // it('should render to home/403 view if user has permission', async () => {
-        //     req = { 
-        //         session: { 
-        //             user: { 
-        //                 id: 40, 
-        //                 establishmentId: 3, 
-        //                 role: 'admin' 
-        //             } 
-        //         } ,
-        //         params: {
-        //             batimentId: 35
-        //         }
-        //     };
-        //     await getEdit(req, res);
-        //     sinon.assert.calledWith(res.render, 'home/403', sinon.match.object);
-        //     // sinon.assert.calledWith(res.render, 'home/403', sinon.match.object);
-        // });
-
+        
         it('should render to home/404 view if batiment does not exist', async () => {
             req = { 
                 session: { 
