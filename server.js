@@ -61,13 +61,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 ///////////////// run kingAdminPermissions to give the kingAdmin all permissions//////////////////
 
-kingAdminPermissions()
-  .then(() => {
-    console.log('Permissions granted to kingAdmin role successfully.');
-  })
-  .catch(error => {
-    console.error('Error granting permissions:', error);
-  });
+// kingAdminPermissions()
+//   .then(() => {
+//     console.log('Permissions granted to kingAdmin role successfully.');
+//   })
+//   .catch(error => {
+//     console.error('Error granting permissions:', error);
+//   });
 
 
 /************ Routes */

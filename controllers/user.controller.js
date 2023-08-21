@@ -31,43 +31,7 @@ export const createUser = async (req, res) => {
   
   try {
     const user = req.session.user
-    // const selectedPermissions = req.body.permissions || [];
-    // console.log("//////selectedPermissions///////////: ",selectedPermissions)
-
-    // const selectedRoles = req.body.roles || [];
-    // console.log("//////selectedRoles///////////: ",selectedRoles)
-
-    // if(selectedRoles){
-    //   selectedRoles.forEach(role => { 
-    //     getUsersWithRole(role)
-      
-      
-    //   })
-    // }
-      // const selectedPermissions = req.body.permissions || [];
-      // const selectedRoles = req.body.roles || [];
-      // console.log("//////selectedPermissions///////////: ",selectedPermissions)
-      // console.log("//////selectedRoles///////////: ",selectedRoles)
-      // if (selectedRoles) {
-      //   for (const role of selectedRoles) {
-      //     console.log("//////role in loop///////////: ",role)
-      //     const usersWithRole = await getUsersWithRole(user,role);
-      //     console.log("//////result of find all users with role///////////: ",usersWithRole)
-      //     const selectedPermissionInstances = await Permission.findAll({
-      //       where: {
-      //         id: selectedPermissions,
-      //       },
-      //     });
-          
-      //     console.log("//////users ids///////////: ",usersWithRole)
-      //     for (const userWithRole of usersWithRole) {
-      //       console.log("//////users ids///////////: ",userWithRole.id)
-      //       await userWithRole.addPermissions(selectedPermissionInstances);
-      //     }
-      //   }
-      // }
-  
-   
+ 
     const errorMessage = req.session.errorMessage;
     delete req.session.errorMessage;
     
@@ -172,7 +136,7 @@ export const getProfile = async (req, res) => {
     if (!findUser) {
       return res.status(404).render('home/404', {user});;
     }
-    if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.Establishment.id, user.Establishment.id, user.role)  ){
+    if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.establishmentId, user.establishmentId, user.role)  ){
       res.render('users/profile', { user, findUser});
     }
     else {
@@ -199,7 +163,7 @@ export const getEdit = async (req, res) => {
   if (!findUser) {
     return res.status(404).render('home/404', {user});
   }
-  if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.Establishment.id, user.Establishment.id, user.role)  ){
+  if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.establishmentId, user.establishmentId, user.role)  ){
     res.render('users/editProfile', { user, findUser, establishments});
   }
   else {
@@ -254,7 +218,7 @@ export const deleteUser = async (req, res) => {
       return res.status(404).render('home/404', {user});
     }
 
-    if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.establishmentId, user.Establishment.id, user.role)  ){
+    if ((bigger_than(user.role, findUser.role) || user.id == findUser.id) && establishmentCheck(findUser.establishmentId, user.establishmentId, user.role)  ){
       await findUser.destroy();
       res.redirect('/users');
     }

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "nodemon test.js",
+    "test": "npx mocha --recursive ./controllers/tests",
     "client": "cd client && npm start",
     "build": "cd client && npm run build"
   },

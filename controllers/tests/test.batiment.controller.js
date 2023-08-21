@@ -1,8 +1,13 @@
 import { create, createBatiment, showAlleBatiments, getProfileBatiment, getEdit, postEdit, deleteBatiment } from '../batiment.controller.js';
 import { getPermissionForUser } from '../../utiles/user.requete.js';
 import { expect } from 'chai';
+import Batiment from '../../models/batiment-model.js';
 import sinon from 'sinon'; // Import Sinon for mocking
-
+/** careful with the test for delete! it will not work if you run it twice, since it's deleting using the id, once used it actually delete the batiment with no go backs, so don't use it unless u r sure 100 % you don't want the info from the database
+ * for now the function is commented to make sure it does not delete things
+ * make them a global variable, define them in .env and come back here to call them
+*/
+// Find the last added Batiment
 
 //**************************test create***************//
 describe('Controller create Tests', () => {
@@ -203,7 +208,7 @@ describe('Controller postEdit Tests', () => {
                 } 
             },
             params: {
-                batimentId: 35
+                batimentId: 1
             },
             body: {
                 name: "unit test edit name",
@@ -223,7 +228,7 @@ describe('Controller postEdit Tests', () => {
     });
 
     describe('postEdit', () => {
-        it('should redirect /batiment/${batimentId} to batment/editProfile view if user has permission', async () => {
+        it('should redirect /batiment/${batimentId}  if batiment does not exist', async () => {
             await postEdit(req, res);
             sinon.assert.calledWith(res.redirect, `/batiments/${req.params.batimentId}`);
         });
@@ -249,3 +254,82 @@ describe('Controller postEdit Tests', () => {
     });
 
 });
+
+
+//**************************test delete***************//
+// describe('Controller delete Tests', () => {
+//     let req;
+//     let res;
+      
+
+//     beforeEach(() => {
+//         req = { 
+//             session: { 
+//                 user: { 
+//                     id: 38, 
+//                     establishmentId: 2, 
+//                     role: 'kingAdmin' 
+//                 } 
+//             },
+//             params: {
+//                 batimentId : 37
+//             },
+//         };
+//         res = { 
+//             render: sinon.spy(), 
+//             redirect: sinon.spy(), 
+//             status: sinon.stub().returnsThis(), 
+//             send: sinon.spy() 
+//         };
+//     });
+
+//     afterEach(() => {
+//         sinon.restore();
+//     });
+
+//     describe('delete', () => {
+//         it('should delete the batiment and redirect to batiments', async () => {
+//             await deleteBatiment(req, res);
+//             sinon.assert.calledWith(res.redirect, '/batiments');
+//         });
+        
+//         it('should render to 404 page because the batiment wasn not found', async () => {
+//             req = { 
+//                 session: { 
+//                     user: { 
+//                         id: 40, 
+//                         establishmentId: 3, 
+//                         role: 'admin' 
+//                     } 
+//                 } ,
+//                 params: {
+//                     batimentId: 12434
+//                 }
+//             };
+//             await deleteBatiment(req, res);
+//             sinon.assert.calledWith(res.status, 404);
+//             sinon.assert.calledWith(res.render, 'home/404', sinon.match.object);
+//         });
+
+//         it('should render to 403 page because of the lack of permission', async () => {
+//             req = { 
+//                 session: { 
+//                     user: { 
+//                         id: 40, 
+//                         establishmentId: 3, 
+//                         role: 'admin' 
+//                     } 
+//                 } ,
+//                 params: {
+//                     batimentId: 1
+//                 }
+//             };
+//             await deleteBatiment(req, res);
+//             // sinon.assert.calledWith(res.status, 403);
+//             sinon.assert.calledWith(res.render, 'home/403', sinon.match.object);
+//             // sinon.assert.calledWith(res.render, 'home/403', sinon.match.object);
+//         });
+//     });
+
+// });
+
