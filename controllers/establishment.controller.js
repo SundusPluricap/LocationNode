@@ -45,7 +45,7 @@ export const createEstablishment = async (req, res) => {
 export const showAlleEstablishments = async (req, res) => {
     try {
       const successMessage = req.session.successMessage;
-      console.log("_______________successMessage yyayayayayayayayayay____________________",successMessage,'___________here here')
+      // console.log("_______________successMessage yyayayayayayayayayay____________________",successMessage,'___________here here')
       delete req.session.successMessage;
       console.log("showAlleEstablishments starting")
       // Fetch all users from the database
@@ -87,9 +87,6 @@ export const showAlleEstablishments = async (req, res) => {
 
 
 export const getEdit = async (req, res) => {
-  // const firstName = req.session.user.firstName;
-  // const lastName = req.session.user.lastName;
-  // const idUser = req.session.user.id;
   const user = req.session.user
   const establishmentId = parseInt(req.params.establishmentId, 10);
 
@@ -126,12 +123,6 @@ export const postEdit = async (req, res) => {
       name: req.body.name
     });
 
-    // if(user.id === req.session.user.id){
-    //   req.session.user = user
-    // }
-    // console.log("user update: " , user)
-    // console.log("user logged in: " , req.session.user)
-    // Redirect to the user's profile page after successful update
     res.redirect(`/establishments`);
   } catch (error) {
     console.error('Error updating establishment:', error);
@@ -163,7 +154,7 @@ export const deleteEstablishment = async (req, res) => {
     }
   } 
   else {
-    res.status(403).redirect('/');
+    res.status(403).render('home/403', {user});
   }
 
 };
