@@ -21,6 +21,7 @@ import {setPermissions} from '../utiles/role.js'
 
 
 export const getRoles = async (req, res) => {
+    console.log("get roles started")
     const user = req.session.user
     const establishmentId = req.params.establishmentId
     const permissions = await permissionsList()
@@ -84,9 +85,11 @@ export const getRoles = async (req, res) => {
     
     // const users = await User.findAll({ include: [Establishment] });
     res.render('admin/roles.ejs', {permissions,establishments,superPermissions, adminPermissions,editorPermissions, user,oneUserWithRole,establishmentId });
+    console.log("get roles done")
 };
 
 export const setPermissionsForSuper = async (req, res) => {
+    console.log("setPermissionsForSuper started")
     const establishmentId = req.params.establishmentId
     const user = req.session.user
     const selectedPermissions = req.body.superPermissions || [];
@@ -97,10 +100,12 @@ export const setPermissionsForSuper = async (req, res) => {
     // }
     req.session.successMessage = 'Action was successful!';
     res.redirect('/establishments');
+    console.log("setPermissionsForSuper done")
 }
 
 
 export const setPermissionsForAdmin = async (req, res) => {
+    console.log("setPermissionsForAdmin started")
     const establishmentId = req.params.establishmentId
     const user = req.session.user
     const selectedPermissions = req.body.superPermissions || [];
@@ -111,10 +116,13 @@ export const setPermissionsForAdmin = async (req, res) => {
     // }
     req.session.successMessage = 'Action was successful!';
     res.redirect('/establishments');
+
+    console.log("setPermissionsForAdmin done")
 }
 
 
 export const setPermissionsForEditor = async (req, res) => {
+    console.log("setPermissionsForEditor start")
     const establishmentId = req.params.establishmentId
     // const user = req.session.user
     // const selectedPermissions = req.body.superPermissions || [];
@@ -126,4 +134,5 @@ export const setPermissionsForEditor = async (req, res) => {
     // }
     req.session.successMessage = 'Action was successful!';
     res.redirect('/establishments');
+    console.log("setPermissionsForEditor done")
 }

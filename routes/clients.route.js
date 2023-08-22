@@ -1,7 +1,7 @@
 import express from "express";
 // import {showAllUsers, getProfile, getEdit, postEdit, deleteUser} from "../controllers/user.controller.js";
 import {isAuthenticated} from "../middlewares/auth-middleware.js"
-import {showAllClients, createClient, create, getProfile, getEdit, deleteClient, postEdit} from "../controllers/client.controle.js";
+import {showAllClients, createClient, create, getProfile, getEdit, deleteClient, postEdit} from "../controllers/client.controller.js";
 import Client from "../models/client-model.js";
 
 const clientRouter = express.Router();

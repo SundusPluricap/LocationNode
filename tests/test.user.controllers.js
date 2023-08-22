@@ -1,8 +1,8 @@
-import { register, createUser, showAllUsers, getProfile, getEdit, postEdit, deleteUser } from '../user.controller.js';
+import { register, createUser, showAllUsers, getProfile, getEdit, postEdit, deleteUser } from '../controllers/user.controller.js';
 // import User from "../../models/user-model.js";
-import { getPermissionForUser } from '../../utiles/user.requete.js';
+import { getPermissionForUser } from '../utiles/user.requete.js';
 import { expect } from 'chai';
-import Batiment from '../../models/batiment-model.js';
+import Batiment from '../models/batiment-model.js';
 import sinon from 'sinon'; // Import Sinon for mocking
 /** careful with the test for delete! it will not work if you run it twice, since it's deleting using the id, once used it actually delete the batiment with no go backs, so don't use it unless u r sure 100 % you don't want the info from the database
  * for now the function is commented to make sure it does not delete things
@@ -16,7 +16,7 @@ describe('Controller User Tests', () => {
     let res;
 
     beforeEach(() => {
-        req = { 
+        req = {
             session: { 
                 user: { 
                     id: 38, 
@@ -24,7 +24,7 @@ describe('Controller User Tests', () => {
                     role: 'kingAdmin' 
                 },
                 errorMessage :'err'
-            } ,
+            },
             params: {
                 userId: 1
             },
@@ -55,12 +55,12 @@ describe('Controller User Tests', () => {
 
 
     describe('postEdit', () => {
-        it('should redirect /batiment/${batimentId}  if batiment does not exist', async () => {
+        it('should redirect /users/${req.params.userId}  if user does not exist', async () => {
             await postEdit(req, res);
             sinon.assert.calledWith(res.redirect, `/users/${req.params.userId}`);
         });
         
-        it('should render to home/404 view if batiment does not exist', async () => {
+        it('should render to home/404 view if user does not exist', async () => {
             req = { 
                 session: { 
                     user: { 
@@ -91,7 +91,7 @@ describe('Controller User Tests', () => {
     });
 
     describe('getEdit', () => {
-        it('should render "users/register" view if user has permission', async () => {
+        it('should render "users/editProfile" view if user has permission', async () => {
             await getEdit(req, res);
             sinon.assert.calledWith(res.render, 'users/editProfile', sinon.match.object);
         });
@@ -403,7 +403,7 @@ describe('Controller User Tests', () => {
     describe('delete', () => {
         
         
-        // it('should delete the user and redirect to batiments', async () => {
+        // it('should delete the user and redirect to the list of users', async () => {
         //     req = { 
         //         session: { 
         //             user: { 

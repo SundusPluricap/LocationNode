@@ -12,14 +12,14 @@ dotenv.config();
 const { VIEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } = process.env;
 
 export const create = async (req, res) => {
-    const users = await getUsersOrderedByEstablishmentId()
-    const user = req.session.user;
-    // ...
-    // Check if there's an error message in the session
-    const errorMessage = req.session.errorMessage;
-    // Clear the error message from the session
-    delete req.session.errorMessage;
-    res.render('clients/createClient', { errorMessage,users,user });
+  const users = await getUsersOrderedByEstablishmentId()
+  const user = req.session.user;
+  // ...
+  // Check if there's an error message in the session
+  const errorMessage = req.session.errorMessage;
+  // Clear the error message from the session
+  delete req.session.errorMessage;
+  res.render('clients/createClient', { errorMessage,users,user });
 };
 
 export const createClient = async (req, res) => {
@@ -88,13 +88,10 @@ export const showAllClients = async (req, res) => {
       // console.log("clients", clients.user);
     } else {
       // Handle cases where user's role is not 'kingAdmin' and no establishment is associated
-      res.status(403).send('Access denied.');
+      res.status(403).render('home/403', {user});
     }
     
-      res.render('clients/all-clients', { clients, user, viewPermission, isKing, belongTo });
-    
-      
-    
+    res.render('clients/all-clients', { clients, user, viewPermission, isKing, belongTo });
     console.log("showAllClients done");
   } catch (error) {
     console.error('Error fetching clients:', error);
@@ -181,6 +178,7 @@ export const getEdit = async (req, res) => {
 }
 
 export const postEdit = async (req, res) => {
+  const user = req.session.user
   const clientId = parseInt(req.params.clientId, 10);
   
   try {
