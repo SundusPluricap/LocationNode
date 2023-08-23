@@ -54,7 +54,8 @@ export const oneUserWithRole = async (establishmentId, role) => {
         role: role,
         establishmentId
       },
-      include: Permission // Include the associated Permission model
+      include: Permission, // Include the associated Permission model
+      include: Establishment
     });
 
     return foundUser;
@@ -70,7 +71,8 @@ export const specificUser = async (id) => {
       where: {
         id
       },
-      include: Permission // Include the associated Permission model
+      include: Permission ,// Include the associated Permission model
+      include: Permission
     });
 
     return foundUser;

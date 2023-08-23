@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import {belongTo} from '../utiles/role.permission.js'
 import {clientFindOne,clientFindAll, clientFindAllInOneEstablishment} from '../utiles/client.reqetes.js'
 import {getUsersOrderedByEstablishmentId,getPermissionForUser} from '../utiles/user.requete.js'
-import {isKing} from '../utiles/role.js'
+import {isKing, findSuperAdminOfUser} from '../utiles/role.js'
 dotenv.config();
 const { VIEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } = process.env;
 
@@ -26,21 +26,35 @@ export const createClient = async (req, res) => {
   console.log("createClient starting");
   try {
     const user = req.session.user;
-    const { firstName, lastName, email, phoneNumber } = req.body;
-    let idUser = req.session.user.id; // Default to the logged-in user's ID
+    let superAdmin
+    const { firstName, lastName, email, phoneNumber, adresse, companyName } = req.body;
+    let createdBy = req.session.user.id; // Default to the logged-in user's ID
 
     if (user.role === 'kingAdmin') {
       // If the logged-in user is kingAdmin, get the selected user's ID from the request body
-      idUser = req.body.userName;
+      createdBy = req.body.userName;
+      
+      superAdmin = await findSuperAdminOfUser(createdBy)
+      
+    }
+    else{
+      console.log("here")
+      superAdmin = await findSuperAdminOfUser(user.id)
     }
 
+    
+    let linkedTo = superAdmin.id
+   
     // Create a new client in the database
     const newClient = await Client.create({
       firstName,
       lastName,
       email,
       phoneNumber,
-      idUser 
+      adresse,
+      companyName,
+      createdBy,
+      linkedTo
     });
 
     console.log('User ID set in session:', req.session.user.id);
@@ -61,9 +75,13 @@ export const createClient = async (req, res) => {
 export const showAllClients = async (req, res) => {
 
   try {
+
+    
     console.log("showAllClients starting");
     const user = req.session.user; // Assuming you have the user data in the session
+    let superAdmin = await findSuperAdminOfUser(user.id)
 
+    
     // const userPermissions = await getPermissionForUser(user.id);
     // console.log('hererrerererrerererer--------',userPermissions)
     if (!user) {
@@ -91,7 +109,7 @@ export const showAllClients = async (req, res) => {
       res.status(403).render('home/403', {user});
     }
     
-    res.render('clients/all-clients', { clients, user, viewPermission, isKing, belongTo });
+    res.render('clients/all-clients', { clients, user, viewPermission, isKing, belongTo, superAdmin });
     console.log("showAllClients done");
   } catch (error) {
     console.error('Error fetching clients:', error);
@@ -119,10 +137,8 @@ export const getProfile = async (req, res) => {
     if (!param) {
       return res.status(404).render('home/404', {user});
     }
-    let hasPermission = isKing(user) || (viewPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id)
-    // let hasPermission = viewPermission && (isKing(user) || belongTo(param.User.establishmentId,user.establishmentId) || belongTo(param.User.id,user.id))
-    // console.log('-----------viewPermission--------',hasPermission)
-    // console.log("hasPermission", hasPermission," isKing(user) " , isKing(user),"  viewPermission  ", viewPermission, "belongTo(client.User.establishmentId,user.establishmentId)", belongTo(param.User.establishmentId,user.establishmentId), "belongTo(client.User.id,user.id)", belongTo(param.User.id,user.id), "client.User.id===user.id)", (param.idUser==user.id), "client.User.id" ,param.User.id , "client.idUser", param.idUser)
+    let hasPermission = isKing(user) || (viewPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id)
+    
     if(hasPermission ){
       res.render('clients/profileClient', {  user, param,editPermission, deletePermission, isKing, belongTo });
     }
@@ -158,7 +174,7 @@ export const getEdit = async (req, res) => {
     if (!param) {
       return res.status(404).render('home/404', {user}); // Handle the case when the client ID is not found.
     }
-    let hasPermission = editPermission && (isKing(user) || belongTo(param.User.establishmentId,user.establishmentId) || belongTo(param.User.id,user.id))
+    let hasPermission = editPermission && (isKing(user) || belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.User.id,user.id)
     console.log('-----------editPermission--------',hasPermission)
       // if 
     if(hasPermission ){
@@ -180,6 +196,7 @@ export const getEdit = async (req, res) => {
 export const postEdit = async (req, res) => {
   const user = req.session.user
   const clientId = parseInt(req.params.clientId, 10);
+  const { firstName, lastName, email, phoneNumber, adresse, companyName } = req.body;
   
   try {
     const client = await Client.findByPk(clientId);
@@ -188,12 +205,15 @@ export const postEdit = async (req, res) => {
       return res.status(404).render('home/404', {user});
     }
 
+    
     // Update the user data with the form data
     await client.update({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      phoneNumber: req.body.phoneNumber,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      adresse,
+      companyName
     });
 
     res.redirect(`/clients/${clientId}`);

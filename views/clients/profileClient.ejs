@@ -30,19 +30,40 @@
                     <td><%= param.email %></td>
                     
                 </tr>
+                
                 <tr>
                     <td>Numéro de tél:</td>
                     <td><%= param.phoneNumber %> </td>
                     
                 </tr>
+
                 <tr>
-                    <td>Créé par:</td>
-                    <td><%= param.User.firstName %> </td>
+                    <td>Adresse postal:</td>
+                    <td><%= param.adresse %></td>
                     
                 </tr>
+                <% if (param.companyName) { %>
+                    <tr>
+                        <td>Nom d'entreprise:</td>
+                        <td><%= param.companyName %></td>
+                        
+                    </tr>
+                <% } %>
+
                 <tr>
-                <!-- ////////////////////////// -->
-                <% let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+
+                    <td>Créé par:</td>
+                    <%if (param.createdBy) { %>
+                        <td><%= param.User.firstName %> </td>
+                    <%} else { %>
+                        <td>l'utilisateur a été supprimé ce client est maintenant lié à un superAdmin </td>
+                    <%} %>
+                    
+                </tr>
+                
+                <tr>
+                
+                <% let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id) %>
 
                 <% if (hasPermission) { %>
                     <td colspan="3" align="center">
@@ -54,7 +75,7 @@
                         <button type="button" class="disabled" disabled>Can't Edit this Client</button>
                     </td>
                 <% } %>
-                <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.idUser,user.id) %>
+                <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id) %>
 
                 <% if (hasPermission2) { %>
                     <td colspan="3" align="center">

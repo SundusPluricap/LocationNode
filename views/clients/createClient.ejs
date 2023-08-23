@@ -25,6 +25,14 @@
                             <label for="phoneNumber" class="form-label">Numéro de tél</label>
                             <input type="phoneNumber" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="+3300000000" required>
                         </div>
+                        <div class="mb-3">
+                            <label for="adresse" class="form-label">Adresse postal</label>
+                            <input type="adresse" class="form-control" id="adresse" name="adresse" placeholder="adresse complete" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="companyName" class="form-label">Nom d'entreprise <span style="color:rgba(26, 2, 2, 0.381)">   si le type de client est entreprise </span></label>
+                            <input type="companyName" class="form-control" id="companyName" name="companyName" placeholder="Pluricap">
+                        </div>
                         
                         <% if (user.role === "kingAdmin") { %>
                             <div class="mb-3">

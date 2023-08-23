@@ -1,5 +1,7 @@
-import {getUsersWithRole} from '../utiles/user.requete.js'
+import {getUsersWithRole, oneUserWithRole, specificUser} from '../utiles/user.requete.js'
 import Permission from '../models/permission-model.js';
+import User from '../models/user-model.js';
+import Establishment from '../models/establishment-model.js';
 import '../models/user-has-permisssion-model.js';
 import Sequelize from 'sequelize';
 
@@ -41,4 +43,11 @@ export const setPermissions = async (req,establishmentId,role) => {
 
 export const isKing = (user) => {
     return user.role === "kingAdmin"
+}
+
+export const findSuperAdminOfUser = async (userId) => {
+    // console.log('shiiiiiiiiiiiiiiiiiiiiiiiii')
+    const foundUser = await specificUser(userId)
+    //   console.log('shiiiiiiiiiiiiiiiiiiiiiiiii',foundUser)
+   return oneUserWithRole(foundUser.establishmentId, "superAdmin")  
 }

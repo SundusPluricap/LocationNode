@@ -18,23 +18,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% let currentEstablishment = null; %>
-                    <% clients.forEach(client => { %>
-                        <% if (user.role === "kingAdmin") { %>
-                            <% if (client.User.Establishment.name !== currentEstablishment) { %>
-                                <tr class="establishmentTab">
-                                    <td colspan="3" class="center establishmentName"><%= client.User.Establishment.name %></td>
-                                </tr>
-                                <% currentEstablishment = client.User.Establishment.name; %>
-                            <% } %>
-                        <% } %>
+                    <% let currentEstablishment = null; 
+                        clients.forEach(client => { 
+                            if (user.role === "kingAdmin") { 
+                                
+
+                                if (client.User.Establishment.name != currentEstablishment) { %>
+                                    <tr class="establishmentTab">
+                                        <td colspan="3" class="center establishmentName"><%= client.User.Establishment.name %></td>
+                                    </tr>
+                                    <% currentEstablishment = client.User.Establishment.name; 
+                                } 
+                             } %>
                         <tr>
                             <td>
                                 <%= client.firstName %> <%= client.lastName %>
                                 <% if (user.role === "kingAdmin") { %>
                                     <div class="hoverMe"> 👤
                                         <span class="hoverText">
-                                            <%= client.User.firstName %> de <%= client.User.Establishment.name %>
+                                            <%if (client.createdBy) { %> 
+                                                <%= client.User.firstName %> de <%= client.User.Establishment.name %>
+                                            <%} else { %>
+                                                l'utilisateur n'est pas défini ce client est maintenant lié à un superAdmin
+                                            <%} %>
                                         </span>
                                     </div>
                                 <% }else {%>
@@ -50,7 +56,7 @@
                             </td>
                             
                             
-                                <% let hasPermission = isKing(user) || (viewPermission && belongTo(client.User.establishmentId,user.establishmentId)) || belongTo(client.idUser,user.id)
+                                <% let hasPermission = isKing(user) || (viewPermission && belongTo(client.User.establishmentId,user.establishmentId)) || belongTo(client.createdBy,user.id)
                                     
                                 %>
                                 

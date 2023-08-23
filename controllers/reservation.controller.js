@@ -1,9 +1,6 @@
 import Client from '../models/client-model.js'; // Assuming you have imported the Client model correctly
 
 export const showAll = (req, res) => {
-    // const firstName = req.session.user.firstName;
-    // const lastName = req.session.user.lastName;
-    // const idUser = req.session.user.id;
     const user = req.session.user
     res.render('reservations/index',{user});
 }
@@ -14,9 +11,9 @@ export const create = async (req, res) => {
     // Get the user ID from the session (assuming it's stored in req.session.userId)
     
     const user = req.session.user
-    const idUser = user.id;
+    const createdBy = user.id;
     // Fetch clients whose userId matches the ID saved in the session
-    const clients = await Client.findAll({ where: { idUser } });
+    const clients = await Client.findAll({ where: { createdBy } });
 
     const errorMessage = req.session.errorMessage;
     // Clear the error message from the session

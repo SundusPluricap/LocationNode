@@ -21,6 +21,12 @@
                 <label for="phoneNumber">Numéro de tél:</label>
                 <input type="text" id="phoneNumber" name="phoneNumber" value="<%= param.phoneNumber %>">
 
+                <label for="adresse">Adresse postal:</label>
+                <input type="adresse" id="adresse" name="adresse" value="<%= param.adresse %>">
+
+                <label for="companyName">Nom d'entreprise:</label>
+                <input type="companyName" id="companyName" name="companyName" value="<%= param.companyName %>">
+
                 <% if (user.role === "kingAdmin") { %>
                     <div class="mb-3">
                       <label for="userName" class="form-label">User Name</label>
