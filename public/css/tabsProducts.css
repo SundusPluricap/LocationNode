@@ -14,20 +14,22 @@ body, ul {
 
 .tab-list {
     display: flex;
+    flex-wrap: wrap;
     background-color: #f0f0f0;
     border-bottom: 1px solid #ccc;
-    padding: 8px 0;
+    /* padding: 8px 0; */
 }
 
 .tab-label {
-    /* flex: 1; Distribute equal width among tabs */
-    padding: 8px 16px;
+    
+    padding:16px;
     cursor: pointer;
     user-select: none;
     text-align: center;
     transition: background-color 0.2s;
-    font-size: 16px;
+    font-size: 17px;
     border-right: 1px solid #ccc; /* Add right border to each tab button */
+    border-bottom: 1px solid #ccc;
 }
 
 .tab-label:last-child {

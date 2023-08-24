@@ -72,7 +72,7 @@ export const specificUser = async (id) => {
         id
       },
       include: Permission ,// Include the associated Permission model
-      include: Permission
+      // include: Establishment
     });
 
     return foundUser;
@@ -110,3 +110,34 @@ export const getPermissionForUser = async (id) => {
   }
   return permissions
 }
+
+// export const specificUsernoAsync = (id, callback) => {
+//   try {
+//     User.findOne({
+//       where: {
+//         id
+//       },
+//       // Include the associated Establishment model
+//       include: Establishment
+//     }).then(foundUser => {
+//       callback(null, foundUser); // Call the callback with the result
+//     }).catch(error => {
+//       console.error('Error retrieving users with role:', error);
+//       callback(error); // Call the callback with the error
+//     });
+//   } catch (error) {
+//     console.error('Error in specificUsernoAsync:', error);
+//     callback(error);
+//   }
+// };
+
+// export const callback = (error, user) => {
+//   if (error) {
+//     console.error('Error:', error);
+//     // Handle the error
+//   } else {
+//     // console.log('User:', user);
+//     return user
+//     // Handle the user data
+//   }
+// };

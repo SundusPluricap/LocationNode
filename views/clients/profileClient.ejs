@@ -52,9 +52,16 @@
 
                 <tr>
 
+                    <td>Lié à:</td>
+                    <td><%= param.User.firstName %> </td>
+                                       
+                </tr>
+
+                <tr>
+
                     <td>Créé par:</td>
                     <%if (param.createdBy) { %>
-                        <td><%= param.User.firstName %> </td>
+                        <td><%= createdByUser.firstName %> </td>
                     <%} else { %>
                         <td>l'utilisateur a été supprimé ce client est maintenant lié à un superAdmin </td>
                     <%} %>

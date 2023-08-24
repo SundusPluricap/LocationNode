@@ -6,6 +6,11 @@ import sinon from 'sinon'; // Import Sinon for mocking
 /** careful with the test for delete! it will not work if you run it twice, since it's deleting using the id, once used it actually delete the batiment with no go backs, so don't use it unless u r sure 100 % you don't want the info from the database
  * for now the function is commented to make sure it does not delete things
  * make them a global variable, define them in .env and come back here to call them
+ * 
+ *  DELETE FROM batiments WHERE name LIKE '%unit test%'; 
+ * to delete all unit test from database
+ * careful of the function edit profile
+ * 
 */
 // Find the last added Batiment
 

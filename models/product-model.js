@@ -50,13 +50,7 @@ const Product = sequelize.define('products', {
     type: DataTypes.DATE,
     defaultValue: null,
   },
-  establishment_id: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'establishments',
-      key: 'id',
-    },
-  },
+  
   
 });
 
@@ -64,6 +58,6 @@ const Product = sequelize.define('products', {
 Product.belongsTo(Batiment, { foreignKey: 'batiment_id' , onDelete: 'CASCADE' });
 
 // Define the association between Product and Establishment
-Product.belongsTo(Establishment, { foreignKey: 'establishment_id' , onDelete: 'CASCADE' });
+// Product.belongsTo(Establishment, { foreignKey: 'establishment_id' , onDelete: 'CASCADE' });
 
 export default Product;

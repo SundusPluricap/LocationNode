@@ -19,8 +19,11 @@
             Toutes les salles
           </li>
           <% batiments.forEach((batiment) => { %>
-            <li class="tab-label" onclick="showTabContent('content-<%= batiment.name %>')">
-              <%= batiment.name %>
+            <li class="tab-label" onclick="showTabContent('content-<%= batiment.name %><%= batiment.id %>')">
+              <%= batiment.name %> de
+              <% if (user.role === "kingAdmin" ){%>
+                <%= batiment.Establishment.name %>
+              <%}%>
             </li>
           <% }); %>
         </ul>
@@ -62,7 +65,7 @@
           </div>
           <!-- Content sections for other tabs -->
           <% batiments.forEach((batiment) => { %>
-            <div class="content" id="content-<%= batiment.name %>" style="display: none;">
+            <div class="content" id="content-<%= batiment.name %><%= batiment.id %>" style="display: none;">
               <% products.forEach((product) => { %>
                 <% if (product.batiment_id === batiment.id) { %>
                   <div class="product-item">

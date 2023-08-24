@@ -21,32 +21,26 @@
                     <% let currentEstablishment = null; 
                         clients.forEach(client => { 
                             if (user.role === "kingAdmin") { 
-                                
-
                                 if (client.User.Establishment.name != currentEstablishment) { %>
                                     <tr class="establishmentTab">
                                         <td colspan="3" class="center establishmentName"><%= client.User.Establishment.name %></td>
                                     </tr>
                                     <% currentEstablishment = client.User.Establishment.name; 
                                 } 
-                             } %>
+                            } %>
                         <tr>
                             <td>
                                 <%= client.firstName %> <%= client.lastName %>
                                 <% if (user.role === "kingAdmin") { %>
                                     <div class="hoverMe"> 👤
-                                        <span class="hoverText">
-                                            <%if (client.createdBy) { %> 
-                                                <%= client.User.firstName %> de <%= client.User.Establishment.name %>
-                                            <%} else { %>
-                                                l'utilisateur n'est pas défini ce client est maintenant lié à un superAdmin
-                                            <%} %>
+                                        <span class="hoverText">             
+                                            ce client est lié à <%= client.User.firstName %> de <%= client.User.Establishment.name %>
                                         </span>
                                     </div>
                                 <% }else {%>
                                     <div class="hoverMe"> 👤
                                         <span class="hoverText">
-                                            <%= client.User.firstName %>
+                                            ce client est lié à <%= client.User.firstName %>
                                         </span>
                                     </div>
 

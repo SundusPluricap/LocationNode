@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import {belongTo} from '../utiles/role.permission.js'
 import {clientFindOne,clientFindAll, clientFindAllInOneEstablishment} from '../utiles/client.reqetes.js'
-import {getUsersOrderedByEstablishmentId,getPermissionForUser} from '../utiles/user.requete.js'
+import {getUsersOrderedByEstablishmentId,getPermissionForUser, specificUser} from '../utiles/user.requete.js'
 import {isKing, findSuperAdminOfUser} from '../utiles/role.js'
 dotenv.config();
 const { VIEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT } = process.env;
@@ -75,12 +75,10 @@ export const createClient = async (req, res) => {
 export const showAllClients = async (req, res) => {
 
   try {
-
-    
     console.log("showAllClients starting");
     const user = req.session.user; // Assuming you have the user data in the session
     let superAdmin = await findSuperAdminOfUser(user.id)
-
+    console.log("superAdmin" , superAdmin);
     
     // const userPermissions = await getPermissionForUser(user.id);
     // console.log('hererrerererrerererer--------',userPermissions)
@@ -92,7 +90,11 @@ export const showAllClients = async (req, res) => {
 
     const userPermissions = await getPermissionForUser(user.id);
     let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_CLIENT)
- 
+    // console.log('_______________________________________________________________________________________________')
+
+    // console.log("userPermissions" , viewPermission);
+    // console.log('_______________________________________________________________________________________________')
+
     let clients
     // Check if the user's role is 'kingAdmin'
     if (user.role === 'kingAdmin') {
@@ -105,11 +107,11 @@ export const showAllClients = async (req, res) => {
       clients = await clientFindAllInOneEstablishment(user.establishmentId)
       // console.log("clients", clients.user);
     } else {
-      // Handle cases where user's role is not 'kingAdmin' and no establishment is associated
+      // Handle cases where user's role is not 'kingAdmin' and no estabishment is associated
       res.status(403).render('home/403', {user});
     }
     
-    res.render('clients/all-clients', { clients, user, viewPermission, isKing, belongTo, superAdmin });
+    res.render('clients/all-clients', { clients, user, viewPermission, isKing, belongTo, superAdmin});
     console.log("showAllClients done");
   } catch (error) {
     console.error('Error fetching clients:', error);
@@ -128,19 +130,23 @@ export const getProfile = async (req, res) => {
   let editPermission = userPermissions.some(perm => perm.name.trim() === EDIT_CLIENT)
   let deletePermission = userPermissions.some(perm => perm.name.trim() === DELETE_CLIENT)
 
-  
+  let createdByUser
   const clientId = parseInt(req.params.clientId, 10); // Extract the client ID from the URL parameter and parse it as an integer.
 
   try {
+    
     const param = await clientFindOne(clientId);
-
+    
     if (!param) {
       return res.status(404).render('home/404', {user});
+    }
+    if (param.createdBy){
+      createdByUser = await specificUser(param.createdBy)
     }
     let hasPermission = isKing(user) || (viewPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id)
     
     if(hasPermission ){
-      res.render('clients/profileClient', {  user, param,editPermission, deletePermission, isKing, belongTo });
+      res.render('clients/profileClient', {  user, param,editPermission, deletePermission, isKing, belongTo, createdByUser });
     }
     else {
       res.render('home/403', {user})

@@ -6,7 +6,10 @@ import Batiment from "../models/batiment-model.js";
 export const batimentFindAllInEstablishment = async (user) => {
     
     const batiments = await Batiment.findAll({ 
-        where: { establishmentId : user.establishmentId  }
+        where: { establishmentId : user.establishmentId  },
+        include: {
+            model: Establishment
+        },
     });
   
     return batiments

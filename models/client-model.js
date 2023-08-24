@@ -33,6 +33,17 @@ const Client = sequelize.define('Client', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  
+  codePostal: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  country: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
   companyName: {
     type: DataTypes.STRING,
     allowNull: true,
@@ -43,7 +54,7 @@ const Client = sequelize.define('Client', {
   },
   linkedTo: {
     type: DataTypes.INTEGER,
-    allowNull: true, // Nullable as the association is optional
+    allowNull: false, // Nullable as the association is optional
   },
 });
 

@@ -146,10 +146,6 @@ export const getProfile = async (req, res) => {
         {
           model: Batiment,
         },
-        {
-          model: Establishment,
-          attributes: ['id', 'name'],
-        },
       ],
     });
 
