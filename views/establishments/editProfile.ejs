@@ -14,6 +14,27 @@
             <form action="/establishments/<%= param.id %>/edit" method="POST">
                 <label for="name">Nom:</label>
                 <input type="text" id="name" name="name" value="<%= param.name %>">
+                            
+                <label for="adresse">adresse:</label>
+                <input type="text" id="adresse" name="adresse" value="<%= param.adresse %>">
+
+                <label for="codePostal">codePostal:</label>
+                <input type="text" id="codePostal" name="codePostal" value="<%= param.codePostal %>">
+
+                <label for="country">country:</label>
+                <input type="text" id="country" name="country" value="<%= param.country %>">
+
+                <label for="SIRET">SIRET:</label>
+                <input type="text" id="SIRET" name="SIRET" value="<%= param.SIRET %>">
+
+                <label for="bankName">Nom de banque:</label>
+                <input type="text" id="bankName" name="bankName" value="<%= param.bankName %>">
+
+                <label for="IBAN">IBAN:</label>
+                <input type="text" id="IBAN" name="IBAN" value="<%= param.IBAN %>">
+
+                <label for="BIC">BIC:</label>
+                <input type="text" id="BIC" name="BIC" value="<%= param.BIC %>">
 
                 <button type="submit">Enregistrer les modifications</button>
             </form>

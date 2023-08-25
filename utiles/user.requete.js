@@ -55,7 +55,7 @@ export const oneUserWithRole = async (establishmentId, role) => {
         establishmentId
       },
       include: Permission, // Include the associated Permission model
-      include: Establishment
+      // include: Establishment
     });
 
     return foundUser;
@@ -94,6 +94,11 @@ export const getPermissionForRole = async (establishmentId, role) => {
   } else {
       // console.log('User not found with the specified role.');
   }
+  console.log('__________________________________________________ ' )
+
+  console.log('from getPermissionForRole permissions:',permissions )
+  console.log('__________________________________________________ ' )
+
   return permissions
 }
 

@@ -26,13 +26,20 @@
                                 
                                 <form action="/roles/<%= establishmentId %>/updatePermissionsForSuper/" method="post">
                                     <div class="permissions-container">
-                                        <% permissions.forEach(permission => { %>
+                                        <% permissions.forEach(permission => {
+                                            console.log('__________________________________________________ ' )
+                                            console.log('superPermissions: ',superPermissions )
+                                            %>
                                             <label>
+                                                
+
                                                 <input type="checkbox" name="superPermissions" value="<%= permission.id %>"
-                                                <% if ((superPermissions) && superPermissions.some(perm => perm.name.trim() === permission.name.trim())) { %>
+                                                <% if ((superPermissions) && superPermissions.some(perm => perm.name.trim() === permission.name.trim())) {%>
                                                     checked
                                                 <% } %>
                                                 >
+                                                
+                                                
                                                 <%= permission.name %>
                                             </label><br>
                                         <% }) %>

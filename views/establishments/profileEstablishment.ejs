@@ -1,0 +1,128 @@
+<!-- profile Etablissement.ejs -->
+<%- include('../partials/header') -%>
+
+<title><%= param.name %> Profile</title>
+<link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/user.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>Profil de l'etablissement <%= param.name %></h1>
+            <table class="user-profile-table">
+                <tr>
+                    <td>ID:</td>
+                    <td><%= param.id %></td>
+                </tr>
+                <tr>
+                    <td>Nom:</td>
+                    <td><%= param.name %></td>
+                    
+                </tr>
+                <tr>
+                    <td>Adressee:</td>
+                    <td><%= param.adresse %></td>
+                    
+                </tr>
+                <tr>
+                    <td>codePostal:</td>
+                    <td><%= param.codePostal %></td>
+                    
+                </tr>
+                
+                <tr>
+                    <td>Pays:</td>
+                    <td><%= param.country %> </td>
+                    
+                </tr>
+
+                <tr>
+                    <td>SIRET:</td>
+                    <td><%= param.SIRET %></td>
+                    
+                </tr>
+               
+                <tr>
+                    <td>Nom de banque:</td>
+                    <td><%= param.bankName %></td>
+                    
+                </tr>
+                
+
+                <tr>
+
+                    <td>IBAN:</td>
+                    <td><%= param.IBAN %> </td>
+                                       
+                </tr>
+
+                <tr>
+
+                    <td>BIC:</td>                    
+                    <td><%= param.BIC %> </td>
+                    
+                    
+                </tr>
+                
+                <tr>
+
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                    </td>
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                    </td>
+                    
+                
+                <!-- <%/* let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id) %>
+
+                <% if (hasPermission) { %> -->
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                    </td>
+                    
+                <!-- <% } else { %> -->
+                    <!-- <td>
+                        <button type="button" class="disabled" disabled>Can't Edit this Client</button>
+                    </td> -->
+                <!-- <% } %> -->
+                <!-- <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id) %>
+
+                <% if (hasPermission2) { %> -->
+                    <td colspan="3" align="center">
+                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                    </td>
+                    
+                <!-- <% } else { %> -->
+                    <!-- <td>
+                        <button type="button" class="disabled" disabled>Can't Delete this Client</button>
+                    </td> -->
+                <!-- <% }*/ %> -->
+
+
+                <!-- ////////////////////////// -->
+
+
+
+
+
+
+                    <% /* if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)) { */%>
+                    
+                        <!-- <td colspan="3" align="center">
+                            <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                            
+                            <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                        </td> -->
+                    <% /*} else { */%>
+                    <%/* }*/ %>
+                   
+                </tr>
+            </table>
+        </div>
+    </div>
+
+<script src="/js/delete.js"></script>
+
+

@@ -82,9 +82,13 @@ export const getRoles = async (req, res) => {
     //     console.log('ListOf!!!!!!!!!!!!',establishmentPermissions)
 
     // } )
+    console.log('__________________________________________________ ' )
+
+    console.log('from controller superPermissions: ', superPermissions)
+    console.log('__________________________________________________ ' )
     
     // const users = await User.findAll({ include: [Establishment] });
-    res.render('admin/roles.ejs', {permissions,establishments,superPermissions, adminPermissions,editorPermissions, user,oneUserWithRole,establishmentId });
+    res.render('admin/roles.ejs', {permissions,establishments,superPermissions, adminPermissions,editorPermissions, user,establishmentId });
     console.log("get roles done")
 };
 

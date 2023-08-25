@@ -15,8 +15,9 @@
                     <tr>
                         <th>Nom</th>
                         
+                        <th>Voir</th>
                         <th>Modifier</th>
-                        <th>Supprimer</th>
+                        
                         <th> Roles</th>
                     </tr>
                     </thead>
@@ -24,12 +25,15 @@
                     <% establishments.forEach(establishment => { %>
                         <tr>
                             <td><%= establishment.name %> </td>
+
+                            <td align="center">
+                                <a href="/establishments/<%= establishment.id %>" class="view-button" >View</a>
+                            </td>
+
                             <td align="center">
                                 <a href="/establishments/<%= establishment.id %>/edit" class="view-profile-button">Modifier</a>
                             </td>
-                            <td align="center">
-                                <a href="/establishments/<%= establishment.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
-                            </td>
+                            
                             <td align="center">
                                 <a href="/roles/<%= establishment.id %>" class="edit-button" >Roles</a>
                             </td>

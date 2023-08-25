@@ -16,7 +16,41 @@ const Establishment  = sequelize.define('Establishment', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
+  adresse: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  
+  codePostal: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  country: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  SIRET: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  
+  bankName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  IBAN: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+
+  BIC: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },  
 });
 
 export default Establishment;

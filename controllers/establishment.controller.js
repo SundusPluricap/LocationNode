@@ -20,11 +20,19 @@ export const createEstablishment = async (req, res) => {
     console.log("createEstablishment starting")
     try {
         const user = req.session.user
-        const { name } = req.body;
+        const { name, adresse, codePostal, country, SIRET, bankName, IBAN, BIC } = req.body;
+        // console.log( "name:", name, "adresse:",adresse , "codePostal:" , codePostal, "country:",country,  "SIRET:", SIRET, "bankName:",bankName, "IBAN:",IBAN, "BIC:", BIC)
         const successMessage = req.session.successMessage;
        delete req.session.successMessage;
         const newEstablishment = await Establishment.create({
-          name
+          name,
+          adresse,
+          codePostal,
+          country,
+          SIRET,
+          bankName,
+          IBAN,
+          BIC,
         });
     
         console.log('New Establishment created:', newEstablishment.toJSON());
@@ -62,28 +70,27 @@ export const showAlleEstablishments = async (req, res) => {
 };  
 
 
-// export const getProfileEstablishment = async (req, res) => {
-//   console.log("getProfileEstablishment starting")
-//   const firstName = req.session.user.firstName;
-//   const lastName = req.session.user.lastName;
-//   const establishmentId = parseInt(req.params.establishmentId, 10); // Extract the establishment ID from the URL parameter and parse it as an integer.
+export const getProfile = async (req, res) => {
+  console.log("getProfileEstablishment starting")
+  const user = req.session.user
+  const establishmentId = parseInt(req.params.establishmentId, 10); // Extract the establishment ID from the URL parameter and parse it as an integer.
 
-//   try {
-//     // Find the establishment with the given ID in the database.
-//     const establishment = await Establishment.findOne({ where: { id: establishmentId } });
+  try {
+    // Find the establishment with the given ID in the database.
+    const establishment = await Establishment.findOne({ where: { id: establishmentId } });
 
-//     if (!establishment) {
-//       return res.status(404).send('Establishment not found.'); // Handle the case when the establishment ID is not found.
-//     }
-//     const param = establishment
-//     // Render the establishment profile template with the establishment data.
-//     res.render('establishments/profileEstablishment', {  firstName, lastName, param });
-//   } catch (error) {
-//     console.error('Error fetching Establishment:', error);
-//     res.status(500).send('Error fetching establishment. Please try again.');
-//   }
-//   console.log("getProfileEstablishment done")
-// }
+    if (!establishment) {
+      return res.status(404).send('Establishment not found.'); // Handle the case when the establishment ID is not found.
+    }
+    const param = establishment
+    // Render the establishment profile template with the establishment data.
+    res.render('establishments/profileEstablishment', {  user, param });
+  } catch (error) {
+    console.error('Error fetching Establishment:', error);
+    res.status(500).send('Error fetching establishment. Please try again.');
+  }
+  console.log("getProfileEstablishment done")
+}
 
 
 export const getEdit = async (req, res) => {
@@ -110,6 +117,7 @@ export const getEdit = async (req, res) => {
 export const postEdit = async (req, res) => {
   const user = req.session.user
   const establishmentId = parseInt(req.params.establishmentId, 10);
+  const { name, adresse, codePostal, country, SIRET, bankName, IBAN, BIC } = req.body;
   
   try {
     const establishment = await Establishment.findByPk(establishmentId);
@@ -120,7 +128,14 @@ export const postEdit = async (req, res) => {
 
     // Update the user data with the form data
     await establishment.update({
-      name: req.body.name
+      name,
+      adresse,
+      codePostal,
+      country,
+      SIRET,
+      bankName,
+      IBAN,
+      BIC,
     });
 
     res.redirect(`/establishments`);

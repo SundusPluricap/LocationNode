@@ -1,7 +1,7 @@
 import express from "express";
 // import {showAllUsers, getProfile, getEdit, postEdit, deleteUser} from "../controllers/user.controller.js";
 import {isAuthenticated} from "../middlewares/auth-middleware.js"
-import {create, createEstablishment, showAlleEstablishments, getEdit, postEdit, deleteEstablishment} from "../controllers/establishment.controller.js";
+import {create, createEstablishment, showAlleEstablishments,getProfile, getEdit, postEdit, deleteEstablishment} from "../controllers/establishment.controller.js";
 // import Establishment from "../models/establishment-model.js";
 
 
@@ -15,7 +15,7 @@ establishmentRouter.get("/create-establishment",isAuthenticated, create);
 establishmentRouter.post("/create-establishment",isAuthenticated ,createEstablishment);
 
 // // Route handler for /clients/:userId
-// clientRouter.get('/:clientId',isAuthenticated, getProfile);
+establishmentRouter.get('/:establishmentId',isAuthenticated, getProfile);
 
 
 // // // Route handler for displaying the edit user form
