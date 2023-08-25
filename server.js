@@ -7,7 +7,7 @@ import userRouter from "./routes/users.route.js";
 import clientRouter from "./routes/clients.route.js";
 import establishmentRouter from "./routes/establishment.route.js";
 import batimentstRouter from "./routes/batiment.route.js"
-import productRouter from "./routes/product.route.js"
+import roomRouter from "./routes/room.route.js"
 import agendaRouter from "./routes/agenda.route.js"
 import reservationRouter from "./routes/reservation.route.js"
 import roleRouter from "./routes/roles.route.js"
@@ -76,8 +76,8 @@ app.use('/users', userRouter);
 app.use('/clients', clientRouter);
 app.use('/establishments', establishmentRouter);
 app.use('/batiments', batimentstRouter);
-app.use('/products', productRouter);
-app.use('/agenda', agendaRouter);roleRouter
+app.use('/rooms', roomRouter);
+app.use('/agenda', agendaRouter);
 app.use('/reservations', reservationRouter);
 app.use('/roles', roleRouter);
 app.listen(port, hostname, () => {

@@ -8,7 +8,7 @@
                     <h4 class="mb-0">Créer une nouvelle salle</h4>
                 </div>
                 <div class="card-body" >
-                    <form action="/products/create-salle" method="POST" enctype="multipart/form-data">
+                    <form action="/rooms/create-salle" method="POST" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="name" class="form-label">Nom de la salle</label>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
@@ -19,7 +19,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="price" class="form-label">Prix</label>
-                            <input type="number" class="form-control" id="price" name="price" placeholder="0" step="10" required>
+                            <input type="number" class="form-control" id="price" name="price" placeholder="0" required>
                         </div>
                         <div class="mb-3">
                             <label for="image" class="form-label">Photo de la salle</label>
@@ -52,5 +52,5 @@
     </div>
 </div>
 
-<script src="/js/positive.js"></script>
+<!-- <script src="/js/positive.js"></script> -->
 <%- include('../partials/footer') -%>

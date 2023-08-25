@@ -8,7 +8,7 @@
         <%- include('../partials/sidebar') -%>
         <div class="main-content">
             <h1>Modifier les détails de la salle</h1>
-            <form action="/products/<%= param.id %>/edit" method="POST" enctype="multipart/form-data">
+            <form action="/rooms/<%= param.id %>/edit" method="POST" enctype="multipart/form-data">
                 <label for="name">Nom:</label>
                 <input type="text" id="name" name="name" value="<%= param.name %>">
 
@@ -21,7 +21,8 @@
                 <label for="batimentId" class="form-label">Appartient au bâtiment</label>
                 <select class="form-control" id="batimentId" name="batimentId">
                     <% batiments.forEach((batiment) => { %>
-                        <option value="<%= batiment.id %>"><%= batiment.name %></option>
+                        <option value="<%= batiment.id %>"  <%= batiment.id === param.batiment_id ? 'selected' : '' %>><%= batiment.name %> </option>
+
                     <% }); %>
                 </select>
                

@@ -3,7 +3,7 @@ import path from 'path';
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'public/images/products'); // Set the destination folder where uploaded files will be stored
+        cb(null, 'public/images/rooms'); // Set the destination folder where uploaded files will be stored
     },
     filename: function (req, file, cb) {
         const ext = path.extname(file.originalname);

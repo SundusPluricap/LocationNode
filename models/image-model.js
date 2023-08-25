@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
 import Product from './product-model.js'; // Import the Product model
-import Batiment from './batiment-model.js'; // Import the Batiment model
+import Room from './room-model.js'; // Import the Batiment model
 
 dotenv.config();
 
@@ -31,7 +31,7 @@ const Image = sequelize.define('Image', {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
-    batiment_id: {
+    room_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
     },
@@ -43,6 +43,6 @@ const Image = sequelize.define('Image', {
 
 // Define the associations
 Image.belongsTo(Product, { foreignKey: 'product_id', as: 'product' , onDelete: 'CASCADE' });
-Image.belongsTo(Batiment, { foreignKey: 'batiment_id', as: 'batiment' , onDelete: 'CASCADE' });
+Image.belongsTo(Room, { foreignKey: 'room_id', as: 'room' , onDelete: 'CASCADE' });
 
 export default Image;

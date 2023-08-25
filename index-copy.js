@@ -55,7 +55,7 @@ app.post("/", (req, res)=>{
 // app.use('/clients', clientRouter);
 // app.use('/establishments', establishmentRouter);
 // app.use('/batiments', batimentstRouter);
-// app.use('/products', productRouter);
+
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

@@ -14,50 +14,50 @@
 
       <div class="tabs">
         <ul class="tab-list" id="tabList">
-          <!-- First tab for all products -->
-          <li class="tab-label" onclick="showTabContent('content-allProducts')">
+          <!-- First tab for all rooms -->
+          <li class="tab-label" onclick="showTabContent('content-allRooms')">
             Toutes les salles
           </li>
           <% batiments.forEach((batiment) => { %>
             <li class="tab-label" onclick="showTabContent('content-<%= batiment.name %><%= batiment.id %>')">
-              <%= batiment.name %> de
+              <%= batiment.name %> 
               <% if (user.role === "kingAdmin" ){%>
-                <%= batiment.Establishment.name %>
+                de <%= batiment.Establishment.name %>
               <%}%>
             </li>
           <% }); %>
         </ul>
         <div class="tab-content" id="tabContent">
           <!-- Content section for the first tab (All Products) -->
-          <div class="content" id="content-allProducts">
-            <% products.forEach((product) => { %>
+          <div class="content" id="content-allRooms">
+            <% rooms.forEach((room) => { %>
               <div class="product-item">
                 <div class="product-cart">
-                  <p><strong>Nom:</strong> <%= product.name %></p>
-                  <p><strong>Capacité:</strong> <%= product.capacity %></p>
-                  <p><strong>Prix:</strong> <%= product.price %></p>
-                  <% if (product.Batiment) { %> <!-- Check if product.Batiment is defined -->
-                    <p><strong>Appartient au bâtiment:</strong> <%= product.Batiment.name %></p> <!-- Use product.Batiment.name -->
-                    <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
+                  <p><strong>Nom:</strong> <%= room.name %></p>
+                  <p><strong>Capacité:</strong> <%= room.capacity %></p>
+                  <p><strong>Prix:</strong> <%= room.price %></p>
+                  <% if (room.Batiment) { %> <!-- Check if room.Batiment is defined -->
+                    <p><strong>Appartient au bâtiment:</strong> <%= room.Batiment.name %></p> <!-- Use room.Batiment.name -->
+                    <p><strong>Adresse:</strong> <%= room.Batiment.adresse %></p>
                     
                   <% } else { %>
                     <p><strong>Appartient au bâtiment:</strong> Non spécifié</p>
                   <% } %>
                   <div class="button-container">
                     <% if (hasPermission) { %>
-                      <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
+                      <a href="/rooms/<%= room.id %>" class="edit-button">Voir</a>
                     <% } else { %>
                       <button type="button" class="disabled" disabled>Can't view this salle</button>
                     <% } %>
                    
                     <% if (hasPermission1) { %>
-                      <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
+                      <a href="/rooms/<%= room.id %>/reserve" class="reserve-button">Réserve</a>
                     <% } else { %>
                       <button type="button" class="disabled" disabled>Can't reserve this salle</button>
                     <% } %>
                     
                   </div>
-                  <!-- Add other product details as needed -->
+                  <!-- Add other room details as needed -->
                   
                 </div>
               </div>
@@ -66,30 +66,30 @@
           <!-- Content sections for other tabs -->
           <% batiments.forEach((batiment) => { %>
             <div class="content" id="content-<%= batiment.name %><%= batiment.id %>" style="display: none;">
-              <% products.forEach((product) => { %>
-                <% if (product.batiment_id === batiment.id) { %>
+              <% rooms.forEach((room) => { %>
+                <% if (room.batiment_id === batiment.id) { %>
                   <div class="product-item">
                     <div class="product-cart">
-                      <p><strong>Nom:</strong> <%= product.name %></p>
-                      <p><strong>Capacité:</strong> <%= product.capacity %></p>
-                      <p><strong>Prix:</strong> <%= product.price %></p>
-                      <p><strong>Adresse:</strong> <%= product.Batiment.adresse %></p>
+                      <p><strong>Nom:</strong> <%= room.name %></p>
+                      <p><strong>Capacité:</strong> <%= room.capacity %></p>
+                      <p><strong>Prix:</strong> <%= room.price %></p>
+                      <p><strong>Adresse:</strong> <%= room.Batiment.adresse %></p>
 
                       <div class="button-container">
                         <% if (hasPermission) { %>
-                          <a href="/products/<%= product.id %>" class="edit-button">Voir</a>
+                          <a href="/rooms/<%= room.id %>" class="edit-button">Voir</a>
                         <% } else { %>
                           <button type="button" class="disabled" disabled>Can't view this salle</button>
                         <% } %>
                        
                         <% if (hasPermission1) { %>
-                          <a href="/products/<%= product.id %>/reserve" class="reserve-button">Réserve</a>
+                          <a href="/rooms/<%= room.id %>/reserve" class="reserve-button">Réserve</a>
                         <% } else { %>
                           <button type="button" class="disabled" disabled>Can't reserve this salle</button>
                         <% } %>
 
                       </div>
-                      <!-- Add other product details as needed -->
+                      <!-- Add other room details as needed -->
                     </div>
                   </div>
                 <% } %>
@@ -98,7 +98,7 @@
           <% }); %>
           <% 
           if (hasPermission2) { %>
-            <a href="/products/create-salle" class="add-salle-button">Ajouter une salle</a>
+            <a href="/rooms/create-salle" class="add-salle-button">Ajouter une salle</a>
             <% } else { %>
             <button type="button" class=" disabled" disabled>Can't create a building</button>   
           <% } %>
