@@ -124,6 +124,7 @@ export const showAllUsers = async (req, res) => {
 
 export const getProfile = async (req, res) => {
   const user = req.session.user;
+  
   const userId = parseInt(req.params.userId, 10);
   
   // role_has_permission(user.role, "view")
@@ -177,25 +178,65 @@ export const getEdit = async (req, res) => {
 
 export const postEdit = async (req, res) => {
   const userId = parseInt(req.params.userId, 10);
-  
+  const activeUserSessions = req.session.activeUserSessions
   try {
+    const { firstName, lastName, email, role, establishmentId, password } = req.body;
+
     const user = await User.findByPk(userId);
 
     if (!user) {
       return res.status(404).render('home/404', {user});
     }
+    if(password){
+      const hashedPassword = await bcrypt.hash(password, 10);
+      // console.log("here------------------reqbody", req.body)
+      // Update the user data with the form data
+      await user.update({
+        firstName,
+        lastName,
+        email,
+        password: hashedPassword,
+        role,
+        establishmentId,
+      });
+    }else{
+      await user.update({
+        firstName,
+        lastName,
+        email,
+        role,
+        establishmentId,
+      });
+    }
 
-    console.log("here------------------reqbody", req.body)
-    // Update the user data with the form data
-    await user.update({
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      email: req.body.email,
-      role: req.body.role,
-      establishmentId : req.body.establishmentId
-    });
+    // activeUserSessions
+    // activeUserSessions.forEach(session => {
+    //   console.log('-------------------------------------------------------------------------')
+
+    //   console.log('logged here',session.userid); // Access the userid property of each session
+    //   console.log('-------------------------------------------------------------------------')
+
+    //   // You can access other properties of the session object as well
+    //   // console.log(session.firstName);
+    //   // console.log(session.lastName);
+    //   // ... other properties
+    // });
+    const isUserActive = activeUserSessions.some(session => session.userid.id === user.id);
+        console.log('--------------------------------activeUserSessions-----------------------------------------', activeUserSessions)
+        console.log('-------------------------------------------------------------------------')
+
+
+        console.log('------------------------------------user edited-------------------------------------', user)
+
+        console.log('-------------------------------------------------------------------------')
+
+        console.log('-------------------------------------------------------------------------')
+        console.log('---------------------- user is logged in ----------------------', isUserActive)
+        console.log('-------------------------------------------------------------------------')
+
 
     if(user.id === req.session.user.id){
+      console.log('----------------------users in session-----------------------------', req.session)
       req.session.user = user
     }
     // console.log("user update: " , user)

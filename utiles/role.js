@@ -36,9 +36,6 @@ export const setPermissions = async (req,establishmentId,role) => {
         }
     }
     
-    // if (selectedPermissions){
-
-    // }
 }
 
 export const isKing = (user) => {

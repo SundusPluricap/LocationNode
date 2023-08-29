@@ -12,8 +12,8 @@
             <h1>Profil de l'etablissement <%= param.name %></h1>
             <table class="user-profile-table">
                 <tr>
-                    <td>ID:</td>
-                    <td><%= param.id %></td>
+                    <td colspan="3" align="center">ID:</td>
+                    <td colspan="3" align="center"><%= param.id %></td>
                 </tr>
                 <tr>
                     <td>Nom:</td>
@@ -67,57 +67,46 @@
                 
                 <tr>
 
-                    <td colspan="3" align="center">
-                        <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
-                    </td>
-                    <td colspan="3" align="center">
-                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
-                    </td>
-                    
-                
-                <!-- <%/* let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id) %>
 
-                <% if (hasPermission) { %> -->
-                    <td colspan="3" align="center">
-                        <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
-                    </td>
-                    
-                <!-- <% } else { %> -->
-                    <!-- <td>
-                        <button type="button" class="disabled" disabled>Can't Edit this Client</button>
-                    </td> -->
-                <!-- <% } %> -->
-                <!-- <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.createdBy,user.id) %>
+                    <% let hasPermission = isKing(user) || (editPermission && belongTo(param.id,user.establishmentId))  %>
 
-                <% if (hasPermission2) { %> -->
-                    <td colspan="3" align="center">
-                        <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
-                    </td>
-                    
-                <!-- <% } else { %> -->
-                    <!-- <td>
-                        <button type="button" class="disabled" disabled>Can't Delete this Client</button>
-                    </td> -->
-                <!-- <% }*/ %> -->
-
-
-                <!-- ////////////////////////// -->
-
-
-
-
-
-
-                    <% /* if (bigger_than(user.role, param.User.role) || belongTo(param.User.id,user.id)) { */%>
-                    
-                        <!-- <td colspan="3" align="center">
+                    <% if (hasPermission) { %>
+                        <td colspan="3" align="center">
                             <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
-                            
+                        </td>
+                        
+                    <% } else { %>
+                        <td>
+                            <button type="button" class="disabled" disabled>Can't Edit this Client</button>
+                        </td>
+                    <% } %>
+                    <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.id,user.establishmentId)) %>
+    
+                    <% if (hasPermission2) { %>
+                        <td colspan="3" align="center">
                             <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
-                        </td> -->
-                    <% /*} else { */%>
-                    <%/* }*/ %>
+                        </td>
+                        
+                    <% } else { %>
+                        <td>
+                            <button type="button" class="disabled" disabled>Can't Delete this Client</button>
+                        </td>
+                    <% } %>
+
                    
+                </tr>
+
+                <tr>
+                    <td colspan="3" align="center">
+                        <a href="/users" class="view-button" >utilisateurs</a>
+                    </td>
+                    <td colspan="3" align="center">
+                        <a href="/batiments" class="view-button"> Bâtiments</a>
+                    </td>
+                    <td colspan="3" align="center">
+                        
+                        <a href="/rooms" class="view-button"> Salles</a>
+                    </td>
                 </tr>
             </table>
         </div>

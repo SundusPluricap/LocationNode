@@ -15,7 +15,7 @@ export const dashboard = (req, res) => {
   if (req.session.user.id) {
     const user = req.session.user
     
-    console.log("The user is logged in (using session)")
+    // console.log("The user is logged in (using session)")
     
     res.render('home/dashboard', { user });
     

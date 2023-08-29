@@ -50,19 +50,19 @@
                             <% } %>
                                 
                         </div>
-                        <% /* if (user.role === "kingAdmin") { console.log("aaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")%>
-                            <!-- <div class="mb-3">
+                        <%  if (user.role === "kingAdmin") { %>
+                            <div class="mb-3">
                                 <label for="establishmentId" class="form-label">Select Etablissement</label>
-                                <select class="form-control" id="establishmentId" name="establishmentId" required> -->
+                                <select class="form-control" id="establishmentId" name="establishmentId" required> 
                                 <% establishments.forEach((establishment) => { %>
-                                <!-- <option value="<%= establishment.id %>"><%= establishment.name %></option> -->
+                                 <option value="<%= establishment.id %>"><%= establishment.name %></option>
                                 <% }); %>
-                                <!-- </select>
-                            </div> -->
+                             </select>
+                            </div>
                         <% } %>
                         
 
-                        <% if (user.role !== "editor") { %>
+                        <% /* if (user.role !== "editor") { %>
                             <!-- <div class="mb-3">
                               <label class="form-label">Select permissions</label> -->
                               <% permissions.forEach(permission => { %>

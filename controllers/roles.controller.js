@@ -95,10 +95,14 @@ export const getRoles = async (req, res) => {
 export const setPermissionsForSuper = async (req, res) => {
     console.log("setPermissionsForSuper started")
     const establishmentId = req.params.establishmentId
+    console.log('______________________________here1____________________________________________')
+    console.log('establishmentId', establishmentId)
     const user = req.session.user
     const selectedPermissions = req.body.superPermissions || [];
     // console.log("!!!!!!!!!!!!!!!selectedPermissions!!!!!!!!!!!!!!!!!",selectedPermissions)
-    setPermissions(req,establishmentId,"superAdmin")
+    await setPermissions(req,establishmentId,"superAdmin")
+    console.log('______________________________here2____________________________________________')
+    console.log('setPermissions(req,establishmentId,"superAdmin")',await setPermissions(req,establishmentId,"superAdmin"))
     // if(selectedPermissions){
 
     // }

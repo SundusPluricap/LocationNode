@@ -38,7 +38,7 @@ export const checkUserExistence = async (req, res, next) => {
 export const ifManyUsers = async (req, res, next) => {
     try {
         // const user = req.session.user
-        console.log("ifManyUsers starting req: |||||||||", req.body)
+        console.log("||||||||| ifManyUsers starting req: |||||||||")
         const { email, password } = req.body;
     
         // Check if the user already exists in the database

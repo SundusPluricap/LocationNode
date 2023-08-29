@@ -27,7 +27,7 @@ export const createClient = async (req, res) => {
   try {
     const user = req.session.user;
     let superAdmin
-    const { firstName, lastName, email, phoneNumber, adresse, companyName } = req.body;
+    const { firstName, lastName, email, phoneNumber, adresse, companyName, codePostal, country} = req.body;
     let createdBy = req.session.user.id; // Default to the logged-in user's ID
 
     if (user.role === 'kingAdmin') {
@@ -52,6 +52,8 @@ export const createClient = async (req, res) => {
       email,
       phoneNumber,
       adresse,
+      codePostal,
+      country,
       companyName,
       createdBy,
       linkedTo
@@ -83,7 +85,7 @@ export const showAllClients = async (req, res) => {
     // const userPermissions = await getPermissionForUser(user.id);
     // console.log('hererrerererrerererer--------',userPermissions)
     if (!user) {
-      // Handle cases where user is not authenticated
+      // Handle cases where client is not authenticated
       res.status(401).send('User not authenticated.');
       return;
     }
@@ -181,7 +183,7 @@ export const getEdit = async (req, res) => {
       return res.status(404).render('home/404', {user}); // Handle the case when the client ID is not found.
     }
     let hasPermission = editPermission && (isKing(user) || belongTo(param.User.establishmentId,user.establishmentId)) || belongTo(param.User.id,user.id)
-    console.log('-----------editPermission--------',hasPermission)
+    // console.log('-----------editPermission--------',hasPermission)
       // if 
     if(hasPermission ){
       res.render('clients/editProfile', { param, user, users });

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import Establishment from '../models/establishment-model.js';
-
+let activeUserSessions= [];
 dotenv.config();
 const { SESSION_SECRET } = process.env;
 
@@ -46,7 +46,7 @@ export const verifyLogin = async (req, res) => {
             console.log("req.session.errorMessage:  ", req.session.errorMessage)
             return res.redirect('/login');
         }
-
+        req.session.user = user;
         // Compare the provided password with the hashed password in the database
         const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -56,29 +56,42 @@ export const verifyLogin = async (req, res) => {
             return res.redirect('/login');
         }
 
+        activeUserSessions.push( { userid: user });
         // Set the user ID in the session to keep track of the authenticated user
-        req.session.user = user;
-        
-        // const token = jwt.sign(
-        //     {
-        //         userId: user.id, // You can include any user-specific data in the token payload
-        //         role: user.role,
-        //     },
-        //     SESSION_SECRET,
-        //     { expiresIn: '1h' } // Token will expire in 1 hour
-        // );
-        // Redirect the user to the desired page after successful login (e.g., dashboard, home)
-        // res.redirect(`/dashboard?token=${token}`);
+        req.session.activeUserSessions = activeUserSessions;
+        // const isUserActive = activeUserSessions.some(session => session.userid === user);
+        // console.log('-------------------------------------------------------------------------')
+        // console.log('----------------------logged in ----------------------', isUserActive)
+        // console.log('-------------------------------------------------------------------------')
 
-        // Check the user's role and redirect accordingly
-        if (user.role === 'admin') {
-            res.redirect(`/dashboard`);
-        } else if (user.role === 'assistant') {
-            res.redirect(`/dashboard`);
-        } else {
-            // If the role is not explicitly defined, you can redirect to a common dashboard or home page
-            res.redirect('/dashboard');
-        }
+        // console.log('-----------------------------------111--------------------------------------')
+
+        // activeUserSessions.forEach(session => {
+        // console.log('-----------------------------------in loop--------------------------------------')
+
+        //     console.log('logged',session.userid); // Access the userid property of each session
+        //     // You can access other properties of the session object as well
+        //     // console.log(session.firstName);
+        //     // console.log(session.lastName);
+        //     // ... other properties
+        //   });
+
+
+        //   req.session.activeUserSessions.forEach(session => {
+        //     console.log('req.session logged',session.userid); // Access the userid property of each session
+        //     // You can access other properties of the session object as well
+        //     // console.log(session.firstName);
+        //     // console.log(session.lastName);
+        //     // ... other properties
+        //   });
+
+        // console.log('-----------------------------------111--------------------------------------')
+
+        // console.log('-------------------------------------------------------------------------')
+
+
+       res.redirect('/dashboard');
+        
     } catch (error) {
         console.error('Error during login:', error);
         res.status(500).send('Error during login. Please try again.');
@@ -91,14 +104,51 @@ export const chooseEstablishmentPost = async (req, res) => {
     console.log("chooseEstablishmentPost starting");
     try {
         const { establishmentId } = req.body;
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",req.body)
+        // console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",req.body)
         // const user = req.session.manyEstablishmentsForSameUser
         // console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh user.establishmentId: ",user.Establishment.id)
         // Find the user with the given establishmentId in the session data
         const user = req.session.manyEstablishmentsForSameUser.find(
             user => user.Establishment.id === parseInt(establishmentId)
         );
-        console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh user",user)
+
+        
+        activeUserSessions.push( { userid: user });
+        // Set the user ID in the session to keep track of the authenticated user
+        // req.session.user = user;
+        // const isUserActive = activeUserSessions.some(session => session.userid === user);
+        // console.log('-------------------------------------------------------------------------')
+        // console.log('----------------------logged in ----------------------', isUserActive)
+        // console.log('-------------------------------------------------------------------------')
+        req.session.activeUserSessions = activeUserSessions;
+        // console.log('----------------------logged in----------------------', activeUserSessions)
+        // console.log('-----------------------------------111--------------------------------------')
+
+        // activeUserSessions.forEach(session => {
+        // console.log('-----------------------------------in loop--------------------------------------')
+
+        //     console.log('logged',session.userid); // Access the userid property of each session
+        //     // You can access other properties of the session object as well
+        //     // console.log(session.firstName);
+        //     // console.log(session.lastName);
+        //     // ... other properties
+        //   });
+
+
+        //   req.session.activeUserSessions.forEach(session => {
+        //     console.log('req.session logged',session.userid); // Access the userid property of each session
+        //     // You can access other properties of the session object as well
+        //     // console.log(session.firstName);
+        //     // console.log(session.lastName);
+        //     // ... other properties
+        //   });
+
+        // console.log('-----------------------------------111--------------------------------------')
+
+        // console.log('-------------------------------------------------------------------------')
+
+
+        // console.log("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh user",user)
         if (!user) {
             req.session.errorMessage = 'No user found for the selected establishment';
             console.log("req.session.errorMessage:  ", req.session.errorMessage);
