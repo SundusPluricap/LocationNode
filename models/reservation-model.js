@@ -21,11 +21,15 @@ const Reservation = sequelize.define('Reservation', {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  endDate: {
-    type: DataTypes.DATE,
+  startTime: {
+    type: DataTypes.TIME,
     allowNull: false,
   },
-  reason: {
+  endTime: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+  objet: {
     type: DataTypes.STRING,
     allowNull: true,
   },
@@ -34,23 +38,18 @@ const Reservation = sequelize.define('Reservation', {
     allowNull: false,
   },
   status: {
+    type: DataTypes.ENUM,
+    allowNull: false,
+  },
+  devis: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  facture: {
     type: DataTypes.STRING,
     allowNull: false,
   }
 });
-
-// Synchronize the model with the database (create the table if it doesn't exist)
-// Note: This should be done only once in the application, for example, during the initialization phase.
-// You can use Sequelize migrations in a real-world application to manage database schema changes.
-// (async () => {
-//   try {
-//     await Reservation.sync();
-//     console.log('Reservation table synced successfully.');
-//   } catch (error) {
-//     console.error('Error syncing Reservation table:', error);
-//   }
-// })();
-
 
 Client.hasMany(Reservation, { foreignKey: 'clientId' , onDelete: 'CASCADE' });
 Reservation.belongsTo(Client, { foreignKey: 'clientId' , onDelete: 'CASCADE' });

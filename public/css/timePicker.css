@@ -1,0 +1,18 @@
+.time-picker {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .time-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+  .time-option {
+    padding: 8px;
+    cursor: pointer;
+  }
