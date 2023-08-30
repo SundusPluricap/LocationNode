@@ -13,10 +13,7 @@ const sequelize = new Sequelize(db, username, mdp, {
 
 // Define the Reservation model
 const Reservation = sequelize.define('Reservation', {
-  clientId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
+  
   startDate: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -38,7 +35,7 @@ const Reservation = sequelize.define('Reservation', {
     allowNull: false,
   },
   status: {
-    type: DataTypes.ENUM,
+    type: DataTypes.ENUM('pending', 'confirmed', 'canceled'),
     allowNull: false,
   },
   devis: {
@@ -48,7 +45,19 @@ const Reservation = sequelize.define('Reservation', {
   facture: {
     type: DataTypes.STRING,
     allowNull: false,
-  }
+  },
+  clientId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  salleId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
 Client.hasMany(Reservation, { foreignKey: 'clientId' , onDelete: 'CASCADE' });

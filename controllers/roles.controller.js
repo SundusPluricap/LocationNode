@@ -118,7 +118,7 @@ export const setPermissionsForAdmin = async (req, res) => {
     const user = req.session.user
     const selectedPermissions = req.body.superPermissions || [];
     // console.log("!!!!!!!!!!!!!!!selectedPermissions!!!!!!!!!!!!!!!!!",selectedPermissions)
-    setPermissions(req,establishmentId,"admin")
+    await setPermissions(req,establishmentId,"admin")
     // if(selectedPermissions){
 
     // }
@@ -136,7 +136,7 @@ export const setPermissionsForEditor = async (req, res) => {
     // const selectedPermissions = req.body.superPermissions || [];
     
     // console.log("!!!!!!!!!!!!!!!selectedPermissions!!!!!!!!!!!!!!!!!",selectedPermissions)
-    setPermissions(req,establishmentId,"editor")
+    await setPermissions(req,establishmentId,"editor")
     // if(selectedPermissions){
 
     // }
