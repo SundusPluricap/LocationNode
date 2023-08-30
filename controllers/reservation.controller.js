@@ -9,6 +9,7 @@ import {getRoomsByEstablishment, getAllRooms} from '../utiles/room.requete.js'
 import {getPermissionForUser} from '../utiles/user.requete.js'
 const { RESERVE_SALLE} = process.env;
 
+import {setPermissionsByDefault} from '../utiles/role.js'
 import { isKing } from '../utiles/role.js';
 export const showAll = (req, res) => {
     const user = req.session.user
@@ -140,7 +141,7 @@ export const createPost = async(req, res) => {
   }
 };
 
-export const download = (req, res) => {
+export const download = async (req, res) => {
   // const filename = `devis_0d6e7ef2-087e-4a72-a0b4-10a1d6ecb207.pdf`;
 
   //   // Determine the base directory
@@ -159,7 +160,8 @@ export const download = (req, res) => {
   //     }
   //   });
   const user = req.session.user
-  // getRoomsByEstablishment(req,res,user.establishmentId)
+  await setPermissionsByDefault(user.establishmentId,'superAdmin')
+  res.redirect('/establishments')
   
 };
 
