@@ -1,5 +1,5 @@
 import express from "express";
-import {register, createUser, showAllUsers, getProfile, getEdit, postEdit, deleteUser} from "../controllers/user.controller.js";
+import {register, createUser, showAllUsers, getProfile, getEdit, passwordResetGet, passwordResetPost, postEdit, deleteUser} from "../controllers/user.controller.js";
 import { isAuthenticated} from "../middlewares/auth-middleware.js"
 import {checkUserExistence} from "../middlewares/user.middleware.js"
 
@@ -15,7 +15,8 @@ userRouter.get('/:userId', isAuthenticated, getProfile);
 
 // Route handler for displaying the edit user form
 userRouter.get('/:userId/edit', isAuthenticated, getEdit);
-
+userRouter.get('/:userId/passwordreset', isAuthenticated, passwordResetGet);
+userRouter.post('/:userId/passwordreset', isAuthenticated, passwordResetPost );
 // Route handler for handling form submission and updating user data
 userRouter.post('/:userId/edit', isAuthenticated, postEdit);
 

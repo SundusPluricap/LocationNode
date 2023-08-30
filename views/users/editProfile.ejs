@@ -1,6 +1,7 @@
 <!-- editProfile.ejs -->
 <%- include('../partials/header') -%>
 <title>Edit <%= findUser.firstName %> <%= findUser.lastName %> Profile</title>
+<!-- <link rel="stylesheet" href="/css/profile.css"> -->
 <link rel="stylesheet" href="/css/editProfile.css">
 </head>
 <body>
@@ -18,11 +19,6 @@
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" value="<%= findUser.email %>">
 
-                    <% if (user.role === "kingAdmin" || user.id === findUser.id) { %>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" value="<%= findUser.password %>">
-
-                    <% } %>
                     <% if (user.role === "kingAdmin" && user.id !== findUser.id) { %>
 
                         
@@ -42,7 +38,12 @@
                         </select>
                     <% } %>
 
+
                     <button type="submit">Save Changes</button>
+
+                    <% if (user.role === "kingAdmin" || user.id === findUser.id) { %>
+                        <a  href="/users/<%= findUser.id %>/passwordreset" class="edit-button">change Password</a>
+                    <% } %>
                 </form>
             </div>
        

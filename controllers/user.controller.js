@@ -10,6 +10,7 @@ import {bigger_than, establishmentCheck} from '../utiles/role.permission.js'
 import {getUsersOrderedByEstablishmentId, getUsersFromSameEstablishment, getUsersWithRole} from '../utiles/user.requete.js'
 import {permissionsList} from '../utiles/permission.requetes.js'
 import '../models/user-has-permisssion-model.js';
+import { isKing } from "../utiles/role.js";
 
 dotenv.config();
 const { SESSION_SECRET } = process.env;
@@ -72,17 +73,17 @@ export const createUser = async (req, res) => {
     // console.log('newUser.id:', newUser.id);
     console.log('New user created:', newUser.toJSON());
     
-    let users;
+    // let users;
 
-    if (user.role === "kingAdmin") {
-      // If the user is a "kingAdmin", fetch all users
-      users = await getUsersOrderedByEstablishmentId()
-    } else {
-      // If the user is not a "kingAdmin", fetch users with the same establishment ID
-      users = await getUsersFromSameEstablishment(user.establishmentId)
-    }
+    // if (user.role === "kingAdmin") {
+    //   // If the user is a "kingAdmin", fetch all users
+    //   users = await getUsersOrderedByEstablishmentId()
+    // } else {
+    //   // If the user is not a "kingAdmin", fetch users with the same establishment ID
+    //   users = await getUsersFromSameEstablishment(user.establishmentId)
+    // }
     
-    res.render('users/users', { user, users, errorMessage });
+    res.redirct('/users');
     // res.redirect(`/dashboard`); // Redirect to the index page after successful user creation
       
   } catch (error) {
@@ -169,45 +170,64 @@ export const getEdit = async (req, res) => {
   }
   else {
     res.render('home/403', {user})
-  }
-
-  // Render the edit profile template with the user data
-    
+  }  
 }
 
+
+export const passwordResetGet = async (req, res) => {
+  const userId = parseInt(req.params.userId, 10);
+  const user = req.session.user
+  // Check if there's an error message in the sessionPermission
+  if(isKing(user) || user.id === userId ){
+    res.render('users/passwordReset', { user,userId });
+  }
+  else{
+    res.render('home/403', {user})
+  }
+  
+};
+
+export const passwordResetPost = async (req, res) => {
+  const userId = parseInt(req.params.userId, 10);
+
+  const { password } = req.body;
+  const user = await User.findByPk(userId);
+
+  if (!user) {
+    return res.status(404).render('home/404', {user});
+  }
+  if(password){
+    const hashedPassword = await bcrypt.hash(password, 10);
+    // console.log("here------------------reqbody", req.body)
+    // Update the user data with the form data
+    await user.update({
+      password: hashedPassword,
+    });
+  }
+  res.redirect(`/users/${userId}`);
+
+}
 
 export const postEdit = async (req, res) => {
   const userId = parseInt(req.params.userId, 10);
   const activeUserSessions = req.session.activeUserSessions
   try {
-    const { firstName, lastName, email, role, establishmentId, password } = req.body;
+    const { firstName, lastName, email, role, establishmentId } = req.body;
 
     const user = await User.findByPk(userId);
 
     if (!user) {
       return res.status(404).render('home/404', {user});
     }
-    if(password){
-      const hashedPassword = await bcrypt.hash(password, 10);
-      // console.log("here------------------reqbody", req.body)
-      // Update the user data with the form data
-      await user.update({
-        firstName,
-        lastName,
-        email,
-        password: hashedPassword,
-        role,
-        establishmentId,
-      });
-    }else{
-      await user.update({
-        firstName,
-        lastName,
-        email,
-        role,
-        establishmentId,
-      });
-    }
+  
+    await user.update({
+      firstName,
+      lastName,
+      email,
+      role,
+      establishmentId,
+    });
+  
 
     // activeUserSessions
     // activeUserSessions.forEach(session => {
@@ -221,22 +241,22 @@ export const postEdit = async (req, res) => {
     //   // console.log(session.lastName);
     //   // ... other properties
     // });
-    const isUserActive = activeUserSessions.some(session => session.userid.id === user.id);
-        console.log('--------------------------------activeUserSessions-----------------------------------------', activeUserSessions)
-        console.log('-------------------------------------------------------------------------')
+    // const isUserActive = activeUserSessions.some(session => session.userid.id === user.id);
+    //     console.log('--------------------------------activeUserSessions-----------------------------------------', activeUserSessions)
+    //     console.log('-------------------------------------------------------------------------')
 
 
-        console.log('------------------------------------user edited-------------------------------------', user)
+    //     console.log('------------------------------------user edited-------------------------------------', user)
 
-        console.log('-------------------------------------------------------------------------')
+    //     console.log('-------------------------------------------------------------------------')
 
-        console.log('-------------------------------------------------------------------------')
-        console.log('---------------------- user is logged in ----------------------', isUserActive)
-        console.log('-------------------------------------------------------------------------')
+    //     console.log('-------------------------------------------------------------------------')
+    //     console.log('---------------------- user is logged in ----------------------', isUserActive)
+    //     console.log('-------------------------------------------------------------------------')
 
 
     if(user.id === req.session.user.id){
-      console.log('----------------------users in session-----------------------------', req.session)
+      // console.log('----------------------users in session-----------------------------', req.session)
       req.session.user = user
     }
     // console.log("user update: " , user)

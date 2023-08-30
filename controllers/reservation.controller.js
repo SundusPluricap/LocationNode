@@ -123,18 +123,17 @@ export const createPost = async(req, res) => {
     // res.redirect('/')
 
     // Initiate download
-    res.download(pdfFilePath, filename, (err) => {
-      if (err) {
-        console.error('Error downloading PDF:', err);
-        res.status(500).send('An error occurred while downloading the PDF');
-      } else {
-        // Remove the PDF file after the download
-        fs.unlinkSync(pdfFilePath);
-       
-      }
-    });
+    // res.download(pdfFilePath, filename, (err) => {
+    //   if (err) {
+    //     console.error('Error downloading PDF:', err);
+    //     res.status(500).send('An error occurred while downloading the PDF');
+    //   } else {
+    //     // Remove the PDF file after the download
+    //     fs.unlinkSync(pdfFilePath);
+    //   }
+    // });
 
-    
+    res.redirect('/reservations')
   } catch (error) {
     console.error('Error generating PDF:', error);
     res.status(500).send('An error occurred');
@@ -142,26 +141,23 @@ export const createPost = async(req, res) => {
 };
 
 export const download = async (req, res) => {
-  // const filename = `devis_0d6e7ef2-087e-4a72-a0b4-10a1d6ecb207.pdf`;
+  const filename = `devis_0d6e7ef2-087e-4a72-a0b4-10a1d6ecb207.pdf`;
 
-  //   // Determine the base directory
-  //   const __dirname = path.dirname(fileURLToPath(import.meta.url));
-  //   // const baseDirectory = path.dirname(new URL(import.meta.url).pathname);
-  //   const pdfFilePath = path.join(__dirname,"..", "public", "devis", filename); // Make sure this aligns with your directory structure
+    // Determine the base directory
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    // const baseDirectory = path.dirname(new URL(import.meta.url).pathname);
+    const pdfFilePath = path.join(__dirname,"..", "public", "devis", filename); // Make sure this aligns with your directory structure
     
-  //   res.download(pdfFilePath, filename, (err) => {
-  //     if (err) {
-  //       console.error('Error downloading PDF:', err);
-  //       res.status(500).send('An error occurred while downloading the PDF');
-  //     } else {
-  //       // Remove the PDF file after the download
-  //       // fs.unlinkSync(pdfFilePath);
+    res.download(pdfFilePath, filename, (err) => {
+      if (err) {
+        console.error('Error downloading PDF:', err);
+        res.status(500).send('An error occurred while downloading the PDF');
+      } else {
+        // Remove the PDF file after the download
+        // fs.unlinkSync(pdfFilePath);
        
-  //     }
-  //   });
-  const user = req.session.user
-  await setPermissionsByDefault(user.establishmentId,'superAdmin')
-  res.redirect('/establishments')
+      }
+    });
   
 };
 

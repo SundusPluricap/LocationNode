@@ -1,8 +1,8 @@
 import Establishment from "../models/establishment-model.js";
 import {getUsersOrderedByEstablishmentId,getPermissionForUser, specificUser} from '../utiles/user.requete.js'
-import {isKing, findSuperAdminOfUser} from '../utiles/role.js'
+import {isKing, findSuperAdminOfUser, setAllPermissionsByDefault} from '../utiles/role.js'
 import {belongTo} from '../utiles/role.permission.js'
-
+import {createEstablishmentWithDefaults} from '../utiles/defaultCreation.js'
 import dotenv from 'dotenv';
 dotenv.config();
 const { SESSION_SECRET, CREATE_ESTABLISHMENT,  VIEW_ESTABLISHMENT,  EDIT_ESTABLISHMENT,  DELETE_ESTABLISHMENT } = process.env;
@@ -21,29 +21,11 @@ export const create = (req, res) => {
 
 export const createEstablishment = async (req, res) => {
     console.log("createEstablishment starting")
+    
     try {
-        const user = req.session.user
-        const { name, adresse, codePostal, country, SIRET, bankName, IBAN, BIC } = req.body;
-        // console.log( "name:", name, "adresse:",adresse , "codePostal:" , codePostal, "country:",country,  "SIRET:", SIRET, "bankName:",bankName, "IBAN:",IBAN, "BIC:", BIC)
-        const successMessage = req.session.successMessage;
-        delete req.session.successMessage;
-        const newEstablishment = await Establishment.create({
-          name,
-          adresse,
-          codePostal,
-          country,
-          SIRET,
-          bankName,
-          IBAN,
-          BIC,
-        });
-    
-        console.log('New Establishment created:', newEstablishment.toJSON());
-
-        const establishments = await Establishment.findAll();
-    
-        res.render('establishments/all-establishments', { user, establishments,successMessage });
-        // res.redirect("/establishments",{ firstName, lastName, establishments }); // Redirect to the index page after successful user creation
+      await createEstablishmentWithDefaults(req)
+      res.redirect('/establishments');
+      // res.redirect("/establishments",{ firstName, lastName, establishments }); // Redirect to the index page after successful user creation
         
     } catch (error) {
       console.error('Error creating establishment:', error);
@@ -56,7 +38,6 @@ export const createEstablishment = async (req, res) => {
 export const showAlleEstablishments = async (req, res) => {
     try {
       const successMessage = req.session.successMessage;
-      // console.log("_______________successMessage yyayayayayayayayayay____________________",successMessage,'___________here here')
       delete req.session.successMessage;
       console.log("showAlleEstablishments starting")
 
