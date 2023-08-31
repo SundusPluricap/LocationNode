@@ -3,6 +3,7 @@
 
 </head>
 <body>
+  <% let capacity %>
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
@@ -29,10 +30,16 @@
             <div class="mb-3">
               <label for="salleId" class="form-label">Sélectionner la salle</label>
               <select class="form-control" id="salleId" name="salleId" required>
+                <option value="" disabled selected>Select a room</option>
                 <% rooms.forEach((room) => { %>
-                <option value="<%= room.id %>"><%= room.name %> </option>
+                  <option value="<%= room.id %>" data-capacity="<%= room.capacity %>"><%= room.name %> <%= room.capacity %></option>
                 <% }); %>
               </select>
+              
+              
+              
+
+
           </div>
 
             <div class="mb-3">
@@ -62,11 +69,13 @@
             </div>
 
             <div class="mb-3">
-              <label for="nbrPeople" class="form-label">Nombre de personnes</label>
+              <label id="capacityDisplay"></label>
+              <br/>
+              <label for="nbrPeople" class="form-label">Nombre de personnes <span style="color:rgba(26, 2, 2, 0.381)">  nomber of people must be less than the capacity </span></label>
               <input type="number" class="form-control" id="nbrPeople" name="nbrPeople" required>
             </div>
 
-           
+            
             
           
 
@@ -96,6 +105,11 @@
 <script>
 
 
+/****
+ * Time picker
+ * 
+ * 
+*/
   function createTimePicker(inputId, optionsId) {
     const timeInput = document.getElementById(inputId);
     const timeOptions = document.getElementById(optionsId);
@@ -147,6 +161,25 @@
 
   createTimePicker('startTime', 'time-options1');
   createTimePicker('endTime', 'time-options2');
+
+
+
+/****
+ * Display capacity
+ * 
+ * 
+*/
+
+  const salleIdSelect = document.getElementById("salleId");
+  // salleIdSelect.selectedIndex = 0;
+  const capacityDisplay = document.getElementById("capacityDisplay");
+  
+  salleIdSelect.addEventListener("change", () => {
+    const selectedOption = salleIdSelect.options[salleIdSelect.selectedIndex];
+    const selectedCapacity = selectedOption.getAttribute("data-capacity");
+    capacityDisplay.textContent = `Capacity: ${selectedCapacity}`;
+  });
+              
 </script>
 </body>
 

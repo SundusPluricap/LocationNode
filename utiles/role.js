@@ -8,7 +8,7 @@ import { Op } from 'sequelize';
 
 import dotenv from 'dotenv';
 dotenv.config();
-const { VIEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT, CREATE_BUILDING, VIEW_BUILDING, EDIT_BUILDING, DELETE_BUILDING, CREATE_SALLE, VIEW_SALLE, EDIT_SALLE, DELETE_SALLE, RESERVE_SALLE, CREATE_ESTABLISHMENT, VIEW_ESTABLISHMENT, EDIT_ESTABLISHMENT, DELETE_ESTABLISHMENT } = process.env;
+const { VIEW_RESERVATION, VIEW_CLIENT, EDIT_CLIENT, DELETE_CLIENT, CREATE_BUILDING, VIEW_BUILDING, EDIT_BUILDING, DELETE_BUILDING, CREATE_SALLE, VIEW_SALLE, EDIT_SALLE, DELETE_SALLE, RESERVE_SALLE, CREATE_ESTABLISHMENT, VIEW_ESTABLISHMENT, EDIT_ESTABLISHMENT, DELETE_ESTABLISHMENT, DELETE_RESERVATION, EDIT_RESERVATION } = process.env;
 
 
 export const setPermissions = async (req,establishmentId,role) => {
@@ -73,6 +73,7 @@ export const setPermissionsByDefault = async (establishmentId,role) => {
             VIEW_ESTABLISHMENT,
             EDIT_ESTABLISHMENT,
             DELETE_ESTABLISHMENT,
+            VIEW_RESERVATION
         ]
     }
     else if(role === "superAdmin"){
@@ -92,6 +93,9 @@ export const setPermissionsByDefault = async (establishmentId,role) => {
             VIEW_ESTABLISHMENT,
             EDIT_ESTABLISHMENT,
             DELETE_ESTABLISHMENT,
+            VIEW_RESERVATION,
+            EDIT_RESERVATION,
+            DELETE_RESERVATION
         ]
     }
     else if(role === "admin"){
@@ -105,6 +109,8 @@ export const setPermissionsByDefault = async (establishmentId,role) => {
             VIEW_SALLE,
             EDIT_SALLE,
             RESERVE_SALLE,
+            VIEW_RESERVATION,
+            EDIT_RESERVATION
         ]
     }
     else if(role === "editor"){
@@ -115,6 +121,7 @@ export const setPermissionsByDefault = async (establishmentId,role) => {
             CREATE_SALLE,
             VIEW_SALLE,
             RESERVE_SALLE,
+            VIEW_RESERVATION
         ]
     }
     

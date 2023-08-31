@@ -1,6 +1,8 @@
 import { Sequelize, DataTypes } from 'sequelize';
 import dotenv from 'dotenv';
 import Client from "./client-model.js";
+import User from "./user-model.js";
+import Room from "./room-model.js";
 dotenv.config();
 
 const { APP_LOCALHOST: hostname, APP_PORT: port, DATABASE: db, USERNAMESQL: username, PASSWORDSQL: mdp } = process.env;
@@ -37,6 +39,7 @@ const Reservation = sequelize.define('Reservation', {
   status: {
     type: DataTypes.ENUM('pending', 'confirmed', 'canceled'),
     allowNull: false,
+    defaultValue: 'pending'
   },
   devis: {
     type: DataTypes.STRING,
@@ -44,7 +47,8 @@ const Reservation = sequelize.define('Reservation', {
   },
   facture: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null
   },
   clientId: {
     type: DataTypes.INTEGER,
@@ -62,5 +66,11 @@ const Reservation = sequelize.define('Reservation', {
 
 Client.hasMany(Reservation, { foreignKey: 'clientId' , onDelete: 'CASCADE' });
 Reservation.belongsTo(Client, { foreignKey: 'clientId' , onDelete: 'CASCADE' });
+
+User.hasMany(Reservation, { foreignKey: 'userId' , onDelete: 'CASCADE' });
+Reservation.belongsTo(User, { foreignKey: 'userId' , onDelete: 'CASCADE' });
+
+Room.hasMany(Reservation, { foreignKey: 'salleId' , onDelete: 'CASCADE' });
+Reservation.belongsTo(Room, { foreignKey: 'salleId' , onDelete: 'CASCADE' });
 
 export default Reservation;

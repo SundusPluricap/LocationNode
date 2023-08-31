@@ -24,7 +24,7 @@ const Room = sequelize.define('rooms', {
     allowNull: false,
   },
   capacity: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     defaultValue: null,
   },
   price: {

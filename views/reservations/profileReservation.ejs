@@ -1,0 +1,154 @@
+<%- include('../partials/header') -%>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<title> <%= param.Client.firstName %>'s resrevation Profile</title>
+<link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="/css/user.css">
+</head>
+<body>
+    <div class="container">
+        <%- include('../partials/sidebar') -%>
+        <div class="main-content">
+            <h1>Profil de l'etablissement <%= param.name %></h1>
+            <table class="user-profile-table">
+                <tr>
+                    <td colspan="6" align="center">ID:</td>
+                    <td ><%= param.id %></td>
+
+                    <!-- startDate: 2023-08-04T00:00:00.000Z, -->
+    <!-- startTime: '00:00:00', -->
+    <!-- endTime: '00:00:00', -->
+    <!-- objet: '',
+    nbrPeople: 3, -->
+    <!-- : '', -->
+    <!-- devis: 'devis_ece4b528-36b5-428a-b6ef-3241ed7576ca.pdf', -->
+    <!-- facture: 'facture_ece4b528-36b5-428a-b6ef-3241ed7576ca.pdf', -->
+    clientId: 112,
+    userId: 38,
+    salleId: 1,
+    createdAt: 2023-08-30T15:04:36.000Z,
+    updatedAt
+                </tr>
+                <tr>
+                    <td colspan="6" align="center">Date of reservation:</td>
+                    <td><%= param.startDate.toLocaleDateString('fr-FR') %></td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="6" align="center">startTime:</td>
+                    <td><%= param.startTime %></td>
+                    
+                </tr>
+                <tr>
+                    <td colspan="6" align="center">endTime:</td>
+                    <td><%= param.endTime %></td>
+                    
+                </tr>
+                
+                <tr>
+                    <td colspan="6" align="center">objet:</td>
+                    <% if (param.objet){ %>
+                        <td> <%= param.objet %> </td>
+                    <% } else { %>
+                        <td>No reason provided </td>
+                    <% } %>
+                    
+                </tr>
+
+                <tr>
+                    <td colspan="6" align="center">nbrPeople:</td>
+                    <td><%= param.nbrPeople %></td>
+                </tr>
+               
+                <tr>
+                    <td colspan="6" align="center">status:</td>
+                    <% if (param.status){ %>
+                        <td> <%= param.status %> </td>
+                    <% } else { %>
+                        <td> pending </td>
+                    <% } %>
+                </tr>
+                
+
+                <tr>
+                    <td colspan="6" align="center">devis:</td>
+                    <td><a href="<%= param.devis %>/download" class="edit-button"> <i class="fa fa-download"></i> &nbsp;Télécharger</a></td>               
+                </tr>
+
+                <tr>
+                    <td colspan="6" align="center">facture:</td>                    
+                    <% if (param.facture){ %>
+                        <td><a href="<%= param.facture %>/download" class="edit-button"> <i class="fa fa-download"></i> &nbsp;Télécharger</a></td>
+                    <% } else { %>
+                        <td> reservation is pending, change status to confirmed to get the invoice </td>
+                    <% } %> 
+                </tr>
+                
+                <tr>
+                    <td colspan="6" align="center">client:</td>
+                    <td><%= param.Client.firstName %><%= param.Client.lastName %>  
+                        <% let hasPermissionToClient = isKing(user) || (viewClientPermission && belongTo(param.User.establishmentId,user.establishmentId))  %>
+
+                        <% if (hasPermissionToClient) { %>
+                            <a href="/clients/<%= param.clientId %>"> &nbsp;click here to see client Profile</a>
+                        <% } %>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" align="center">Room:</td>
+                    <td><%= param.room.name %> 
+                        <% let hasPermissionToRoom = isKing(user) || (viewSallePermission && belongTo(param.User.establishmentId,user.establishmentId))  %>
+
+                        <% if (hasPermissionToRoom) { %>
+                            <a href="/rooms/<%= param.salleId %>"> &nbsp;click here to see the room</a>
+                        <% } %>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <% let hasPermission = isKing(user) || (editPermission && belongTo(param.User.establishmentId,user.establishmentId))  %>
+
+                    <% if (hasPermission) { %>
+                        <td colspan="3" align="center">
+                            <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
+                        </td>
+                        
+                    <% } else { %>
+                        <td>
+                            <button type="button" class="disabled" disabled>Can't Edit this Client</button>
+                        </td>
+                    <% } %>
+                    <% let hasPermission2 = isKing(user) || (deletePermission && belongTo(param.User.establishmentId,user.establishmentId)) %>
+    
+                    <% if (hasPermission2) { %>
+                        <td colspan="3" align="center">
+                            <a href="<%= param.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                        </td>
+                        
+                    <% } else { %>
+                        <td>
+                            <button type="button" class="disabled" disabled>Can't Delete this Client</button>
+                        </td>
+                    <% } %>                  
+                </tr>
+
+                
+                <!-- <tr>
+                    <td colspan="3" align="center">
+                        <a href="/users" class="view-button" >utilisateurs</a>
+                    </td>
+                    <td colspan="3" align="center">
+                        <a href="/batiments" class="view-button"> Bâtiments</a>
+                    </td>
+                    <td colspan="3" align="center">
+                        
+                        <a href="/rooms" class="view-button"> Salles</a>
+                    </td>
+                </tr> -->
+            </table>
+        </div>
+    </div>
+
+<script src="/js/delete.js"></script>
+
+
