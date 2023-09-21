@@ -13,6 +13,7 @@ reservationRouter.get('/:reservationId', isAuthenticated, getProfile);
 reservationRouter.get('/:devisName/download', isAuthenticated, downloadDevis);
 reservationRouter.post('/create', isAuthenticated, createPost);
 
+reservationRouter.get('/create/:roomId', isAuthenticated, create);
 reservationRouter.get('/download', isAuthenticated, downloadDevis);
 // reservationRouter.get('/redirect-after-download', handleRedirect);
 export default reservationRouter;

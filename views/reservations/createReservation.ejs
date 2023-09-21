@@ -19,28 +19,37 @@
           <form action="/reservations/create" method="POST">
             
             <div class="mb-3">
-                <label for="clientId" class="form-label">Select Client</label>
-                <select class="form-control" id="clientId" name="clientId" required>
-                  <% clients.forEach((client) => { %>
-                  <option value="<%= client.id %>"><%= client.firstName %> <%= client.lastName %></option>
-                  <% }); %>
-                </select>
+              <label for="clientId" class="form-label">Select Client</label>
+              <select class="form-control" id="clientId" name="clientId" required>
+                <% clients.forEach((client) => { %>
+                <option value="<%= client.id %>"><%= client.firstName %> <%= client.lastName %></option>
+                <% }); %>
+              </select>
             </div>
 
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label for="salleId" class="form-label">Sélectionner la salle</label>
               <select class="form-control" id="salleId" name="salleId" required>
                 <option value="" disabled selected>Select a room</option>
-                <% rooms.forEach((room) => { %>
-                  <option value="<%= room.id %>" data-capacity="<%= room.capacity %>"><%= room.name %> <%= room.capacity %></option>
+                <% rooms.forEach((room) => {  %>
+                 
+                  <option value="<%= room.id %>" data-capacity="<%= room.capacity %>" <%= room.id === roomId ? 'selected' : '' %>><%= room.name %></option>
                 <% }); %>
               </select>
-              
-              
-              
-
-
-          </div>
+             
+            </div> -->
+            <div class="mb-3">
+              <label for="salleId" class="form-label">Sélectionner la salle</label>
+              <select class="form-control" id="salleId" name="salleId" required>
+                
+                <% rooms.forEach((room) => { %>
+                  <option value="<%= room.id %>" data-capacity="<%= room.capacity %>" <%= room.id === roomId ? 'selected' : '' %>><%= room.name %></option>
+                <% }); %>
+              </select>
+            </div>
+            
+           
+                   
 
             <div class="mb-3">
               <label for="startDate" class="form-label">Date</label>
@@ -55,7 +64,6 @@
               </div>
             </div>
 
-
             <div class="mb-3 time-picker">
               à <input type="time" class="form-control" id="endTime" name="endTime" required>
               <div class="time-options" id="time-options2">
@@ -69,16 +77,12 @@
             </div>
 
             <div class="mb-3">
-              <label id="capacityDisplay"></label>
+            
+              <label id="capacity"></label>
               <br/>
               <label for="nbrPeople" class="form-label">Nombre de personnes <span style="color:rgba(26, 2, 2, 0.381)">  nomber of people must be less than the capacity </span></label>
-              <input type="number" class="form-control" id="nbrPeople" name="nbrPeople" required>
+              <input type="number" class="form-control" id="nbrPeople" name="nbrPeople" min=1 required>
             </div>
-
-            
-            
-          
-
 
             <div align="center">
               <button type="submit" class="btn btn-primary">Créer la reservation et Télécharger le devis</button>
@@ -110,57 +114,54 @@
  * 
  * 
 */
-  function createTimePicker(inputId, optionsId) {
-    const timeInput = document.getElementById(inputId);
-    const timeOptions = document.getElementById(optionsId);
+function createTimePicker(inputId, optionsId) {
+  const timeInput = document.getElementById(inputId);
+  const timeOptions = document.getElementById(optionsId);
 
-    timeInput.addEventListener('click', generateOptions);
-    timeOptions.addEventListener('click', selectTime);
+  timeInput.addEventListener('click', generateOptions);
+  timeOptions.addEventListener('click', selectTime);
 
-    document.addEventListener('click', closeDropdown);
+  document.addEventListener('click', closeDropdown);
 
-    function generateOptions() {
-      timeOptions.innerHTML = ''; // Clear existing options
-      
-      const currentTime = new Date();
-      currentTime.setMinutes(Math.ceil(currentTime.getMinutes() / 30) * 30); // Round to nearest 30 minutes
-      
-      for (let i = 0; i < 24 * 2; i++) { // 24 hours * 2 (30-minute intervals)
-        const optionTime = new Date(currentTime.getTime() + i * 30 * 60 * 1000);
-        const optionText = optionTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
-        const optionElement = document.createElement('div');
-        optionElement.classList.add('time-option');
-        optionElement.textContent = optionText;
-        optionElement.dataset.value = optionText;
-        
-        timeOptions.appendChild(optionElement);
-      }
-      
-      timeOptions.style.display = 'block';
+  function generateOptions() {
+    timeOptions.innerHTML = ''; // Clear existing options
+
+    const currentTime = new Date();
+    currentTime.setMinutes(Math.ceil(currentTime.getMinutes() / 30) * 30); // Round to nearest 30 minutes
+
+    for (let i = 0; i < 24 * 2; i++) { // 24 hours * 2 (30-minute intervals)
+      const optionTime = new Date(currentTime.getTime() + i * 30 * 60 * 1000);
+      const optionText = optionTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }); // Use 24-hour format
+
+      const optionElement = document.createElement('div');
+      optionElement.classList.add('time-option');
+      optionElement.textContent = optionText;
+      optionElement.dataset.value = optionText;
+
+      timeOptions.appendChild(optionElement);
     }
 
-    function selectTime(event) {
-      if (event.target.classList.contains('time-option')) {
-        const selectedTime = event.target.getAttribute('data-value');
-        const selectedTimeDate = new Date();
-        const [hours, minutes] = selectedTime.split(':');
-        selectedTimeDate.setHours(parseInt(hours), parseInt(minutes));
-        timeInput.value = selectedTimeDate.toTimeString().slice(0, 5);
-        timeOptions.style.display = 'none';
-        console.log(`Selected time: ${selectedTime}`);
-      }
-    }
+    timeOptions.style.display = 'block';
+  }
 
-    function closeDropdown(event) {
-      if (!event.target.closest('.time-picker')) {
-        timeOptions.style.display = 'none';
-      }
+  function selectTime(event) {
+    if (event.target.classList.contains('time-option')) {
+      const selectedTime = event.target.getAttribute('data-value');
+      timeInput.value = selectedTime;
+      timeOptions.style.display = 'none';
+      console.log(`Selected time: ${selectedTime}`);
     }
   }
 
-  createTimePicker('startTime', 'time-options1');
-  createTimePicker('endTime', 'time-options2');
+  function closeDropdown(event) {
+    if (!event.target.closest('.time-picker')) {
+      timeOptions.style.display = 'none';
+    }
+  }
+}
+
+createTimePicker('startTime', 'time-options1');
+createTimePicker('endTime', 'time-options2');
 
 
 
@@ -170,16 +171,72 @@
  * 
 */
 
-  const salleIdSelect = document.getElementById("salleId");
-  // salleIdSelect.selectedIndex = 0;
-  const capacityDisplay = document.getElementById("capacityDisplay");
+  // const salleIdSelect = document.getElementById("salleId");
+  // // salleIdSelect.selectedIndex = 0;
+  // const capacityDisplay = document.getElementById("capacityDisplay");
+  // const nbrPeopleInput = document.getElementById("nbrPeople");
+  // salleIdSelect.addEventListener("change", () => {
+  //   const selectedOption = salleIdSelect.options[salleIdSelect.selectedIndex];
+  //   const selectedCapacity = selectedOption.getAttribute("data-capacity");
+  //   capacityDisplay.textContent = `Capacity: ${selectedCapacity}`;
+
+  //   nbrPeopleInput.max = selectedCapacity;
+    
+  //   // If the current value of the input is greater than the new maximum, reset it
+  //   if (parseInt(nbrPeopleInput.value) > parseInt(selectedCapacity)) {
+  //     nbrPeopleInput.value = selectedCapacity;
+  //   }
+  // });
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+  // const salleIdSelect = document.getElementById("salleId");
+  // const nbrPeopleInput = document.getElementById("nbrPeople");
   
-  salleIdSelect.addEventListener("change", () => {
+  // salleIdSelect.addEventListener("change", () => {
+  //   const selectedOption = salleIdSelect.options[salleIdSelect.selectedIndex];
+  //   const selectedCapacity = selectedOption.getAttribute("data-capacity");
+    
+    // Set the maximum value of the input field based on the selected capacity
+    
+  // });
+              
+</script>
+
+<script>
+  // Get the selected option
+  // const selectedOption = document.querySelector('#salleId option[selected]');
+  // if (selectedOption) {
+  //   // Get the capacity attribute value from the selected option
+  //   const capacity = selectedOption.getAttribute('data-capacity');
+  //   // Set the initial text content of the "capacity" <p> element
+  //   document.getElementById('capacity').textContent = `Capacity: ${capacity}`;
+  // }
+
+
+
+
+
+
+
+
+
+
+
+  const salleIdSelect = document.getElementById("salleId");
+  const capacityDisplay = document.getElementById("capacity");
+
+  // Function to update the capacity display
+  function updateCapacityDisplay() {
     const selectedOption = salleIdSelect.options[salleIdSelect.selectedIndex];
     const selectedCapacity = selectedOption.getAttribute("data-capacity");
     capacityDisplay.textContent = `Capacity: ${selectedCapacity}`;
-  });
-              
+  }
+
+  // Add an event listener to update the capacity display on change
+  salleIdSelect.addEventListener("change", updateCapacityDisplay);
+
+  // Initialize the capacity display
+  updateCapacityDisplay();
 </script>
 </body>
 

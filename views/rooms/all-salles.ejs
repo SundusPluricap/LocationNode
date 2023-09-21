@@ -51,7 +51,7 @@
                     <% } %>
                    
                     <% if (hasPermission1) { %>
-                      <a href="/rooms/<%= room.id %>/reserve" class="reserve-button">Réserve</a>
+                      <a href="/reservations/create/<%= room.id %>" class="reserve-button">Réserve</a>
                     <% } else { %>
                       <button type="button" class="disabled" disabled>Can't reserve this salle</button>
                     <% } %>

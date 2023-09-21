@@ -12,20 +12,63 @@ import {getPermissionForUser} from '../utiles/user.requete.js'
 import moment  from  'moment'; 
 import { isKing } from '../utiles/role.js';
 import {belongTo} from '../utiles/role.permission.js'
-
+import {getReservationsByEstablishment, getReservations, formatDate, duree} from '../utiles/reservations.requete.js'
 const { RESERVE_SALLE, VIEW_RESERVATION, EDIT_RESERVATION, DELETE_RESERVATION, VIEW_CLIENT, VIEW_USER, VIEW_SALLE} = process.env;
 
+export const showAll = async (req, res) => {
+  const user = req.session.user;
+  const userPermissions = await getPermissionForUser(user.id);
+  let createPermission = userPermissions.some(perm => perm.name.trim() === RESERVE_SALLE);
+  let viewPermission = userPermissions.some(perm => perm.name.trim() === VIEW_RESERVATION);
 
-export const showAll = (req, res) => {
-    const user = req.session.user
-    res.render('reservations/index',{user});
+  let rooms , reservations
+  let reservationsBySalle = {}; // Create an object to group reservations by salle
+
+  if (user.role === "kingAdmin") {
+    reservations = await getReservations();
+    rooms = await getAllRooms()
+    // Group reservations by salle
+    reservations.forEach(reservation => {
+      if (!reservationsBySalle[reservation.salleId]) {
+        reservationsBySalle[reservation.salleId] = [];
+      }
+      reservationsBySalle[reservation.salleId].push(reservation);
+    });
+  } else {
+    reservations = await getReservationsByEstablishment(user.establishmentId);
+    // Group reservations by salle
+    rooms = await getRoomsByEstablishment(user.establishmentId)
+    reservations.forEach(reservation => {
+      if (!reservationsBySalle[reservation.salleId]) {
+        reservationsBySalle[reservation.salleId] = [];
+      }
+      console.log('here')
+      reservationsBySalle[reservation.salleId].push(reservation);
+    });
+  }
+
+  let hasPermission = isKing(user) || viewPermission
+  // let hasPermission1 = isKing(user) || reservePermission
+  let hasPermission2 = isKing(user) || createPermission
+  console.log("----------------------------------------------")
+  console.log("--------------------reservationsBySalle--------------------------", reservationsBySalle[4])
+
+  console.log("----------------------------------------------")
+
+  // Fetch rooms for reference
+  // const rooms = await Room.findAll(); // You may need to adapt this query
+
+  res.render('reservations/allReservations', { user, hasPermission, hasPermission2, reservationsBySalle, rooms, formatDate, reservations, duree });
 }
+
+
 
 
 export const create = async (req, res) => {
   try {
     // Get the user ID from the session (assuming it's stored in req.session.userId)
-    
+    const roomId = parseInt(req.params.roomId, 10);
+
     const user = req.session.user
     const createdBy = user.id;
     const userPermissions = await getPermissionForUser(user.id);
@@ -47,7 +90,7 @@ export const create = async (req, res) => {
     // Clear the error message from the session
     delete req.session.errorMessage;
     if(hasPermission){
-      res.render('reservations/createReservation', { clients, errorMessage, rooms });
+      res.render('reservations/createReservation', { clients, errorMessage, rooms, roomId });
     }
     else{
       res.render('home/403', { user });
@@ -65,8 +108,9 @@ export const createPost = async(req, res) => {
     // Capture form data
     const { clientId, startDate, startTime, endTime, objet, nbrPeople, salleId } = req.body;
 
-    const formattedStartTime = moment(startTime, 'HH:mm').format('HH:mm:ss');
-    const formattedEndTime = moment(endTime, 'HH:mm').format('HH:mm:ss');
+    
+    const formattedStartTime = moment(startTime, 'h:mm A').format('HH:mm:ss');
+    const formattedEndTime = moment(endTime, 'h:mm A').format('HH:mm:ss');
     console.log('-------------------------timeeeeeeeeeee----------------',startTime, endTime, formattedStartTime,formattedEndTime)
     const user = req.session.user
     const uniqueIdentifier = uuidv4(); // You can also use the reservation ID if available
@@ -86,7 +130,7 @@ export const createPost = async(req, res) => {
     const newReservation = await Reservation.create({
       startDate,
       startTime: formattedStartTime,
-      endTime:formattedEndTime,
+      endTime: formattedEndTime,
       objet,
       nbrPeople,
       // status: "ppending",
