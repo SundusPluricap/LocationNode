@@ -12,7 +12,7 @@ import {getPermissionForUser} from '../utiles/user.requete.js'
 import moment  from  'moment'; 
 import { isKing } from '../utiles/role.js';
 import {belongTo} from '../utiles/role.permission.js'
-import {getReservationsByEstablishment, getReservations, formatDate, duree} from '../utiles/reservations.requete.js'
+import {getReservationsByEstablishment, getReservations, formatDate, duree, download} from '../utiles/reservations.requete.js'
 const { RESERVE_SALLE, VIEW_RESERVATION, EDIT_RESERVATION, DELETE_RESERVATION, VIEW_CLIENT, VIEW_USER, VIEW_SALLE} = process.env;
 
 export const showAll = async (req, res) => {
@@ -111,20 +111,17 @@ export const createPost = async(req, res) => {
     
     const formattedStartTime = moment(startTime, 'h:mm A').format('HH:mm:ss');
     const formattedEndTime = moment(endTime, 'h:mm A').format('HH:mm:ss');
-    console.log('-------------------------timeeeeeeeeeee----------------',startTime, endTime, formattedStartTime,formattedEndTime)
+    // console.log('-------------------------timeeeeeeeeeee----------------',startTime, endTime, formattedStartTime,formattedEndTime)
     const user = req.session.user
     const uniqueIdentifier = uuidv4(); // You can also use the reservation ID if available
 
     // Create a devis like "devis_reservationID.pdf"
     const devisFileName = `devis_${uniqueIdentifier}.pdf`;
-    const factureFileName = `facture_${uniqueIdentifier}.pdf`;
+
     // Determine the base directory
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
     // const baseDirectory = path.dirname(new URL(import.meta.url).pathname);
     const devisFilePath = path.join(__dirname,"..", "public", "devis", devisFileName); // Make sure this aligns with your directory structure
-    // Create a new PDF document
-    const factureFilePath = path.join(__dirname,"..", "public", "factures", factureFileName); 
-    // console.log( "name:", name, "adresse:",adresse , "codePostal:" , codePostal, "country:",country,  "SIRET:", SIRET, "bankName:",bankName, "IBAN:",IBAN, "BIC:", BIC)
     const successMessage = req.session.successMessage;
     delete req.session.successMessage;
     const newReservation = await Reservation.create({
@@ -141,12 +138,7 @@ export const createPost = async(req, res) => {
       clientId
     
     });
-    // Generate a unique identifier for the devis
-    
-    /**
-     * make this a middleware 
-     */
-    
+  
     const doc = new PDFDocument();
 
     // Set the PDF content
@@ -162,14 +154,14 @@ export const createPost = async(req, res) => {
 
 
     // Set the PDF content
-    doc.pipe(fs.createWriteStream(factureFilePath));
-    doc.fontSize(16).text('Quote Details', { align: 'center' });
-    doc.fontSize(12).text(`Client ID: ${clientId}`);
-    doc.fontSize(12).text(`Start Date: ${startDate}`);
-    doc.fontSize(12).text(`Start Time: ${startTime}`);
-    doc.fontSize(12).text(`End Time: ${endTime}`);
-    doc.fontSize(12).text(`Object: ${objet}`);
-    doc.fontSize(12).text(`Number of People: ${nbrPeople}`);
+    // doc.pipe(fs.createWriteStream(factureFilePath));
+    // doc.fontSize(16).text('Quote Details', { align: 'center' });
+    // doc.fontSize(12).text(`Client ID: ${clientId}`);
+    // doc.fontSize(12).text(`Start Date: ${startDate}`);
+    // doc.fontSize(12).text(`Start Time: ${startTime}`);
+    // doc.fontSize(12).text(`End Time: ${endTime}`);
+    // doc.fontSize(12).text(`Object: ${objet}`);
+    // doc.fontSize(12).text(`Number of People: ${nbrPeople}`);
     // Add more details as needed
 
     /**
@@ -184,12 +176,12 @@ export const createPost = async(req, res) => {
       doc.end();
     });
 
-    await new Promise((resolve, reject) => {
-      doc.pipe(fs.createWriteStream(factureFilePath))
-        .on('finish', resolve)
-        .on('error', reject);
-      doc.end();
-    });
+    // await new Promise((resolve, reject) => {
+    //   doc.pipe(fs.createWriteStream(factureFilePath))
+    //     .on('finish', resolve)
+    //     .on('error', reject);
+    //   doc.end();
+    // });
 
     res.redirect('/reservations')
   } catch (error) {
@@ -198,28 +190,72 @@ export const createPost = async(req, res) => {
   }
 };
 
+
+export const generateFacture = async (req, res) => {
+  console.log('get facture')
+  try {
+    const uniqueIdentifier = uuidv4();
+    const reservationId = req.params.reservationId; // Assuming you can access the reservation ID from the URL
+    const reservation = await Reservation.findByPk(reservationId);
+
+    if (!reservation) {
+      return res.status(404).send('Reservation not found');
+    }
+
+    if (reservation.status !== 'pending') {
+      return res.status(400).send('Reservation is not pending and cannot be confirmed');
+    }
+
+    // Update the reservation status to 'confirmed'
+    reservation.status = 'confirmed';
+
+    const factureFileName = `facture_${uniqueIdentifier}.pdf`;
+    reservation.facture = factureFileName; // Update the facture field with the factureFileName
+
+    await reservation.save(); // Save the updated status and facture in the database
+
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+    // Your code to generate the facture PDF goes here
+    const factureFilePath = path.join(__dirname, '..', 'public', 'factures', factureFileName);
+
+    const doc = new PDFDocument();
+    doc.pipe(fs.createWriteStream(factureFilePath));
+    doc.fontSize(16).text('Quote Details', { align: 'center' });
+    doc.fontSize(12).text(`Client ID: ${reservation.clientId}`);
+    doc.fontSize(12).text(`Start Date: ${reservation.startDate}`);
+    doc.fontSize(12).text(`Start Time: ${reservation.startTime}`);
+    doc.fontSize(12).text(`End Time: ${reservation.endTime}`);
+    doc.fontSize(12).text(`Object: ${reservation.objet}`);
+    doc.fontSize(12).text(`Number of People: ${reservation.nbrPeople}`);
+    console.log('--------------------------------------------here1---------------------------------')
+
+    await new Promise((resolve, reject) => {
+      doc.pipe(fs.createWriteStream(factureFileName))
+        .on('finish', resolve)
+        .on('error', reject);
+      doc.end();
+    });
+
+    console.log('--------------------------------------------here2---------------------------------')
+    res.redirect(`/reservations/${reservation.id}`)
+  } catch (error) {
+    console.error('Error generating Facture:', error);
+    res.status(500).send('An error occurred');
+  }
+};
+
 export const downloadDevis = async (req, res) => {
   const devisFileName = req.params.devisName;
-  // const reservation = await Reservation.findOne({ where: { id: batimentId } });
-  // const devisFileName = `devis_0d6e7ef2-087e-4a72-a0b4-10a1d6ecb207.pdf`;
-
-    // Determine the base directory
-    const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    // const baseDirectory = path.dirname(new URL(import.meta.url).pathname);
-    const devisFilePath = path.join(__dirname,"..", "public", "devis", devisFileName); // Make sure this aligns with your directory structure
-    
-    res.download(devisFilePath, devisFileName, (err) => {
-      if (err) {
-        console.error('Error downloading PDF:', err);
-        res.status(500).send('An error occurred while downloading the PDF');
-      } else {
-        // Remove the PDF file after the download
-        // fs.unlinkSync(devisFilePath);
-       
-      }
-    });
-  
+  await download(devisFileName, "devis", res)
 };
+
+
+export const downloadFacture = async (req, res) => {
+  const factureFileName = req.params.factureName;
+  await download(factureFileName, "factures", res)
+};
+
 
 export const getProfile = async (req, res) => {
   const user = req.session.user

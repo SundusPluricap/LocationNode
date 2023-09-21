@@ -38,6 +38,7 @@ function getAnchorFromURL() {
   const url = window.location.href;
   const anchorIndex = url.indexOf('#');
   const anchor = anchorIndex !== -1 ? url.substring(anchorIndex + 1) : null;
+  console.log('---------------------------- anchor -------------------------------------' , anchor)
   return anchor;
 }
 

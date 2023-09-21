@@ -11,89 +11,94 @@
     <%- include('../partials/sidebar') -%>
   
     <div class="main-content">
-        <a href="/reservations/create" class="add-user-button">Create a new reservation</a>
+        
 
       <div class="tabs">
         <ul class="tab-list" id="tabList">
-            <li class="tab-label" onclick="showTabContent('content-allReservations')">
-                Toutes les salles
-            </li>
-            <% rooms.forEach((room) => { %>
+          <li class="tab-label" onclick="showTabContent('content-allReservations')">
+            Toutes les salles
+          </li>
+          <% // Create a filtered list of rooms that have reservations
+            const roomsWithReservations = rooms.filter((room) => reservationsBySalle[room.id] && reservationsBySalle[room.id].length > 0);
+            
+            roomsWithReservations.forEach((room) => {%>
               <li class="tab-label" onclick="showTabContent('content-<%= room.id %>')">
                 <%= room.name %> <!-- You may need to adapt this based on your room data structure -->
               </li>
-            <% }); %>
-          </ul>
+          <% }); %>
+        </ul>
           
-          <div class="tab-content" id="tabContent">
-            <div class="content" id="content-allReservations">
-                <% reservations.forEach((reservation) => { %>
-                  <div class="product-item">
-                    <div class="product-cart">
-                        <p><strong>Date:</strong> <%= formatDate(reservation.startDate) %></p>
-                        <p><strong>Duree:</strong> <%= duree(reservation.endTime, reservation.startTime) %></p>
-                        <p><strong>ٍStatut:</strong> <%= reservation.status %></p>
-                        
-                          <p><strong>Appartient au client:</strong> <%= reservation.Client.firstName %> <%= reservation.Client.lastName %></p> <!-- Use room.Batiment.name -->
-                            
-                        
-                        <div class="button-container">
-                            <% if (hasPermission) { %>
-                            <a href="/reservations/<%= reservation.id %>" class="edit-button">Voir</a>
-                            <% } else { %>
-                            <button type="button" class="disabled" disabled>Can't view this Reservation</button>
-                            <% } %>
-                        </div>
-                      <!-- Add other room details as needed -->
+        <div class="tab-content" id="tabContent">
+          <div class="content" id="content-allReservations">
+            <% reservations.forEach((reservation) => { %>
+              <div class="product-item">
+                <div class="product-cart">
+                  <p><strong>Date:</strong> <%= formatDate(reservation.startDate) %></p>
+                  <p><strong>Duree:</strong> <%= duree(reservation.endTime, reservation.startTime) %></p>
+                  <p><strong>ٍStatut:</strong> <%= reservation.status %></p>
+                  
+                  <p><strong>Appartient au client:</strong> <%= reservation.Client.firstName %> <%= reservation.Client.lastName %></p> <!-- Use room.Batiment.name -->
+                          
                       
-                    </div>
+                  <div class="button-container">
+                    <% if (hasPermission) { %>
+                      <a href="/reservations/<%= reservation.id %>" class="edit-button">Voir</a>
+                    <% } else { %>
+                      <button type="button" class="disabled" disabled>Can't view this Reservation</button>
+                    <% } %>
+                  </div>
+                  <!-- Add other room details as needed -->
+                    
                 </div>
-                <% }); %>
-            </div>
-            <!-- Content sections for each salle -->
-            
-            <% rooms.forEach((room) => { %>
-            <div class="content" id="content-<%= room.id %>" style="display: none;">
-                <!-- Display reservations for this salle -->
-                <% if (reservationsBySalle[room.id]) { %>
-                    <% reservationsBySalle[room.id].forEach((reservation) => { %>
-                        <div class="product-item">
-                            <div class="product-cart">
-                                <p><strong>Date:</strong> <%= formatDate(reservation.startDate) %></p>
-                                <p><strong>Duree:</strong> <%= duree(reservation.endTime, reservation.startTime) %></p>
-                                <p><strong>Prix:</strong> <%= reservation.price %></p>
-                                <% if (reservation.Batiment) { %> <!-- Check if room.Batiment is defined -->
-                                    <p><strong>Appartient au bâtiment:</strong> <%= reservation.Batiment.name %></p> <!-- Use room.Batiment.name -->
-                                    <p><strong>Adresse:</strong> <%= reservation.Batiment.adresse %></p>
-                                    
-                                <% } else { %>
-                                    <p><strong>Appartient au bâtiment:</strong> Non spécifié</p>
-                                <% } %>
-                                <div class="button-container">
-                                    <% if (hasPermission) { %>
-                                    <a href="/reservations/<%= reservation.id %>" class="edit-button">Voir</a>
-                                    <% } else { %>
-                                    <button type="button" class="disabled" disabled>Can't view this Reservation</button>
-                                    <% } %>
-                               
-                                
-                                </div>
-                              <!-- Add other room details as needed -->
-                              
-                            </div>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <p><strong>Room Id:</strong> <%= room.id %></p>
-                <p>No reservations for this salle.</p>
-                <% } %>
-            </div>
+              </div>
             <% }); %>
+
+            <a href="/reservations/create" class="add-user-button">Create a new reservation</a>
+          </div>
+          <!-- Content sections for each salle -->
+            
+          <% rooms.forEach((room) => { %>
+          <div class="content" id="content-<%= room.id %>" style="display: none;">
+            <!-- Display reservations for this salle -->
+            <% if (reservationsBySalle[room.id]) { %>
+              <% reservationsBySalle[room.id].forEach((reservation) => { %>
+                <div class="product-item">
+                  <div class="product-cart">
+                    <p><strong>Date:</strong> <%= formatDate(reservation.startDate) %></p>
+                    <p><strong>Duree:</strong> <%= duree(reservation.endTime, reservation.startTime) %></p>
+                    <p><strong>Prix:</strong> <%= reservation.price %></p>
+                    <% if (reservation.Batiment) { %> <!-- Check if room.Batiment is defined -->
+                      <p><strong>Appartient au bâtiment:</strong> <%= reservation.Batiment.name %></p> <!-- Use room.Batiment.name -->
+                      <p><strong>Adresse:</strong> <%= reservation.Batiment.adresse %></p>
+                    <% } else { %>
+                      <p><strong>Appartient au bâtiment:</strong> Non spécifié</p>
+                    <% } %>
+                    <div class="button-container">
+                      <% if (hasPermission) { %>
+                      <a href="/reservations/<%= reservation.id %>" class="edit-button">Voir</a>
+                      <% } else { %>
+                      <button type="button" class="disabled" disabled>Can't view this Reservation</button>
+                      <% } %>
+                    </div>
+                    <!-- Add other room details as needed -->
+                    
+                  </div>
+                </div>
+                
+              <% }); %>
+            <% } else { %>
+              <p><strong>Room Id:</strong> <%= room.id %></p>
+              <p>No reservations for this salle.</p>
+            <% } %>
+            <a href="/reservations/create/<%= room.id %>" class="add-user-button">Create a new reservation for this salle</a>
+          </div>
+
+
+            
+          <% }); %>
             
         </div>
 
-          
-        
       </div>
       
     </div>

@@ -3,6 +3,9 @@ import Establishment from "../models/establishment-model.js";
 import Reservation from "../models/reservation-model.js";
 import User from "../models/user-model.js";
 import moment  from  'moment'; 
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 // Define the formatDate function to include date and time
 export function formatDate(date) {
     const options = {
@@ -107,4 +110,24 @@ export const getReservations = async () => {
     } catch (error) {
       console.error('Error fetching rooms by establishment:', error);
     }
+};
+
+
+export const download = async (fileName, folderName, res) => {
+
+    // Determine the base directory
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    // const baseDirectory = path.dirname(new URL(import.meta.url).pathname);
+    const filePath = path.join(__dirname,"..", "public", folderName, fileName); // Make sure this aligns with your directory structure
+    
+    res.download(filePath, fileName, (err) => {
+      if (err) {
+        console.error('Error downloading PDF:', err);
+        res.status(500).send('An error occurred while downloading the PDF');
+      } else {
+        // Remove the PDF file after the download
+        // fs.unlinkSync(fileName);
+      }
+    });
+  
 };

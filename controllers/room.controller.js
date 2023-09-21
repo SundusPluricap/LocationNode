@@ -251,7 +251,7 @@ export const getEdit = async (req, res) => {
     console.log('-----------param--------',    param.Batiment.establishmentId)
 
     
-    let hasPermission = editPermission && (isKing(user) || belongTo(param.Batiment.establishmentId,user.establishmentId) )
+    let hasPermission = isKing(user) || (editPermission && belongTo(param.Batiment.establishmentId,user.establishmentId) )
     console.log('-----------editPermission--------',hasPermission)
       // if 
     if(hasPermission ){

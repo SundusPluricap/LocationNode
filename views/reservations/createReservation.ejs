@@ -88,9 +88,6 @@
               <button type="submit" class="btn btn-primary">Créer la reservation et Télécharger le devis</button>
               <a href="/reservations" class="btn btn-primary">go back</a>
             </div>
-
-
-
           </form>
 
           
@@ -106,138 +103,9 @@
   </div>
 </div>
 
-<script>
+<script src="/js/timePicker.js"></script>
 
-
-/****
- * Time picker
- * 
- * 
-*/
-function createTimePicker(inputId, optionsId) {
-  const timeInput = document.getElementById(inputId);
-  const timeOptions = document.getElementById(optionsId);
-
-  timeInput.addEventListener('click', generateOptions);
-  timeOptions.addEventListener('click', selectTime);
-
-  document.addEventListener('click', closeDropdown);
-
-  function generateOptions() {
-    timeOptions.innerHTML = ''; // Clear existing options
-
-    const currentTime = new Date();
-    currentTime.setMinutes(Math.ceil(currentTime.getMinutes() / 30) * 30); // Round to nearest 30 minutes
-
-    for (let i = 0; i < 24 * 2; i++) { // 24 hours * 2 (30-minute intervals)
-      const optionTime = new Date(currentTime.getTime() + i * 30 * 60 * 1000);
-      const optionText = optionTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }); // Use 24-hour format
-
-      const optionElement = document.createElement('div');
-      optionElement.classList.add('time-option');
-      optionElement.textContent = optionText;
-      optionElement.dataset.value = optionText;
-
-      timeOptions.appendChild(optionElement);
-    }
-
-    timeOptions.style.display = 'block';
-  }
-
-  function selectTime(event) {
-    if (event.target.classList.contains('time-option')) {
-      const selectedTime = event.target.getAttribute('data-value');
-      timeInput.value = selectedTime;
-      timeOptions.style.display = 'none';
-      console.log(`Selected time: ${selectedTime}`);
-    }
-  }
-
-  function closeDropdown(event) {
-    if (!event.target.closest('.time-picker')) {
-      timeOptions.style.display = 'none';
-    }
-  }
-}
-
-createTimePicker('startTime', 'time-options1');
-createTimePicker('endTime', 'time-options2');
-
-
-
-/****
- * Display capacity
- * 
- * 
-*/
-
-  // const salleIdSelect = document.getElementById("salleId");
-  // // salleIdSelect.selectedIndex = 0;
-  // const capacityDisplay = document.getElementById("capacityDisplay");
-  // const nbrPeopleInput = document.getElementById("nbrPeople");
-  // salleIdSelect.addEventListener("change", () => {
-  //   const selectedOption = salleIdSelect.options[salleIdSelect.selectedIndex];
-  //   const selectedCapacity = selectedOption.getAttribute("data-capacity");
-  //   capacityDisplay.textContent = `Capacity: ${selectedCapacity}`;
-
-  //   nbrPeopleInput.max = selectedCapacity;
-    
-  //   // If the current value of the input is greater than the new maximum, reset it
-  //   if (parseInt(nbrPeopleInput.value) > parseInt(selectedCapacity)) {
-  //     nbrPeopleInput.value = selectedCapacity;
-  //   }
-  // });
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-  // const salleIdSelect = document.getElementById("salleId");
-  // const nbrPeopleInput = document.getElementById("nbrPeople");
-  
-  // salleIdSelect.addEventListener("change", () => {
-  //   const selectedOption = salleIdSelect.options[salleIdSelect.selectedIndex];
-  //   const selectedCapacity = selectedOption.getAttribute("data-capacity");
-    
-    // Set the maximum value of the input field based on the selected capacity
-    
-  // });
-              
-</script>
-
-<script>
-  // Get the selected option
-  // const selectedOption = document.querySelector('#salleId option[selected]');
-  // if (selectedOption) {
-  //   // Get the capacity attribute value from the selected option
-  //   const capacity = selectedOption.getAttribute('data-capacity');
-  //   // Set the initial text content of the "capacity" <p> element
-  //   document.getElementById('capacity').textContent = `Capacity: ${capacity}`;
-  // }
-
-
-
-
-
-
-
-
-
-
-
-  const salleIdSelect = document.getElementById("salleId");
-  const capacityDisplay = document.getElementById("capacity");
-
-  // Function to update the capacity display
-  function updateCapacityDisplay() {
-    const selectedOption = salleIdSelect.options[salleIdSelect.selectedIndex];
-    const selectedCapacity = selectedOption.getAttribute("data-capacity");
-    capacityDisplay.textContent = `Capacity: ${selectedCapacity}`;
-  }
-
-  // Add an event listener to update the capacity display on change
-  salleIdSelect.addEventListener("change", updateCapacityDisplay);
-
-  // Initialize the capacity display
-  updateCapacityDisplay();
-</script>
+<script src="/js/setCapacity.js"></script>
 </body>
 
 <!-- <%- include('../partials/footer') -%> -->

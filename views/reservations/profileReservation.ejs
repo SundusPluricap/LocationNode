@@ -13,20 +13,6 @@
                 <tr>
                     <td colspan="6" align="center">ID:</td>
                     <td ><%= param.id %></td>
-
-                    <!-- startDate: 2023-08-04T00:00:00.000Z, -->
-    <!-- startTime: '00:00:00', -->
-    <!-- endTime: '00:00:00', -->
-    <!-- objet: '',
-    nbrPeople: 3, -->
-    <!-- : '', -->
-    <!-- devis: 'devis_ece4b528-36b5-428a-b6ef-3241ed7576ca.pdf', -->
-    <!-- facture: 'facture_ece4b528-36b5-428a-b6ef-3241ed7576ca.pdf', -->
-    <!-- clientId: 112,
-    userId: 38,
-    salleId: 1,
-    createdAt: 2023-08-30T15:04:36.000Z,
-    updatedAt -->
                 </tr>
                 <tr>
                     <td colspan="6" align="center">Date of reservation:</td>
@@ -72,13 +58,13 @@
 
                 <tr>
                     <td colspan="6" align="center">devis:</td>
-                    <td><a href="<%= param.devis %>/download" class="edit-button"> <i class="fa fa-download"></i> &nbsp;Télécharger</a></td>               
+                    <td><a href="<%= param.devis %>/downloadDevis" class="edit-button"> <i class="fa fa-download"></i> &nbsp;Télécharger</a></td>               
                 </tr>
 
                 <tr>
                     <td colspan="6" align="center">facture:</td>                    
                     <% if (param.facture){ %>
-                        <td><a href="<%= param.facture %>/download" class="edit-button"> <i class="fa fa-download"></i> &nbsp;Télécharger</a></td>
+                        <td><a href="<%= param.facture %>/downloadFacture" class="edit-button"> <i class="fa fa-download"></i> &nbsp;Télécharger</a></td>
                     <% } else { %>
                         <td> reservation is pending, change status to confirmed to get the invoice </td>
                     <% } %> 
@@ -113,6 +99,8 @@
                         <td colspan="3" align="center">
                             <a href="<%= param.id %>/edit" class="edit-button">Modifier</a>
                         </td>
+
+                        
                         
                     <% } else { %>
                         <td>
@@ -130,7 +118,15 @@
                         <td>
                             <button type="button" class="disabled" disabled>Can't Delete this Client</button>
                         </td>
-                    <% } %>                  
+                    <% } %>            
+                    
+                    <% if (param.status === 'pending') { %>
+                        <td colspan="3" align="center">
+                            <a href="<%= param.id %>/confirm" class="view-profile-button">confirm Devis</a>
+                        </td>
+                    <% } else { %>
+                    <% } %>  
+                    
                 </tr>
 
                 

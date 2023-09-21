@@ -63,17 +63,9 @@
                             
                             <div class="photo-slider">
                                 <% param.images.forEach((image) => { %>
-                                    
-
                                     <div class="slider-item slider-item-3d">
                                         <img src="/images/products/<%= image.name %>" alt="<%= image.description %>" class="img-fluid">
-                                        <!-- <div class="image-buttons">
-                                          <a class="edit-img" href="/products/img/<%= image.id %>/change">Modifier</a>
-                                          |
-                                          <a class="delete-img" href="/products/img/<%= image.id %>/delete">Supprimer</a>
-                                        </div> -->
-                                      </div>
-                                
+                                    </div>
                                 <% }); %>
                             </div>
                         <% } else { %>
@@ -87,7 +79,7 @@
 
             <div class="actions-container text-center mt-4">
                 <a href="<%= param.product.id %>/edit" class="edit-button">Modifier</a>
-                <a href="/products/<%= param.product.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
+                <a href="/rooms/<%= param.product.id %>/delete" class="delete-button" onclick="return confirmDelete()">Supprimer</a>
             </div>
         </div>
     </div>
