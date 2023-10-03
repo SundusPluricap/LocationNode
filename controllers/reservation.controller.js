@@ -1,6 +1,7 @@
 import Client from '../models/client-model.js'; 
 import User from '../models/user-model.js'; 
 import Room from '../models/room-model.js'; 
+import Establishment from '../models/establishment-model.js'; 
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,6 +13,7 @@ import {getPermissionForUser} from '../utiles/user.requete.js'
 import moment  from  'moment'; 
 import { isKing } from '../utiles/role.js';
 import {belongTo} from '../utiles/role.permission.js'
+
 import {getReservationsByEstablishment, getReservations, formatDate, duree, download} from '../utiles/reservations.requete.js'
 const { RESERVE_SALLE, VIEW_RESERVATION, EDIT_RESERVATION, DELETE_RESERVATION, VIEW_CLIENT, VIEW_USER, VIEW_SALLE} = process.env;
 
@@ -106,13 +108,28 @@ export const create = async (req, res) => {
 export const createPost = async(req, res) => {
   try {
     // Capture form data
+    const user = req.session.user
     const { clientId, startDate, startTime, endTime, objet, nbrPeople, salleId } = req.body;
 
+    // Retrieve Client and Room data
+    const client = await Client.findByPk(clientId, {
+      include: [
+        {
+          model: User,
+          include: [
+            {
+              model: Establishment,
+            },
+          ],
+        },
+      ],
+    });
+    const room = await Room.findByPk(salleId);
     
     const formattedStartTime = moment(startTime, 'h:mm A').format('HH:mm:ss');
     const formattedEndTime = moment(endTime, 'h:mm A').format('HH:mm:ss');
     // console.log('-------------------------timeeeeeeeeeee----------------',startTime, endTime, formattedStartTime,formattedEndTime)
-    const user = req.session.user
+    
     const uniqueIdentifier = uuidv4(); // You can also use the reservation ID if available
 
     // Create a devis like "devis_reservationID.pdf"
@@ -150,38 +167,57 @@ export const createPost = async(req, res) => {
     doc.fontSize(12).text(`End Time: ${endTime}`);
     doc.fontSize(12).text(`Object: ${objet}`);
     doc.fontSize(12).text(`Number of People: ${nbrPeople}`);
-    // Add more details as needed
+   // Include Client and Room data in the PDF
+    if (client) {
+      doc.fontSize(14).text('Client Information', { align: 'left' });
+      doc.fontSize(12).text(`Name: ${client.firstName} ${client.lastName}`);
+      doc.fontSize(12).text(`Email: ${client.email}`);
+      doc.fontSize(12).text(`Phone Number: ${client.phoneNumber}`);
+      doc.fontSize(12).text(`Address: ${client.adresse}, ${client.codePostal}, ${client.country}`);
+      doc.fontSize(12).text(`Company Name: ${client.companyName || 'N/A'}`);
+    }
 
+    if (client && client.User) {
+      const linkedUser = client.User;
+      doc.fontSize(14).text('Linked User Information', { align: 'left' });
+      doc.fontSize(12).text(`User ID: ${linkedUser.id}`);
+      doc.fontSize(12).text(`User Name: ${linkedUser.firstName} ${linkedUser.lastName}`);
+      doc.fontSize(12).text(`User Email: ${linkedUser.email}`);
+    
+      if (linkedUser.Establishment) {
+        doc.fontSize(14).text('Linked User\'s Establishment Information', { align: 'left' });
+        doc.fontSize(12).text(`Establishment Name: ${linkedUser.Establishment.name}`);
+        doc.fontSize(12).text(`Establishment Address: ${linkedUser.Establishment.adresse}, ${linkedUser.Establishment.codePostal}, ${linkedUser.Establishment.country}`);
+        doc.fontSize(12).text(`Establishment SIRET: ${linkedUser.Establishment.SIRET}`);
+        doc.fontSize(12).text(`Establishment Bank Name: ${linkedUser.Establishment.bankName}`);
+        doc.fontSize(12).text(`Establishment IBAN: ${linkedUser.Establishment.IBAN}`);
+        doc.fontSize(12).text(`Establishment BIC: ${linkedUser.Establishment.BIC}`);
+      }
+    }
 
-    // Set the PDF content
-    // doc.pipe(fs.createWriteStream(factureFilePath));
-    // doc.fontSize(16).text('Quote Details', { align: 'center' });
-    // doc.fontSize(12).text(`Client ID: ${clientId}`);
-    // doc.fontSize(12).text(`Start Date: ${startDate}`);
-    // doc.fontSize(12).text(`Start Time: ${startTime}`);
-    // doc.fontSize(12).text(`End Time: ${endTime}`);
-    // doc.fontSize(12).text(`Object: ${objet}`);
-    // doc.fontSize(12).text(`Number of People: ${nbrPeople}`);
-    // Add more details as needed
+    if (room) {
+      doc.fontSize(14).text('Room Information', { align: 'left' });
+      doc.fontSize(12).text(`Room Name: ${room.name}`);
+      doc.fontSize(12).text(`Capacity: ${room.capacity || 'N/A'}`);
+      doc.fontSize(12).text(`Price: ${room.price}`);
+      doc.fontSize(12).text(`TVA: ${room.TVA || 'N/A'}`);
+    }
 
-    /**
-     * make this a middleware 
-     */
-    // At this point, the PDF is generated and saved
-
+    if (user.Establishment) {
+      doc.fontSize(14).text('Establishment Information', { align: 'left' });
+      doc.fontSize(12).text(`Name: ${user.Establishment.name}`);
+      doc.fontSize(12).text(`Address: ${user.Establishment.adresse}, ${user.Establishment.codePostal}, ${user.Establishment.country}`);
+      doc.fontSize(12).text(`SIRET: ${user.Establishment.SIRET}`);
+      doc.fontSize(12).text(`Bank Name: ${user.Establishment.bankName}`);
+      doc.fontSize(12).text(`IBAN: ${user.Establishment.IBAN}`);
+      doc.fontSize(12).text(`BIC: ${user.Establishment.BIC}`);
+    }
     await new Promise((resolve, reject) => {
       doc.pipe(fs.createWriteStream(devisFilePath))
         .on('finish', resolve)
         .on('error', reject);
       doc.end();
     });
-
-    // await new Promise((resolve, reject) => {
-    //   doc.pipe(fs.createWriteStream(factureFilePath))
-    //     .on('finish', resolve)
-    //     .on('error', reject);
-    //   doc.end();
-    // });
 
     res.redirect('/reservations')
   } catch (error) {
