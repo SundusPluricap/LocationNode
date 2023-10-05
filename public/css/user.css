@@ -15,7 +15,7 @@ h1 {
 .user-table th , .establishmentTab{
     background-color: #f2f2f2;
 }
-.view-profile-button , .add-user-button{
+/* .view-profile-button , .add-user-button{
     display: inline-block;
     width: 80%;
     max-width: 200px;
@@ -27,22 +27,55 @@ h1 {
     transition: background-color 0.3s, color 0.3s;
 }
 
+
 .add-user-button {
     display: block;
     width: 100%;
     margin-top: 20px;
-    border: 2px solid #3f9d00; /* Changed to border instead of background color */
-    color: #3f9d00;
+    border: 2px solid #009d54; Changed to border instead of background color
+    color: #009d54;
+} */
+/* 
+.add-user-button {
+    background-color: #009d54;
+    border: 2px solid #009d54;
+    color: #fff;
+    transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
 .add-user-button:hover {
-    background-color: #3f9d00;
+    background-color: rgb(45, 62, 253);
+    border-color: rgb(45, 62, 253);
+}
+.view-profile-button {
+    border: 2px solid #007bff; Changed to border instead of background color
+    color: #007bff;
+} */
+
+
+/* .add-user-button {
+    background-color: #009d54;
+    border: 2px solid #009d54;
     color: #fff;
 }
 
-.view-profile-button {
-    border: 2px solid #007bff; /* Changed to border instead of background color */
-    color: #007bff;
+.add-user-button:hover {
+    animation: smoothColorChange 4s infinite;
+} */
+
+@keyframes smoothColorChange {
+    0% {
+        background-color: #009d54;
+        border-color: #009d54;
+    }
+    50% {
+        background-color: rgb(45, 62, 253);
+        border-color: rgb(45, 62, 253);
+    }
+    100% {
+        background-color: #009d54;
+        border-color: #009d54;
+    }
 }
 
 .view-profile-button:hover {

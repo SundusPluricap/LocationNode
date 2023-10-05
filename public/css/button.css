@@ -1,0 +1,148 @@
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Common styles for buttons */
+
+.edit-button, .delete-button, .add-salle-button, .reserve-button, .view-button, .add-user-button, .view-profile-button{
+    display: block;
+    margin: 10px; /* Add some margin between the buttons */
+    padding:10px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+/* Add User Button */
+.add-user-button {
+    background-color: #009d54;
+    color: #fff;
+}
+
+.add-user-button:hover {
+    animation: smoothColorChangeAddUser 4s infinite;
+}
+
+/* View Profile Button */
+.view-profile-button {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.view-profile-button:hover {
+    animation: smoothColorChangeViewProfile 4s infinite;
+}
+
+/* Add Salle Button */
+.add-salle-button {
+    background-color: #054268;
+    color: #fff;
+}
+
+.add-salle-button:hover {
+    animation: smoothColorChangeAddSalle 4s infinite;
+}
+
+/* Reserve Button */
+.reserve-button {
+    background-color: #054268;
+    color: #fff;
+}
+
+.reserve-button:hover {
+    animation: smoothColorChangeReserve 4s infinite;
+}
+
+/* Delete Button */
+.delete-button {
+    background-color: #850000;
+    color: #fff;
+}
+
+.delete-button:hover {
+    animation: smoothColorChangeDelete 4s infinite;
+}
+
+/* Edit Button */
+.edit-button {
+    background-color: #005b24;
+    color: #fff;
+}
+
+.edit-button:hover {
+    animation: smoothColorChangeEdit 4s infinite;
+}
+
+/* View Button */
+.view-button {
+    background-color: #00155b;
+    color: #fff;
+}
+
+.view-button:hover {
+    animation: smoothColorChangeView 4s infinite;
+}
+
+@keyframes smoothColorChangeAddUser {
+    0%, 100% {
+        background-color: #009d54;
+    }
+    50% {
+        background-color: rgb(4, 71, 13);
+    }
+}
+
+@keyframes smoothColorChangeViewProfile {
+    0%, 100% {
+        background-color: #007bff;
+    }
+    50% {
+        background-color: rgb(45, 62, 253);
+    }
+}
+
+@keyframes smoothColorChangeAddSalle {
+    0%, 100% {
+        background-color: #054268;
+    }
+    50% {
+        background-color: rgb(45, 62, 253);
+    }
+}
+
+@keyframes smoothColorChangeReserve {
+    0%, 100% {
+        background-color: #054268;
+    }
+    50% {
+        background-color: rgb(45, 62, 253);
+    }
+}
+
+@keyframes smoothColorChangeDelete {
+    0%, 100% {
+        background-color: #850000;
+    }
+    50% {
+        background-color: rgb(177, 81, 81);
+    }
+}
+
+@keyframes smoothColorChangeEdit {
+    0%, 100% {
+        background-color: #005b24;
+    }
+    50% {
+        background-color: rgb(77, 129, 97);
+    }
+}
+
+@keyframes smoothColorChangeView {
+    0%, 100% {
+        background-color: #00155b;
+    }
+    50% {
+        background-color: rgb(45, 62, 253);
+    }
+}

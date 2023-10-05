@@ -9,7 +9,7 @@
     <div class="col-md-6">
       <div class="card">
         <div class="card-header bg-primary text-white">
-          <h1 class="mb-2">Créer une nouvelle Reservation</h1>
+          <h1 class="mb-2">Créer une nouvelle Reservation</h1> 
         </div>
         <div class="card-body">
           <p>
@@ -19,7 +19,8 @@
           <form action="/reservations/create" method="POST">
             
             <div class="mb-3">
-              <label for="clientId" class="form-label">Select Client</label>
+              <!-- add create client permission here before the link -->
+              <label for="clientId" class="form-label">Select Client  <a href="/clients/create-client" style="color:rgba(26, 2, 2, 0.381)"> or create new client here </a> </label>
               <select class="form-control" id="clientId" name="clientId" required>
                 <% clients.forEach((client) => { %>
                 <option value="<%= client.id %>"><%= client.firstName %> <%= client.lastName %></option>

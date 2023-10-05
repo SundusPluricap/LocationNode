@@ -58,6 +58,8 @@ body, ul {
     width: 45%;
 }
 
+
+  
 /* Style product cart based on screen size */
 .product-cart {
     width: 100%; /* Full width by default */
@@ -95,10 +97,10 @@ body, ul {
     background-color: #0056b3;
 } */
 
-.edit-button, .delete-button, .add-salle-button, .reserve-button{
+/* .edit-button, .delete-button, .add-salle-button, .reserve-button{
     display: inline-block;
-    width: 77%; /* Full width by default */
-    margin: 10px; /* Add some margin between the buttons */
+    width: 77%; Full width by default
+    margin: 10px; Add some margin between the buttons
     padding:10px;
     text-align: center;
     text-decoration: none;
@@ -106,10 +108,10 @@ body, ul {
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* Adjust button width for larger screens */
+Adjust button width for larger screens
 @media screen and (min-width: 768px) {
     .edit-button, .delete-button, .add-salle-button{
-        width: calc(50% - 20px); /* Subtract 20px for margin between buttons */
+        width: calc(50% - 20px); Subtract 20px for margin between buttons
     }
 }
 
@@ -151,7 +153,7 @@ body, ul {
 .reserve-button:hover {
     background-color: #054268;
     color: #fff;
-}
+} */
 
 /* Responsive styles for tabs buttons */
 @media screen and (max-width: 900px) {
